@@ -21,6 +21,7 @@ set(SRCS
     src/icons.cpp
     src/nmmodel.cpp
     src/nmlist.cpp
+    src/nmproxy.cpp
     src/tray.cpp
     src/main.cpp
 )

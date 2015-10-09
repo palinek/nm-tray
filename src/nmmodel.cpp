@@ -438,7 +438,7 @@ NmModel::NmModel(QObject * parent)
 //qDebug() << "connectionAdd" << conn->name();
         const int cnt = d->mConnections.size();
         Q_ASSERT(0 > d->mConnections.indexOf(conn));
-        beginInsertRows(createIndex(0, 0, ITEM_CONNECTION), cnt, cnt);
+        beginInsertRows(createIndex(1, 0, ITEM_CONNECTION), cnt, cnt);
         d->addConnection(conn);
         endInsertRows();
     });
@@ -457,7 +457,7 @@ NmModel::NmModel(QObject * parent)
         if (d->mConnections.cend() != i)
         {
             const int pos = i - d->mConnections.cbegin();
-            beginRemoveRows(createIndex(0, 0, ITEM_CONNECTION), pos, pos);
+            beginRemoveRows(createIndex(1, 0, ITEM_CONNECTION), pos, pos);
             d->removeConnection(pos);
             endRemoveRows();
         }
@@ -511,7 +511,7 @@ NmModel::NmModel(QObject * parent)
 //qDebug() << "deviceAdd" << dev->interfaceName();
         const int cnt = d->mDevices.size();
         Q_ASSERT(0 > d->mDevices.indexOf(dev));
-        beginInsertRows(createIndex(0, 0, ITEM_DEVICE), cnt, cnt);
+        beginInsertRows(createIndex(2, 0, ITEM_DEVICE), cnt, cnt);
         d->addDevice(dev);
         endInsertRows();
     });
@@ -530,7 +530,7 @@ NmModel::NmModel(QObject * parent)
         if (d->mDevices.cend() != i)
         {
             const int pos = i - d->mDevices.cbegin();
-            beginRemoveRows(createIndex(0, 0, ITEM_DEVICE), pos, pos);
+            beginRemoveRows(createIndex(2, 0, ITEM_DEVICE), pos, pos);
             d->removeDevice(pos);
             endRemoveRows();
         }
@@ -543,7 +543,7 @@ NmModel::NmModel(QObject * parent)
         {
             Q_ASSERT(0 > d->mWifiNets.indexOf(net));
             const int cnt = d->mWifiNets.size();
-            beginInsertRows(createIndex(0, 0, ITEM_WIFINET), cnt, cnt);
+            beginInsertRows(createIndex(3, 0, ITEM_WIFINET), cnt, cnt);
             d->addWifiNetwork(net);
             endInsertRows();
         }
@@ -557,7 +557,7 @@ NmModel::NmModel(QObject * parent)
             {
                 //remove
                 auto pos = i - d->mWifiNets.cbegin();
-                beginRemoveRows(createIndex(0, 0, ITEM_WIFINET), pos, pos);
+                beginRemoveRows(createIndex(3, 0, ITEM_WIFINET), pos, pos);
                 d->removeWifiNetwork(pos);
                 endRemoveRows();
             } else
@@ -586,7 +586,7 @@ NmModel::NmModel(QObject * parent)
         auto pos = d->mWifiNets.indexOf(net);
         if (0 <= pos)
         {
-            beginRemoveRows(createIndex(0, 0, ITEM_WIFINET), pos, pos);
+            beginRemoveRows(createIndex(3, 0, ITEM_WIFINET), pos, pos);
             d->removeWifiNetwork(pos);
             endRemoveRows();
         }
@@ -624,26 +624,6 @@ int NmModel::rowCount(const QModelIndex &parent/* = QModelIndex()*/) const
             cnt = d->mWifiNets.size();
     }
 
-/*
-    if (&d->mTypeBasedView == p)
-       return 2; //wired + wifi 
-    if (&d->mWiredRoot == p)
-        return std::count_if(d->mConnections.cbegin(), d->mConnections.cend(), [] (NetworkManager::Connection::Ptr const & c) -> bool {
-                return NetworkManager::ConnectionSettings::Wired == c->settings()->connectionType();
-            })
-            +
-            std::count_if(d->mActiveConns.cbegin(), d->mActiveConns.cend(), [] (NetworkManager::ActiveConnection::Ptr const & c) -> bool {
-                return NetworkManager::ConnectionSettings::Wired == c->connection()->settings()->connectionType();
-            });
-    if (&d->mWifiRoot == p)
-        return std::count_if(d->mConnections.cbegin(), d->mConnections.cend(), [] (NetworkManager::Connection::Ptr const & c) -> bool {
-                return NetworkManager::ConnectionSettings::Wireless == c->settings()->connectionType();
-            })
-            +
-            std::count_if(d->mActiveConns.cbegin(), d->mActiveConns.cend(), [] (NetworkManager::ActiveConnection::Ptr const & c) -> bool {
-                return NetworkManager::ConnectionSettings::Wireless == c->connection()->settings()->connectionType();
-            });
-*/
 //qDebug() << __FUNCTION__ << parent << cnt;
     return cnt;
 }
@@ -1009,7 +989,7 @@ QModelIndex NmModel::parent(const QModelIndex &index) const
                 parent_i = createIndex(2, 0, ITEM_DEVICE);
                 break;
             case ITEM_WIFINET_LEAF:
-                parent_i = createIndex(4, 0, ITEM_WIFINET);
+                parent_i = createIndex(3, 0, ITEM_WIFINET);
                 break;
         }
     }
@@ -1018,7 +998,7 @@ QModelIndex NmModel::parent(const QModelIndex &index) const
     return parent_i;
 }
 
-QModelIndex NmModel::indexTypeFirst(ItemType type)
+QModelIndex NmModel::indexTypeRoot(ItemType type) const
 {
     QModelIndex i;
     switch (type)
@@ -1027,16 +1007,16 @@ QModelIndex NmModel::indexTypeFirst(ItemType type)
             i = createIndex(0, 0, ITEM_ROOT);
             break;
         case ActiveConnectionType:
-            i = createIndex(0, 0, ITEM_ACTIVE_LEAF);
+            i = createIndex(0, 0, ITEM_ACTIVE);
             break;
         case ConnectionType:
-            i = createIndex(0, 0, ITEM_CONNECTION_LEAF);
+            i = createIndex(1, 0, ITEM_CONNECTION);
             break;
         case DeviceType:
-            i = createIndex(0, 0, ITEM_DEVICE_LEAF);
+            i = createIndex(2, 0, ITEM_DEVICE);
             break;
         case WifiNetworkType:
-            i = createIndex(0, 0, ITEM_WIFINET_LEAF);
+            i = createIndex(3, 0, ITEM_WIFINET);
             break;
     }
     return i;

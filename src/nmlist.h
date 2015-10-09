@@ -7,14 +7,14 @@ namespace Ui {
 class NmList;
 }
 
-class NmModel;
+class QAbstractItemModel;
 
 class NmList : public QDialog
 {
     Q_OBJECT
 
 public:
-    explicit NmList(NmModel * m, QWidget *parent = 0);
+    explicit NmList(QAbstractItemModel * m, QWidget *parent = 0);
     ~NmList();
 
 private:

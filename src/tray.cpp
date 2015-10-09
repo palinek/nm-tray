@@ -11,6 +11,7 @@
 
 #include "icons.h"
 #include "nmmodel.h"
+#include "nmproxy.h"
 
 #include "nmlist.h"
 
@@ -18,6 +19,7 @@
 class TrayPrivate
 {
 public:
+    TrayPrivate();
     void updateState(QModelIndex const & index, bool removing);
     void primaryConnectionUpdate();
     void setIcon(icons::Icon icon);
@@ -31,6 +33,8 @@ public:
     QAction * mActEnableWifi;
     QAction * mActConnInfo;
     NmModel mNmModel;
+    NmProxy mActiveConnections;
+    NmProxy mWifiConnections;
     QString mPrimaryConnectionUuid;
     icons::Icon mIconCurrent;
     icons::Icon mIcon2Show;
@@ -38,16 +42,18 @@ public:
 
 };
 
+TrayPrivate::TrayPrivate()
+{
+    mActiveConnections.setNmModel(&mNmModel, NmModel::ActiveConnectionType);
+    mWifiConnections.setNmModel(&mNmModel, NmModel::WifiNetworkType);
+}
+
 void TrayPrivate::updateState(QModelIndex const & index, bool removing)
 {
-    const auto item_type = static_cast<NmModel::ItemType>(mNmModel.data(index, NmModel::ItemTypeRole).toInt());
-    if (NmModel::ActiveConnectionType != item_type)
-        return;
-
-    const auto state = static_cast<NetworkManager::ActiveConnection::State>(mNmModel.data(index, NmModel::ActiveConnectionStateRole).toInt());
-    const QString uuid = mNmModel.data(index, NmModel::ConnectionUuidRole).toString();
+    const auto state = static_cast<NetworkManager::ActiveConnection::State>(mActiveConnections.data(index, NmModel::ActiveConnectionStateRole).toInt());
+    const QString uuid = mActiveConnections.data(index, NmModel::ConnectionUuidRole).toString();
     const bool is_primary = mPrimaryConnectionUuid == uuid;
-//qDebug() << __FUNCTION__ << index << removing << mNmModel.data(index, NmModel::NameRole) << uuid << is_primary << item_type << mNmModel.data(index, NmModel::ConnectionTypeRole).toInt() << state;
+//qDebug() << __FUNCTION__ << index << removing << mActiveConnections.data(index, NmModel::NameRole) << uuid << is_primary << item_type << mActiveConnections.data(index, NmModel::ConnectionTypeRole).toInt() << state;
 
     if (removing || NetworkManager::ActiveConnection::Deactivated == state)
     {
@@ -59,7 +65,7 @@ void TrayPrivate::updateState(QModelIndex const & index, bool removing)
     } else
     {
         if (is_primary || NetworkManager::ActiveConnection::Activating == state)
-            setIcon(static_cast<icons::Icon>(mNmModel.data(index, NmModel::IconTypeRole).toInt()));
+            setIcon(static_cast<icons::Icon>(mActiveConnections.data(index, NmModel::IconTypeRole).toInt()));
         if (!is_primary && NetworkManager::ActiveConnection::Activating != state)
             primaryConnectionUpdate();
     }
@@ -78,7 +84,7 @@ void TrayPrivate::primaryConnectionUpdate()
 //qDebug() << __FUNCTION__ << prim_conn->uuid();
 
     mPrimaryConnectionUuid = prim_conn->uuid();
-    QModelIndexList l = mNmModel.match(mNmModel.indexTypeFirst(NmModel::ActiveConnectionType), NmModel::ActiveConnectionUuidRole, mPrimaryConnectionUuid, -1, Qt::MatchExactly);
+    QModelIndexList l = mActiveConnections.match(mActiveConnections.index(0, 0, QModelIndex{}), NmModel::ActiveConnectionUuidRole, mPrimaryConnectionUuid, -1, Qt::MatchExactly);
 //qDebug() << __FUNCTION__ << l.size();
     //nothing to do if the connection not populated in model yet
     if (0 >= l.size())
@@ -138,30 +144,36 @@ Tray::Tray(QObject *parent/* = 0*/)
     d->mActEnableWifi->setCheckable(true);
     connect(d->mActEnableNetwork, &QAction::triggered, [this] (bool checked) { NetworkManager::setNetworkingEnabled(checked); });
     connect(d->mActEnableWifi, &QAction::triggered, [this] (bool checked) { NetworkManager::setWirelessEnabled(checked); });
-    connect(d->mActConnInfo, &QAction::triggered, [this] (bool ) { /*TODO: information dialog*/
-        NmList * dialog = new NmList{&d->mNmModel};
-        connect(dialog, &QDialog::finished, dialog, &QObject::deleteLater);
-        dialog->show();
+    connect(d->mActConnInfo, &QAction::triggered, [this] (bool ) {
+        //TODO: information dialog
+        //XXX: just testing dialogs
+        QAbstractItemModel * models[] = { &d->mNmModel, &d->mActiveConnections, &d->mWifiConnections };
+        for (auto & model : models)
+        {
+            NmList * dialog = new NmList{model};
+            dialog->setAttribute(Qt::WA_DeleteOnClose);
+            dialog->show();
+        }
     });
 
     connect(NetworkManager::notifier(), &NetworkManager::Notifier::networkingEnabledChanged, &d->mStateTimer, static_cast<void (QTimer::*)()>(&QTimer::start));
     connect(NetworkManager::notifier(), &NetworkManager::Notifier::wirelessEnabledChanged, &d->mStateTimer, static_cast<void (QTimer::*)()>(&QTimer::start));
     connect(NetworkManager::notifier(), &NetworkManager::Notifier::wirelessHardwareEnabledChanged, &d->mStateTimer, static_cast<void (QTimer::*)()>(&QTimer::start));
     connect(NetworkManager::notifier(), &NetworkManager::Notifier::primaryConnectionChanged, this, &Tray::onPrimaryConnectionChanged);
-    connect(&d->mNmModel, &QAbstractItemModel::rowsInserted, [this] (QModelIndex const & parent, int first, int last) {
+    connect(&d->mActiveConnections, &QAbstractItemModel::rowsInserted, [this] (QModelIndex const & parent, int first, int last) {
 //qDebug() << "rowsInserted" << parent;
         for (int i = first; i <= last; ++i)
-            d->updateState(d->mNmModel.index(i, 0, parent), false);
+            d->updateState(d->mActiveConnections.index(i, 0, parent), false);
     });
-    connect(&d->mNmModel, &QAbstractItemModel::rowsAboutToBeRemoved, [this] (QModelIndex const & parent, int first, int last) {
+    connect(&d->mActiveConnections, &QAbstractItemModel::rowsAboutToBeRemoved, [this] (QModelIndex const & parent, int first, int last) {
 //qDebug() << "rowsAboutToBeRemoved";
         for (int i = first; i <= last; ++i)
-            d->updateState(d->mNmModel.index(i, 0, parent), true);
+            d->updateState(d->mActiveConnections.index(i, 0, parent), true);
     });
-    connect(&d->mNmModel, &QAbstractItemModel::dataChanged, [this] (const QModelIndex & topLeft, const QModelIndex & bottomRight, const QVector<int> & /*roles*/) {
+    connect(&d->mActiveConnections, &QAbstractItemModel::dataChanged, [this] (const QModelIndex & topLeft, const QModelIndex & bottomRight, const QVector<int> & /*roles*/) {
 //qDebug() << "dataChanged";
         for (auto const & i : QItemSelection{topLeft, bottomRight}.indexes())
-            d->updateState(i, false);
+        d->updateState(i, false);
     });
 
     d->mTrayIcon.setContextMenu(&d->mContextMenu);

@@ -1,8 +1,7 @@
 #include "nmlist.h"
 #include "ui_nmlist.h"
-#include "nmmodel.h"
 
-NmList::NmList(NmModel * m, QWidget *parent)
+NmList::NmList(QAbstractItemModel * m, QWidget *parent)
     : QDialog(parent)
     , ui(new Ui::NmList)
 {
