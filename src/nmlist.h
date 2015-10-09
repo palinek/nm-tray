@@ -14,7 +14,7 @@ class NmList : public QDialog
     Q_OBJECT
 
 public:
-    explicit NmList(QAbstractItemModel * m, QWidget *parent = 0);
+    explicit NmList(QString const & title, QAbstractItemModel * m, QWidget *parent = 0);
     ~NmList();
 
 private:

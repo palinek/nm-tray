@@ -6,6 +6,7 @@
 #include <NetworkManagerQt/WirelessDevice>
 #include <NetworkManagerQt/WiredDevice>
 #include <NetworkManagerQt/WirelessSetting>
+#include <QDBusPendingCallWatcher>
 
 
 NmModelPrivate::NmModelPrivate()
@@ -1020,4 +1021,108 @@ QModelIndex NmModel::indexTypeRoot(ItemType type) const
             break;
     }
     return i;
+}
+
+void NmModel::activateConnection(QModelIndex const & index)
+{
+    ItemId id = static_cast<ItemId>(index.internalId());
+    if (!isValidDataIndex(index) || (ITEM_CONNECTION_LEAF != id && ITEM_WIFINET_LEAF != id))
+    {
+        //TODO: in what form should we output the warning messages
+        qWarning() << "got invalid index for connection activation" << index;
+        return;
+    }
+    QString conn_uni, dev_uni;
+    QString conn_name, dev_name;
+    QString spec_object;
+    switch (id)
+    {
+        case ITEM_CONNECTION_LEAF:
+            {
+                auto const & conn = d->mConnections[index.row()];
+                conn_uni = conn->path();
+                conn_name = conn->name();
+                dev_name = conn->settings()->interfaceName();
+//qDebug() << *conn->settings();
+                auto dev = std::find_if(d->mDevices.cbegin(), d->mDevices.cend(), [&conn] (NetworkManager::Device::Ptr const & d) {
+                    return conn->settings()->interfaceName() == d->interfaceName();
+
+                });
+                if (d->mDevices.cend() == dev)
+                {
+                    //TODO: in what form should we output the warning messages
+                    qWarning() << QStringLiteral("can't find device '%1' to activate connection '%2' on").arg(conn->settings()->interfaceName()).arg(conn->name());
+                    return;
+                }
+                dev_uni = (*dev)->uni();
+            }
+            break;
+        case ITEM_WIFINET_LEAF:
+            {
+                auto const & net = d->mWifiNets[index.row()];
+                conn_uni = net->referenceAccessPoint()->uni();
+                conn_name = net->referenceAccessPoint()->ssid();
+                dev_uni = net->device();
+                //find the device name
+                for (auto const & dev : d->mDevices)
+                    if (dev->uni() == dev_uni)
+                    {
+                        dev_name = dev->interfaceName();
+                        break;
+                    }
+                auto const & conn = std::find_if(d->mConnections.cbegin(), d->mConnections.cend(), [&dev_name, &conn_name] (NetworkManager::Connection::Ptr const & c) {
+                    return c->settings()->interfaceName() == dev_name && c->settings()->id() == conn_name;
+                });
+                if (d->mConnections.cend()== conn)
+                {
+                    //TODO: in what form should we output the warning messages
+                    qWarning() << QStringLiteral("can't find connection for '%1' on device '%2'").arg(conn_name).arg(dev_name);
+                    return;
+                }
+                conn_uni = (*conn)->path();
+
+                //spec_object = net->ssid();
+            }
+            break;
+        default:
+            Q_ASSERT(false);
+    }
+qDebug() << __FUNCTION__ << conn_uni << dev_uni << conn_name << dev_name;
+    //TODO: check vpn type etc..
+    QDBusPendingReply<QDBusObjectPath> reply = NetworkManager::activateConnection(conn_uni, dev_uni, spec_object);
+    QDBusPendingCallWatcher *watcher = new QDBusPendingCallWatcher(reply, this);
+    connect(watcher, &QDBusPendingCallWatcher::finished, [conn_name, dev_name] (QDBusPendingCallWatcher * watcher) {
+        if (watcher->isError() || !watcher->isValid())
+        {
+            //TODO: in what form should we output the warning messages
+            qWarning() << QStringLiteral("activation of connection '%1' on interface '%2' failed: %3").arg(conn_name)
+                    .arg(dev_name).arg(watcher->error().message());
+         }
+         watcher->deleteLater();
+    });
+}
+
+void NmModel::deactivateConnection(QModelIndex const & index)
+{
+    ItemId id = static_cast<ItemId>(index.internalId());
+    if (!isValidDataIndex(index) || ITEM_ACTIVE_LEAF != id)
+    {
+        //TODO: in what form should we output the warning messages
+        qWarning() << "got invalid index for connection activation" << index;
+        return;
+    }
+
+    auto const & active = d->mActiveConns[index.row()];
+qDebug() << __FUNCTION__ << active->path();
+    QDBusPendingReply<> reply = NetworkManager::deactivateConnection(active->path());
+    QDBusPendingCallWatcher *watcher = new QDBusPendingCallWatcher(reply, this);
+    connect(watcher, &QDBusPendingCallWatcher::finished, [active] (QDBusPendingCallWatcher * watcher) {
+        if (watcher->isError() || !watcher->isValid())
+        {
+            //TODO: in what form should we output the warning messages
+            qWarning() << QStringLiteral("deactivation of connection '%1' failed: %3").arg(active->connection()->name())
+                    .arg(watcher->error().message());
+         }
+         watcher->deleteLater();
+    });
 }

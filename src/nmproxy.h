@@ -18,6 +18,9 @@ public:
     virtual int rowCount(const QModelIndex &parent = QModelIndex()) const override;
     virtual int columnCount(const QModelIndex &parent = QModelIndex()) const override;
 
+    void activateConnection(QModelIndex const & index) const;
+    void deactivateConnection(QModelIndex const & index) const;
+
 protected:
     virtual QModelIndex mapToSource(const QModelIndex & proxyIndex) const override;
     virtual QModelIndex mapFromSource(const QModelIndex & sourceIndex) const override;

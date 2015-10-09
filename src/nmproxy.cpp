@@ -88,6 +88,16 @@ int NmProxy::columnCount(const QModelIndex &proxyParent) const
     return sourceModel()->columnCount(mapToSource(proxyParent));
 }
 
+void NmProxy::activateConnection(QModelIndex const & index) const
+{
+    qobject_cast<NmModel *>(sourceModel())->activateConnection(mapToSource(index));
+}
+
+void NmProxy::deactivateConnection(QModelIndex const & index) const
+{
+    qobject_cast<NmModel *>(sourceModel())->deactivateConnection(mapToSource(index));
+}
+
 QModelIndex NmProxy::mapToSource(const QModelIndex & proxyIndex) const
 {
     QModelIndex i;

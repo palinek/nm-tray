@@ -34,7 +34,6 @@ public:
     QAction * mActConnInfo;
     NmModel mNmModel;
     NmProxy mActiveConnections;
-    NmProxy mWifiConnections;
     QString mPrimaryConnectionUuid;
     icons::Icon mIconCurrent;
     icons::Icon mIcon2Show;
@@ -45,7 +44,6 @@ public:
 TrayPrivate::TrayPrivate()
 {
     mActiveConnections.setNmModel(&mNmModel, NmModel::ActiveConnectionType);
-    mWifiConnections.setNmModel(&mNmModel, NmModel::WifiNetworkType);
 }
 
 void TrayPrivate::updateState(QModelIndex const & index, bool removing)
@@ -147,13 +145,9 @@ Tray::Tray(QObject *parent/* = 0*/)
     connect(d->mActConnInfo, &QAction::triggered, [this] (bool ) {
         //TODO: information dialog
         //XXX: just testing dialogs
-        QAbstractItemModel * models[] = { &d->mNmModel, &d->mActiveConnections, &d->mWifiConnections };
-        for (auto & model : models)
-        {
-            NmList * dialog = new NmList{model};
-            dialog->setAttribute(Qt::WA_DeleteOnClose);
-            dialog->show();
-        }
+        NmList * dialog = new NmList{tr("nm-tray info"), &d->mNmModel};
+        dialog->setAttribute(Qt::WA_DeleteOnClose);
+        dialog->show();
     });
 
     connect(NetworkManager::notifier(), &NetworkManager::Notifier::networkingEnabledChanged, &d->mStateTimer, static_cast<void (QTimer::*)()>(&QTimer::start));

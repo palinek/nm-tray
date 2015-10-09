@@ -38,6 +38,7 @@ public:
     explicit NmModel(QObject * parent = nullptr);
     ~NmModel();
 
+    //QAbstractItemModel methods
     virtual int rowCount(const QModelIndex &parent = QModelIndex()) const override;
     virtual int columnCount(const QModelIndex &parent = QModelIndex()) const override;
 
@@ -48,6 +49,10 @@ public:
 
     QModelIndex indexTypeRoot(ItemType type) const;
 
+public Q_SLOTS:
+    //NetworkManager management methods
+    void activateConnection(QModelIndex const & index);
+    void deactivateConnection(QModelIndex const & index);
 
 private:
     bool isValidDataIndex(const QModelIndex & index) const;
