@@ -42,7 +42,7 @@ namespace icons
                     << QStringLiteral("network-wireless-connected-75-symbolic") << QStringLiteral("network-wireless-connected-75");
                 break;
             case NETWORK_WIFI_EXCELENT:
-                icon_names << QStringLiteral("network-wireless-signal-excelent-symbolic") << QStringLiteral("network-wireless-signal-excelent")
+                icon_names << QStringLiteral("network-wireless-signal-excellent-symbolic") << QStringLiteral("network-wireless-signal-excellent")
                     << QStringLiteral("network-wireless-connected-100-symbolic") << QStringLiteral("network-wireless-connected-100");
                 break;
         };
