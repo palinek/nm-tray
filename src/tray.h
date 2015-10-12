@@ -18,6 +18,7 @@ private Q_SLOTS:
     //menu
     void onAboutTriggered();
     void onQuitTriggered();
+    void onActivated();
 
     //NetworkManager
     void setActionsStates();

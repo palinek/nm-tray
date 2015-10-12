@@ -38,6 +38,7 @@ public:
     icons::Icon mIconCurrent;
     icons::Icon mIcon2Show;
     QTimer mIconTimer;
+    QScopedPointer<QDialog> mConnDialog;
 
 };
 
@@ -113,7 +114,7 @@ Tray::Tray(QObject *parent/* = 0*/)
     : QObject{parent}
     , d{new TrayPrivate}
 {
-    //connect(this, &QSystemTrayIcon::activated, this, &Tray::onActivated);
+    connect(&d->mTrayIcon, &QSystemTrayIcon::activated, this, &Tray::onActivated);
 
     //postpone the update in case of signals flood
     connect(&d->mStateTimer, &QTimer::timeout, this, &Tray::setActionsStates);
@@ -144,10 +145,6 @@ Tray::Tray(QObject *parent/* = 0*/)
     connect(d->mActEnableWifi, &QAction::triggered, [this] (bool checked) { NetworkManager::setWirelessEnabled(checked); });
     connect(d->mActConnInfo, &QAction::triggered, [this] (bool ) {
         //TODO: information dialog
-        //XXX: just testing dialogs
-        NmList * dialog = new NmList{tr("nm-tray info"), &d->mNmModel};
-        dialog->setAttribute(Qt::WA_DeleteOnClose);
-        dialog->show();
     });
 
     connect(NetworkManager::notifier(), &NetworkManager::Notifier::networkingEnabledChanged, &d->mStateTimer, static_cast<void (QTimer::*)()>(&QTimer::start));
@@ -193,12 +190,26 @@ void Tray::onQuitTriggered()
     QApplication::instance()->quit();
 }
 
-/*
-void Tray::onActivated(QSystemTrayIcon::ActivationReason reason)
+
+void Tray::onActivated()
 {
-    qDebug() << __FUNCTION__ << reason;
+    //XXX: just testing dialog
+    if (d->mConnDialog.isNull())
+    {
+        d->mConnDialog.reset(new NmList{tr("nm-tray info"), &d->mNmModel});
+        connect(d->mConnDialog.data(), &QDialog::finished, [this] {
+            d->mConnDialog.reset(nullptr);
+        });
+    }
+    if (d->mConnDialog->isHidden() || d->mConnDialog->isMinimized())
+    {
+        d->mConnDialog->showNormal();
+        d->mConnDialog->activateWindow();
+        d->mConnDialog->raise();
+    } else
+        d->mConnDialog->close();
 }
-*/
+
 
 void Tray::setActionsStates()
 {
