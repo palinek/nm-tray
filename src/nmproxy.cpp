@@ -60,8 +60,8 @@ void NmProxy::setNmModel(NmModel * model, NmModel::ItemType shownType)
 QModelIndex NmProxy::index(int row, int column, const QModelIndex & proxyParent) const
 {
     QModelIndex i;
-    if (!proxyParent.isValid())
-         i = createIndex(row, column);
+    if (hasIndex(row, column, proxyParent))
+        i = createIndex(row, column);
 //qDebug() << __FUNCTION__ << row << column << proxyParent << "->" << i;
     return i;
 }
