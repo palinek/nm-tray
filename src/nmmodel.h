@@ -29,6 +29,7 @@ public:
             , ActiveConnectionTypeRole = ConnectionTypeRole
             , ConnectionUuidRole
             , ActiveConnectionUuidRole = ConnectionUuidRole
+            , ActiveConnectionInfoRole
             , ActiveConnectionStateRole
 
             , SignalRole

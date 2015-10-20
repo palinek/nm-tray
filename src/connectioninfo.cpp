@@ -1,0 +1,76 @@
+#include "connectioninfo.h"
+#include "ui_connectioninfo.h"
+#include "nmproxy.h"
+#include <QScrollArea>
+#include <QLabel>
+#include <QItemSelection>
+
+ConnectionInfo::ConnectionInfo(NmModel * model, QWidget *parent)
+    : QDialog{parent}
+    , ui{new Ui::ConnectionInfo}
+    , mModel{model}
+    , mActive{new NmProxy}
+
+{
+    setAttribute(Qt::WA_DeleteOnClose);
+    ui->setupUi(this);
+
+    mActive->setNmModel(mModel, NmModel::ActiveConnectionType);
+    for (int i = 0, row_cnt = mActive->rowCount(); i < row_cnt; ++i)
+    {
+        addTab(mActive->index(i, 0));
+    }
+
+    connect(mActive.data(), &QAbstractItemModel::rowsInserted, [this] (QModelIndex const & parent, int first, int last) {
+        ui->tabWidget->setUpdatesEnabled(false);
+        for (int i = first; i <= last; ++i)
+            addTab(mActive->index(i, 0, parent));
+        ui->tabWidget->setUpdatesEnabled(true);
+    });
+    connect(mActive.data(), &QAbstractItemModel::rowsAboutToBeRemoved, [this] (QModelIndex const & parent, int first, int last) {
+        ui->tabWidget->setUpdatesEnabled(false);
+        for (int i = first; i <= last; ++i)
+            removeTab(mActive->index(i, 0, parent));
+        ui->tabWidget->setUpdatesEnabled(true);
+    });
+    connect(mActive.data(), &QAbstractItemModel::dataChanged, [this] (const QModelIndex & topLeft, const QModelIndex & bottomRight, const QVector<int> & /*roles*/) {
+        ui->tabWidget->setUpdatesEnabled(false);
+        for (auto const & i : QItemSelection{topLeft, bottomRight}.indexes())
+            changeTab(i);
+        ui->tabWidget->setUpdatesEnabled(true);
+    });
+}
+
+ConnectionInfo::~ConnectionInfo()
+{
+}
+
+void ConnectionInfo::addTab(QModelIndex const & index)
+{
+    QScrollArea * content = new QScrollArea;
+    QLabel * l = new QLabel;
+    l->setText(mActive->data(index, NmModel::ActiveConnectionInfoRole).toString());
+    content->setWidget(l);
+    //QTabWidget takes ownership of the page (if we will not take it back)
+    ui->tabWidget->insertTab(index.row(), content, mActive->data(index, NmModel::IconRole).value<QIcon>(), mActive->data(index, NmModel::NameRole).toString());
+}
+
+void ConnectionInfo::removeTab(QModelIndex const & index)
+{
+    const int i = index.row();
+    QWidget * w = ui->tabWidget->widget(i);
+    ui->tabWidget->removeTab(i);
+    w->deleteLater();
+}
+
+void ConnectionInfo::changeTab(QModelIndex const & index)
+{
+    const int i = index.row();
+    QScrollArea * content = qobject_cast<QScrollArea *>(ui->tabWidget->widget(i));
+    Q_ASSERT(nullptr != content);
+    QLabel * l = qobject_cast<QLabel *>(content->widget());
+    Q_ASSERT(nullptr != l);
+    l->setText(mActive->data(index, NmModel::ActiveConnectionInfoRole).toString());
+    ui->tabWidget->tabBar()->setTabText(i, mActive->data(index, NmModel::NameRole).toString());
+    ui->tabWidget->tabBar()->setTabIcon(i,  mActive->data(index, NmModel::IconRole).value<QIcon>());
+}

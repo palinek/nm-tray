@@ -5,7 +5,32 @@
 #include <NetworkManagerQt/VpnConnection>
 #include <NetworkManagerQt/WirelessDevice>
 #include <NetworkManagerQt/WiredDevice>
+#include <NetworkManagerQt/WimaxDevice>
 #include <NetworkManagerQt/WirelessSetting>
+/*
+#include <NetworkManagerQt/AdslSetting>
+#include <NetworkManagerQt/CdmaSetting>
+#include <NetworkManagerQt/GsmSetting>
+#include <NetworkManagerQt/InfinibandSetting>
+#include <NetworkManagerQt/Ipv4Setting>
+#include <NetworkManagerQt/Ipv6Setting>
+#include <NetworkManagerQt/PppSetting>
+#include <NetworkManagerQt/PppoeSetting>
+#include <NetworkManagerQt/Security8021xSetting>
+#include <NetworkManagerQt/SerialSetting>
+#include <NetworkManagerQt/VpnSetting>
+#include <NetworkManagerQt/WiredSetting>
+#include <NetworkManagerQt/WirelessSecuritySetting>
+#include <NetworkManagerQt/BluetoothSetting>
+#include <NetworkManagerQt/OlpcMeshSetting>
+#include <NetworkManagerQt/VlanSetting>
+#include <NetworkManagerQt/WimaxSetting>
+#include <NetworkManagerQt/BondSetting>
+#include <NetworkManagerQt/BridgeSetting>
+#include <NetworkManagerQt/BridgePortSetting>
+#include <NetworkManagerQt/TeamSetting>
+#include <NetworkManagerQt/GenericSetting>
+*/
 #include <QDBusPendingCallWatcher>
 
 
@@ -317,12 +342,21 @@ NetworkManager::ActiveConnection::Ptr NmModelPrivate::findActiveConnection(QStri
     return mActiveConns.cend() == i ? NetworkManager::ActiveConnection::Ptr{} : *i;
 }
 
-NetworkManager::Device::Ptr NmModelPrivate::findDevice(QString const & uni)
+template <typename Predicate>
+NetworkManager::Device::Ptr NmModelPrivate::findDevice(Predicate const & pred)
 {
-    auto i = std::find_if(mDevices.cbegin(), mDevices.cend(), [&uni] (NetworkManager::Device::Ptr const & dev) -> bool {
-        return dev->uni() == uni;
-    });
+    auto i = std::find_if(mDevices.cbegin(), mDevices.cend(), pred);
     return mDevices.cend() == i ? NetworkManager::Device::Ptr{} : *i;
+}
+
+NetworkManager::Device::Ptr NmModelPrivate::findDeviceUni(QString const & uni)
+{
+    return findDevice([&uni] (NetworkManager::Device::Ptr const & dev) { return dev->uni() == uni; });
+}
+
+NetworkManager::Device::Ptr NmModelPrivate::findDeviceInterface(QString const & interfaceName)
+{
+    return findDevice([&interfaceName] (NetworkManager::Device::Ptr const & dev) { return dev->interfaceName() == interfaceName; });
 }
 
 NetworkManager::WirelessNetwork::Ptr NmModelPrivate::findWifiNetwork(QString const & ssid, QString const & devUni)
@@ -381,7 +415,7 @@ void NmModelPrivate::onDeviceAdded(QString const & uni)
 
 void NmModelPrivate::onDeviceRemoved(QString const & uni)
 {
-    NetworkManager::Device::Ptr dev = findDevice(uni);
+    NetworkManager::Device::Ptr dev = findDeviceUni(uni);
     if (!dev.isNull())
     {
         Q_ASSERT(dev->isValid());
@@ -567,7 +601,7 @@ NmModel::NmModel(QObject * parent)
                 QModelIndex index = createIndex(i - d->mWifiNets.cbegin(), 0, ITEM_WIFINET_LEAF);
                 emit dataChanged(index, index);
                 //XXX: active connection
-                auto dev = d->findDevice((*i)->device());
+                auto dev = d->findDeviceUni((*i)->device());
                 if (!dev.isNull())
                 {
                     auto active = dev->activeConnection();
@@ -822,6 +856,185 @@ QVariant NmModel::dataRole<NmModel::ConnectionUuidRole>(const QModelIndex & inde
 }
 
 template <>
+QVariant NmModel::dataRole<NmModel::ActiveConnectionInfoRole>(const QModelIndex & index) const
+{
+    NetworkManager::Device::Ptr dev;
+    switch (static_cast<ItemId>(index.internalId()))
+    {
+        case ITEM_ROOT:
+        case ITEM_ACTIVE:
+        case ITEM_CONNECTION:
+        case ITEM_DEVICE:
+        case ITEM_DEVICE_LEAF:
+        case ITEM_WIFINET:
+        case ITEM_WIFINET_LEAF:
+        case ITEM_CONNECTION_LEAF:
+            return QVariant{};
+            break;
+        case ITEM_ACTIVE_LEAF:
+            {
+                auto dev_list = d->mActiveConns[index.row()]->devices();
+                //TODO: work with all devices?!?
+                if (!dev_list.isEmpty())
+                    dev = d->findDeviceUni(dev_list.first());
+            }
+            break;
+    }
+    //TODO: we probably shouldn't assemble a string information (with styling) here and leave it to the consumer
+    QString info;
+    QDebug str{&info};
+    str.noquote();
+    str.nospace();
+    if (!dev.isNull())
+    {
+        auto m_enum = NetworkManager::Device::staticMetaObject.enumerator(NetworkManager::Device::staticMetaObject.indexOfEnumerator("Type"));
+
+        QString hw_address = tr("unknown", "hardware address");
+        QString security = tr("none", "security");
+        int bit_rate = -1;
+        switch (dev->type())
+        {
+            case NetworkManager::Device::Ethernet:
+                {
+                    auto spec_dev = dev->as<NetworkManager::WiredDevice>();
+                    Q_ASSERT(nullptr != spec_dev);
+                    hw_address = spec_dev->hardwareAddress();
+                    bit_rate = spec_dev->bitRate();
+                }
+                break;
+            case NetworkManager::Device::Wifi:
+                {
+                    auto spec_dev = dev->as<NetworkManager::WirelessDevice>();
+                    Q_ASSERT(nullptr != spec_dev);
+                    hw_address = spec_dev->hardwareAddress();
+                    bit_rate = spec_dev->bitRate();
+                    //TODO: we probably should get it from Connection object
+                    security = "TODO:";
+                }
+                break;
+            case NetworkManager::Device::Wimax:
+                {
+                    auto spec_dev = dev->as<NetworkManager::WimaxDevice>();
+                    Q_ASSERT(nullptr != spec_dev);
+                    hw_address = spec_dev->hardwareAddress();
+                    //bit_rate = spec_dev->bitRate();
+                }
+                break;
+            default:
+                break;
+        }
+        str << QStringLiteral("<big><strong>") << tr("General", "Active connection information") << QStringLiteral("</strong></big><br/>")
+            << QStringLiteral("<strong>") << tr("Interface", "Active connection information") << QStringLiteral("</strong>: ")
+                << m_enum.valueToKey(dev->type()) << QStringLiteral(" (") << dev->interfaceName() << QStringLiteral(")<br/>")
+            << QStringLiteral("<strong>") << tr("Hardware Address", "Active connection information") << QStringLiteral("</strong>: ")
+                << hw_address << QStringLiteral("<br/>")
+            << QStringLiteral("<strong>") << tr("Driver", "Active connection information") << QStringLiteral("</strong>: ")
+                << dev->driver() << QStringLiteral("<br/>")
+            << QStringLiteral("<strong>") << tr("Speed", "Active connection information") << QStringLiteral("</strong>: ");
+        if (0 <= bit_rate)
+            str << bit_rate << tr(" Kb/s");
+        else
+            str << tr("unknown", "Speed");
+        str
+                << QStringLiteral("<br/>")
+            << QStringLiteral("<strong>") << tr("Security", "Active connection information") << QStringLiteral("</strong>: ")
+                << security << QStringLiteral("<br/>")
+            ;
+    }
+#if 0
+    str << *conn->settings();
+    for (auto sett : conn->settings()->settings())
+    {
+        //TODO: correct info assembly
+        //or return the setting and leave the presentation to the end user
+        switch (sett->type())
+        {
+            case NetworkManager::Setting::Adsl:
+                str << dynamic_cast<NetworkManager::AdslSetting&>(*sett);
+                break;
+            case NetworkManager::Setting::Cdma:
+                str << dynamic_cast<NetworkManager::CdmaSetting&>(*sett);
+                break;
+            case NetworkManager::Setting::Gsm:
+                str << dynamic_cast<NetworkManager::GsmSetting&>(*sett);
+                break;
+            case NetworkManager::Setting::Infiniband:
+                str << dynamic_cast<NetworkManager::InfinibandSetting&>(*sett);
+                break;
+            case NetworkManager::Setting::Ipv4:
+                str << dynamic_cast<NetworkManager::Ipv4Setting&>(*sett);
+                break;
+            case NetworkManager::Setting::Ipv6:
+                str << dynamic_cast<NetworkManager::Ipv6Setting&>(*sett);
+                break;
+            case NetworkManager::Setting::Ppp:
+                str << dynamic_cast<NetworkManager::PppSetting&>(*sett);
+                break;
+            case NetworkManager::Setting::Pppoe:
+                str << dynamic_cast<NetworkManager::PppoeSetting&>(*sett);
+                break;
+            case NetworkManager::Setting::Security8021x:
+                str << dynamic_cast<NetworkManager::Security8021xSetting&>(*sett);
+                break;
+            case NetworkManager::Setting::Serial:
+                str << dynamic_cast<NetworkManager::SerialSetting&>(*sett);
+                break;
+            case NetworkManager::Setting::Vpn:
+                str << dynamic_cast<NetworkManager::VpnSetting&>(*sett);
+                break;
+            case NetworkManager::Setting::Wired:
+                str << dynamic_cast<NetworkManager::WiredSetting&>(*sett);
+                break;
+            case NetworkManager::Setting::Wireless:
+                str << dynamic_cast<NetworkManager::WirelessSetting&>(*sett);
+                break;
+            case NetworkManager::Setting::WirelessSecurity:
+                str << dynamic_cast<NetworkManager::WirelessSecuritySetting&>(*sett);
+                break;
+            case NetworkManager::Setting::Bluetooth:
+                str << dynamic_cast<NetworkManager::BluetoothSetting&>(*sett);
+                break;
+            case NetworkManager::Setting::OlpcMesh:
+                str << dynamic_cast<NetworkManager::OlpcMeshSetting&>(*sett);
+                break;
+            case NetworkManager::Setting::Vlan:
+                str << dynamic_cast<NetworkManager::VlanSetting&>(*sett);
+                break;
+            case NetworkManager::Setting::Wimax:
+                str << dynamic_cast<NetworkManager::WimaxSetting&>(*sett);
+                break;
+            case NetworkManager::Setting::Bond:
+                str << dynamic_cast<NetworkManager::BondSetting&>(*sett);
+                break;
+            case NetworkManager::Setting::Bridge:
+                str << dynamic_cast<NetworkManager::BridgeSetting&>(*sett);
+                break;
+            case NetworkManager::Setting::BridgePort:
+                str << dynamic_cast<NetworkManager::BridgePortSetting&>(*sett);
+                break;
+            case NetworkManager::Setting::Team:
+                str << dynamic_cast<NetworkManager::TeamSetting&>(*sett);
+                break;
+            case NetworkManager::Setting::Generic:
+                str << dynamic_cast<NetworkManager::GenericSetting&>(*sett);
+                break;
+        }
+        str << *sett;
+        /*
+qDebug() << QStringLiteral("<big><strong>") << sett->name() << QStringLiteral("</strong></big>\n");
+        str << QStringLiteral("<big><strong>") << sett->name() << QStringLiteral("</strong></big>\n");
+        for (auto i = sett->toMap().cbegin(), i_e = sett->toMap().cend(); i != i_e; ++i)
+        {
+qDebug() << QStringLiteral("<strong>") << i.key() << QStringLiteral("</strong>: ") << i.value().toString() << QLatin1Char('\n');
+            str << QStringLiteral("<strong>") << i.key() << QStringLiteral("</strong>: ") << i.value().toString() << QLatin1Char('\n');
+        }
+        */
+    }
+#endif
+    return info;
+}
+
+template <>
 QVariant NmModel::dataRole<NmModel::IconTypeRole>(const QModelIndex & index) const
 {
     switch (static_cast<ItemId>(index.internalId()))
@@ -898,6 +1111,9 @@ QVariant NmModel::data(const QModelIndex &index, int role) const
                 break;
             case ConnectionUuidRole:
                 ret = dataRole<ConnectionUuidRole>(index);
+                break;
+            case ActiveConnectionInfoRole:
+                ret = dataRole<ActiveConnectionInfoRole>(index);
                 break;
             case IconTypeRole:
                 ret = dataRole<IconTypeRole>(index);
@@ -1044,17 +1260,14 @@ void NmModel::activateConnection(QModelIndex const & index)
                 conn_name = conn->name();
                 dev_name = conn->settings()->interfaceName();
 //qDebug() << *conn->settings();
-                auto dev = std::find_if(d->mDevices.cbegin(), d->mDevices.cend(), [&conn] (NetworkManager::Device::Ptr const & d) {
-                    return conn->settings()->interfaceName() == d->interfaceName();
-
-                });
-                if (d->mDevices.cend() == dev)
+                auto dev = d->findDeviceInterface(dev_name);
+                if (dev.isNull())
                 {
                     //TODO: in what form should we output the warning messages
-                    qWarning() << QStringLiteral("can't find device '%1' to activate connection '%2' on").arg(conn->settings()->interfaceName()).arg(conn->name());
+                    qWarning() << QStringLiteral("can't find device '%1' to activate connection '%2' on").arg(dev_name).arg(conn->name());
                     return;
                 }
-                dev_uni = (*dev)->uni();
+                dev_uni = dev->uni();
             }
             break;
         case ITEM_WIFINET_LEAF:

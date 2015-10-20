@@ -33,7 +33,10 @@ public:
     void addWifiNetwork(NetworkManager::WirelessNetwork::Ptr net);
 
     NetworkManager::ActiveConnection::Ptr findActiveConnection(QString const & path);
-    NetworkManager::Device::Ptr findDevice(QString const & uni);
+    template <typename Predicate>
+    NetworkManager::Device::Ptr findDevice(Predicate const & pred);
+    NetworkManager::Device::Ptr findDeviceUni(QString const & uni);
+    NetworkManager::Device::Ptr findDeviceInterface(QString const & interfaceName);
     NetworkManager::WirelessNetwork::Ptr findWifiNetwork(QString const & ssid, QString const & devUni);
 
 Q_SIGNALS:

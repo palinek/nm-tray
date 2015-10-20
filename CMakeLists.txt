@@ -20,8 +20,9 @@ add_definitions(-DQT_NO_SIGNALS_SLOTS_KEYWORDS)
 set(SRCS
     src/icons.cpp
     src/nmmodel.cpp
-    src/nmlist.cpp
     src/nmproxy.cpp
+    src/connectioninfo.cpp
+    src/nmlist.cpp
     src/tray.cpp
     src/main.cpp
 )

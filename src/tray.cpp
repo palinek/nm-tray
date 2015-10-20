@@ -14,6 +14,7 @@
 #include "nmproxy.h"
 
 #include "nmlist.h"
+#include "connectioninfo.h"
 
 
 class TrayPrivate
@@ -39,6 +40,7 @@ public:
     icons::Icon mIcon2Show;
     QTimer mIconTimer;
     QScopedPointer<QDialog> mConnDialog;
+    QScopedPointer<QDialog> mInfoDialog;
 
 };
 
@@ -144,7 +146,20 @@ Tray::Tray(QObject *parent/* = 0*/)
     connect(d->mActEnableNetwork, &QAction::triggered, [this] (bool checked) { NetworkManager::setNetworkingEnabled(checked); });
     connect(d->mActEnableWifi, &QAction::triggered, [this] (bool checked) { NetworkManager::setWirelessEnabled(checked); });
     connect(d->mActConnInfo, &QAction::triggered, [this] (bool ) {
-        //TODO: information dialog
+        if (d->mInfoDialog.isNull())
+        {
+            d->mInfoDialog.reset(new ConnectionInfo{&d->mNmModel});
+            connect(d->mInfoDialog.data(), &QDialog::finished, [this] {
+                d->mInfoDialog.reset(nullptr);
+            });
+        }
+        if (d->mInfoDialog->isHidden() || d->mInfoDialog->isMinimized())
+        {
+            d->mInfoDialog->showNormal();
+            d->mInfoDialog->activateWindow();
+            d->mInfoDialog->raise();
+        } else
+            d->mInfoDialog->close();
     });
 
     connect(NetworkManager::notifier(), &NetworkManager::Notifier::networkingEnabledChanged, &d->mStateTimer, static_cast<void (QTimer::*)()>(&QTimer::start));
@@ -164,7 +179,7 @@ Tray::Tray(QObject *parent/* = 0*/)
     connect(&d->mActiveConnections, &QAbstractItemModel::dataChanged, [this] (const QModelIndex & topLeft, const QModelIndex & bottomRight, const QVector<int> & /*roles*/) {
 //qDebug() << "dataChanged";
         for (auto const & i : QItemSelection{topLeft, bottomRight}.indexes())
-        d->updateState(i, false);
+            d->updateState(i, false);
     });
 
     d->mTrayIcon.setContextMenu(&d->mContextMenu);
