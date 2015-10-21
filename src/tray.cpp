@@ -37,6 +37,7 @@ COPYRIGHT_HEADER*/
 
 #include "nmlist.h"
 #include "connectioninfo.h"
+#include <QPersistentModelIndex>
 
 
 class TrayPrivate
@@ -45,7 +46,7 @@ public:
     TrayPrivate();
     void updateState(QModelIndex const & index, bool removing);
     void primaryConnectionUpdate();
-    void setIcon(icons::Icon icon);
+    void setShown(QPersistentModelIndex const & index);
     void updateIcon();
 
 public:
@@ -57,7 +58,8 @@ public:
     QAction * mActConnInfo;
     NmModel mNmModel;
     NmProxy mActiveConnections;
-    QString mPrimaryConnectionUuid;
+    QPersistentModelIndex mPrimaryConnection;
+    QPersistentModelIndex mShownConnection;
     icons::Icon mIconCurrent;
     icons::Icon mIcon2Show;
     QTimer mIconTimer;
@@ -74,23 +76,28 @@ TrayPrivate::TrayPrivate()
 void TrayPrivate::updateState(QModelIndex const & index, bool removing)
 {
     const auto state = static_cast<NetworkManager::ActiveConnection::State>(mActiveConnections.data(index, NmModel::ActiveConnectionStateRole).toInt());
-    const QString uuid = mActiveConnections.data(index, NmModel::ConnectionUuidRole).toString();
-    const bool is_primary = mPrimaryConnectionUuid == uuid;
-//qDebug() << __FUNCTION__ << index << removing << mActiveConnections.data(index, NmModel::NameRole) << uuid << is_primary << item_type << mActiveConnections.data(index, NmModel::ConnectionTypeRole).toInt() << state;
+    const bool is_primary = mPrimaryConnection == index;
+//qDebug() << __FUNCTION__ << index << removing << mActiveConnections.data(index, NmModel::NameRole) << mActiveConnections.data(index, NmModel::ConnectionUuidRole).toString() << is_primary << mActiveConnections.data(index, NmModel::ConnectionTypeRole).toInt() << state;
 
-    if (removing || NetworkManager::ActiveConnection::Deactivated == state)
+    if (removing || NetworkManager::ActiveConnection::Deactivated == state || NetworkManager::ActiveConnection::Deactivating == state)
     {
         if (is_primary)
         {
-            mPrimaryConnectionUuid.clear();
-            setIcon(icons::NETWORK_OFFLINE);
+            mPrimaryConnection = QModelIndex{};
+            setShown(mPrimaryConnection);
+        } else if (mShownConnection == index)
+        {
+            setShown(mPrimaryConnection);
         }
     } else
     {
         if (is_primary || NetworkManager::ActiveConnection::Activating == state)
-            setIcon(static_cast<icons::Icon>(mActiveConnections.data(index, NmModel::IconTypeRole).toInt()));
-        if (!is_primary && NetworkManager::ActiveConnection::Activating != state)
-            primaryConnectionUpdate();
+        {
+            setShown(index);
+        } else if (mShownConnection == index)
+        {
+            setShown(mPrimaryConnection);
+        }
     }
 }
 
@@ -99,26 +106,28 @@ void TrayPrivate::primaryConnectionUpdate()
     NetworkManager::ActiveConnection::Ptr prim_conn = NetworkManager::primaryConnection();
     if (!prim_conn || !prim_conn->isValid())
     {
-        mPrimaryConnectionUuid.clear();
-        setIcon(icons::NETWORK_OFFLINE);
+        mPrimaryConnection = QModelIndex{};
+        setShown(mPrimaryConnection);
         return;
     }
 
 //qDebug() << __FUNCTION__ << prim_conn->uuid();
 
-    mPrimaryConnectionUuid = prim_conn->uuid();
-    QModelIndexList l = mActiveConnections.match(mActiveConnections.index(0, 0, QModelIndex{}), NmModel::ActiveConnectionUuidRole, mPrimaryConnectionUuid, -1, Qt::MatchExactly);
+    QModelIndexList l = mActiveConnections.match(mActiveConnections.index(0, 0, QModelIndex{}), NmModel::ActiveConnectionUuidRole, prim_conn->uuid(), -1, Qt::MatchExactly);
 //qDebug() << __FUNCTION__ << l.size();
     //nothing to do if the connection not populated in model yet
     if (0 >= l.size())
         return;
     Q_ASSERT(1 == l.size());
-    updateState(l.first(), false);
+    mPrimaryConnection = l.first();
+    updateState(mPrimaryConnection, false);
 }
 
-void TrayPrivate::setIcon(icons::Icon icon)
+void TrayPrivate::setShown(QPersistentModelIndex const & index)
 {
-    mIcon2Show = icon;
+    mShownConnection = index;
+    mIcon2Show = mShownConnection.isValid()
+        ? static_cast<icons::Icon>(mActiveConnections.data(mShownConnection, NmModel::IconTypeRole).toInt()) : icons::NETWORK_OFFLINE;
     //postpone setting the icon (for case we change the icon in till our event is finished)
     mIconTimer.start();
 }
@@ -146,7 +155,7 @@ Tray::Tray(QObject *parent/* = 0*/)
     d->mStateTimer.setInterval(200);
 
     d->mIconCurrent = static_cast<icons::Icon>(-1);
-    d->setIcon(icons::NETWORK_OFFLINE);
+    d->setShown(QModelIndex{});
 
     //postpone updating of the icon
     connect(&d->mIconTimer, &QTimer::timeout, [this] { d->updateIcon(); });
@@ -230,7 +239,6 @@ void Tray::onQuitTriggered()
 
 void Tray::onActivated()
 {
-    //XXX: just testing dialog
     if (d->mConnDialog.isNull())
     {
         d->mConnDialog.reset(new NmList{tr("nm-tray info"), &d->mNmModel});
