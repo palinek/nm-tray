@@ -1280,16 +1280,19 @@ void NmModel::activateConnection(QModelIndex const & index)
                 auto const & conn = d->mConnections[index.row()];
                 conn_uni = conn->path();
                 conn_name = conn->name();
-                dev_name = conn->settings()->interfaceName();
-//qDebug() << *conn->settings();
-                auto dev = d->findDeviceInterface(dev_name);
-                if (dev.isNull())
+                for (auto const & dev : d->mDevices)
+                    for (auto const & dev_conn : dev->availableConnections())
+                        if (dev_conn == conn)
+                        {
+                            dev_uni = dev->uni();
+                            dev_name = dev->interfaceName();
+                        }
+                if (dev_uni.isEmpty())
                 {
                     //TODO: in what form should we output the warning messages
-                    qWarning() << QStringLiteral("can't find device '%1' to activate connection '%2' on").arg(dev_name).arg(conn->name());
+                    qWarning() << QStringLiteral("can't find device '%1' to activate connection '%2' on").arg(conn->settings()->interfaceName()).arg(conn->name());
                     return;
                 }
-                dev_uni = dev->uni();
             }
             break;
         case ITEM_WIFINET_LEAF:
@@ -1343,7 +1346,7 @@ void NmModel::deactivateConnection(QModelIndex const & index)
     if (!isValidDataIndex(index) || ITEM_ACTIVE_LEAF != id)
     {
         //TODO: in what form should we output the warning messages
-        qWarning() << "got invalid index for connection activation" << index;
+        qWarning() << "got invalid index for connection deactivation" << index;
         return;
     }
 
