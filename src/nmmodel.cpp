@@ -1280,6 +1280,7 @@ void NmModel::activateConnection(QModelIndex const & index)
                 auto const & conn = d->mConnections[index.row()];
                 conn_uni = conn->path();
                 conn_name = conn->name();
+                dev_name = conn->settings()->interfaceName();
                 for (auto const & dev : d->mDevices)
                     for (auto const & dev_conn : dev->availableConnections())
                         if (dev_conn == conn)
@@ -1287,10 +1288,16 @@ void NmModel::activateConnection(QModelIndex const & index)
                             dev_uni = dev->uni();
                             dev_name = dev->interfaceName();
                         }
+                if (dev_uni.isEmpty() && !dev_name.isEmpty())
+                {
+                    auto dev = d->findDeviceInterface(dev_name);
+                    if (!dev.isNull())
+                        dev_uni = dev->uni();
+                }
                 if (dev_uni.isEmpty())
                 {
                     //TODO: in what form should we output the warning messages
-                    qWarning() << QStringLiteral("can't find device '%1' to activate connection '%2' on").arg(conn->settings()->interfaceName()).arg(conn->name());
+                    qWarning() << QStringLiteral("can't find device '%1' to activate connection '%2' on").arg(dev_name).arg(conn->name());
                     return;
                 }
             }
@@ -1302,22 +1309,22 @@ void NmModel::activateConnection(QModelIndex const & index)
                 conn_name = net->referenceAccessPoint()->ssid();
                 dev_uni = net->device();
                 //find the device name
-                for (auto const & dev : d->mDevices)
-                    if (dev->uni() == dev_uni)
+                auto const & dev = d->findDeviceUni(dev_uni);
+                Q_ASSERT(!dev.isNull());
+                NetworkManager::Connection::Ptr conn;
+                dev_name = dev->interfaceName();
+                for (auto const & dev_conn : dev->availableConnections())
+                    if (dev_conn->settings()->id() == conn_name)
                     {
-                        dev_name = dev->interfaceName();
-                        break;
+                        conn = dev_conn;
                     }
-                auto const & conn = std::find_if(d->mConnections.cbegin(), d->mConnections.cend(), [&dev_name, &conn_name] (NetworkManager::Connection::Ptr const & c) {
-                    return c->settings()->interfaceName() == dev_name && c->settings()->id() == conn_name;
-                });
-                if (d->mConnections.cend()== conn)
+                if (conn.isNull())
                 {
                     //TODO: in what form should we output the warning messages
                     qWarning() << QStringLiteral("can't find connection for '%1' on device '%2'").arg(conn_name).arg(dev_name);
                     return;
                 }
-                conn_uni = (*conn)->path();
+                conn_uni = conn->path();
 
                 //spec_object = net->ssid();
             }
