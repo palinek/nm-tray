@@ -24,6 +24,7 @@ COPYRIGHT_HEADER*/
 #include "ui_nmlist.h"
 #include "nmmodel.h"
 #include "nmproxy.h"
+#include <QSortFilterProxyModel>
 
 template <typename T>
 void installDblClick(QAbstractItemView * view, QAbstractItemModel * m)
@@ -31,15 +32,18 @@ void installDblClick(QAbstractItemView * view, QAbstractItemModel * m)
     T * net_model = qobject_cast<T *>(m);
     if (net_model)
     {
-        QObject::connect(view, &QAbstractItemView::doubleClicked, [net_model] (QModelIndex const & i) {
-            switch (static_cast<NmModel::ItemType>(net_model->data(i, NmModel::ItemTypeRole).toInt()))
+        QAbstractProxyModel * proxy = qobject_cast<QAbstractProxyModel *>(view->model());
+        Q_ASSERT(nullptr != proxy && proxy->sourceModel() == net_model);
+        QObject::connect(view, &QAbstractItemView::doubleClicked, [net_model, proxy] (QModelIndex const & i) {
+            QModelIndex source_i = proxy->mapToSource(i);
+            switch (static_cast<NmModel::ItemType>(net_model->data(source_i, NmModel::ItemTypeRole).toInt()))
             {
                 case NmModel::ActiveConnectionType:
-                    net_model->deactivateConnection(i);
+                    net_model->deactivateConnection(source_i);
                     break;
                 case NmModel::WifiNetworkType:
                 case NmModel::ConnectionType:
-                    net_model->activateConnection(i);
+                    net_model->activateConnection(source_i);
                     break;
                 default:
                     //do nothing
@@ -56,20 +60,30 @@ NmList::NmList(QString const & title, QAbstractItemModel * m, QWidget *parent)
     ui->setupUi(this);
     setWindowTitle(title);
 
-    QScopedPointer<QAbstractItemModel> old{ui->treeView->model()};
-    ui->treeView->setModel(m);
-    //XXX just testing
     Q_ASSERT(qobject_cast<NmModel*>(m));
+    QSortFilterProxyModel * proxy_sort = new QSortFilterProxyModel{this};
+    proxy_sort->setSortCaseSensitivity(Qt::CaseInsensitive);
+    proxy_sort->sort(0);
+    proxy_sort->setSourceModel(m);
+    ui->treeView->setModel(proxy_sort);
     installDblClick<NmModel>(ui->treeView, m);
 
     NmProxy * proxy = new NmProxy(this);
     proxy->setNmModel(qobject_cast<NmModel*>(m), NmModel::ActiveConnectionType);
-    ui->listActive->setModel(proxy);
+    proxy_sort = new QSortFilterProxyModel{this};
+    proxy_sort->setSortCaseSensitivity(Qt::CaseInsensitive);
+    proxy_sort->sort(0);
+    proxy_sort->setSourceModel(proxy);
+    ui->listActive->setModel(proxy_sort);
     installDblClick<NmProxy>(ui->listActive, proxy);
 
     proxy = new NmProxy(this);
     proxy->setNmModel(qobject_cast<NmModel*>(m), NmModel::WifiNetworkType);
-    ui->listWifi->setModel(proxy);
+    proxy_sort = new QSortFilterProxyModel{this};
+    proxy_sort->setSortCaseSensitivity(Qt::CaseInsensitive);
+    proxy_sort->sort(0);
+    proxy_sort->setSourceModel(proxy);
+    ui->listWifi->setModel(proxy_sort);
     installDblClick<NmProxy>(ui->listWifi, proxy);
 }
 
