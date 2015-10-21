@@ -31,6 +31,7 @@ class ConnectionInfo;
 
 class NmModel;
 class NmProxy;
+class QSortFilterProxyModel;
 
 class ConnectionInfo : public QDialog
 {
@@ -49,6 +50,7 @@ private:
     QScopedPointer<Ui::ConnectionInfo> ui;
     NmModel * mModel;
     QScopedPointer<NmProxy> mActive;
+    QScopedPointer<QSortFilterProxyModel> mSorted;
 };
 
 #endif // CONNECTIONINFO_H
