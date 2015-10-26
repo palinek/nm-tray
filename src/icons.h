@@ -38,6 +38,8 @@ namespace icons
             , NETWORK_WIFI_GOOD
             , NETWORK_WIFI_EXCELENT
             , NETWORK_WIFI_DISCONNECTED
+
+            , PREFERENCES_NETWORK
     };
 
     QIcon getIcon(Icon ico);

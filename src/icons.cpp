@@ -67,6 +67,9 @@ namespace icons
                 icon_names << QStringLiteral("network-wireless-signal-excellent-symbolic") << QStringLiteral("network-wireless-signal-excellent")
                     << QStringLiteral("network-wireless-connected-100-symbolic") << QStringLiteral("network-wireless-connected-100");
                 break;
+            case PREFERENCES_NETWORK:
+                icon_names << QStringLiteral("preferences-system-network");
+                break;
         };
         for (auto const & name : icon_names)
         {

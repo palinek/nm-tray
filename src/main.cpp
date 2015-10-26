@@ -24,12 +24,12 @@ COPYRIGHT_HEADER*/
 
 #include "tray.h"
 
-#include "nmmodel.h"
-#include "nmlist.h"
+#include "icons.h"
 
 int main(int argc, char * argv[])
 {
     QApplication app{argc, argv};
+    app.setWindowIcon(icons::getIcon(icons::PREFERENCES_NETWORK));
     app.setQuitOnLastWindowClosed(false);
 
     Tray tray;

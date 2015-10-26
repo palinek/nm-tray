@@ -223,11 +223,8 @@ Tray::~Tray()
 
 void Tray::onAboutTriggered()
 {
-    QMessageBox * about = new QMessageBox{QMessageBox::Information, tr("%1 about").arg(QStringLiteral("nm-tray"))
-        , tr("This is the about nm-tray!")};
-    about->setModal(false);
-    about->setAttribute(Qt::WA_DeleteOnClose);
-    about->show();
+    QMessageBox::about(nullptr, tr("%1 about").arg(QStringLiteral("nm-tray"))
+                , tr("This is the about nm-tray!"));
 }
 
 
