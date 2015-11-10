@@ -162,14 +162,14 @@ Tray::Tray(QObject *parent/* = 0*/)
     d->mIconTimer.setSingleShot(true);
     d->mIconTimer.setInterval(0);
 
-    d->mActEnableNetwork = d->mContextMenu.addAction(tr("Enable Networking"));
-    d->mActEnableWifi = d->mContextMenu.addAction(tr("Enable Wi-fi"));
+    d->mActEnableNetwork = d->mContextMenu.addAction(Tray::tr("Enable Networking"));
+    d->mActEnableWifi = d->mContextMenu.addAction(Tray::tr("Enable Wi-fi"));
     d->mContextMenu.addSeparator();
-    d->mActConnInfo = d->mContextMenu.addAction(QIcon::fromTheme(QStringLiteral("dialog-information")), tr("Connection information"));
+    d->mActConnInfo = d->mContextMenu.addAction(QIcon::fromTheme(QStringLiteral("dialog-information")), Tray::tr("Connection information"));
     d->mContextMenu.addSeparator();
-    connect(d->mContextMenu.addAction(QIcon::fromTheme(QStringLiteral("help-about")), tr("About")), &QAction::triggered
+    connect(d->mContextMenu.addAction(QIcon::fromTheme(QStringLiteral("help-about")), Tray::tr("About")), &QAction::triggered
             , this, &Tray::onAboutTriggered);
-    connect(d->mContextMenu.addAction(QIcon::fromTheme(QStringLiteral("application-exit")), tr("Quit")), &QAction::triggered
+    connect(d->mContextMenu.addAction(QIcon::fromTheme(QStringLiteral("application-exit")), Tray::tr("Quit")), &QAction::triggered
             , this, &Tray::onQuitTriggered);
 
     d->mActEnableNetwork->setCheckable(true);
@@ -223,8 +223,8 @@ Tray::~Tray()
 
 void Tray::onAboutTriggered()
 {
-    QMessageBox::about(nullptr, tr("%1 about").arg(QStringLiteral("nm-tray"))
-                , tr("This is the about nm-tray!"));
+    QMessageBox::about(nullptr, Tray::tr("%1 about").arg(QStringLiteral("nm-tray"))
+                , Tray::tr("This is the about nm-tray!"));
 }
 
 
@@ -238,7 +238,7 @@ void Tray::onActivated()
 {
     if (d->mConnDialog.isNull())
     {
-        d->mConnDialog.reset(new NmList{tr("nm-tray info"), &d->mNmModel});
+        d->mConnDialog.reset(new NmList{Tray::tr("nm-tray info"), &d->mNmModel});
         connect(d->mConnDialog.data(), &QDialog::finished, [this] {
             d->mConnDialog.reset(nullptr);
         });

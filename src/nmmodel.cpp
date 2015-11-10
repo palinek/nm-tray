@@ -742,15 +742,15 @@ QVariant NmModel::dataRole<NmModel::NameRole>(const QModelIndex & index) const
     switch (static_cast<ItemId>(index.internalId()))
     {
         case ITEM_ROOT:
-            return tr("root");
+            return NmModel::tr("root");
         case ITEM_ACTIVE:
-            return tr("active connection(s)");
+            return NmModel::tr("active connection(s)");
         case ITEM_CONNECTION:
-            return tr("connection(s)");
+            return NmModel::tr("connection(s)");
         case ITEM_DEVICE:
-            return tr("device(s)");
+            return NmModel::tr("device(s)");
         case ITEM_WIFINET:
-            return tr("wifi network(s)");
+            return NmModel::tr("wifi network(s)");
         case ITEM_ACTIVE_LEAF:
             return d->mActiveConns[index.row()]->connection()->name();
         case ITEM_CONNECTION_LEAF:
@@ -911,8 +911,8 @@ QVariant NmModel::dataRole<NmModel::ActiveConnectionInfoRole>(const QModelIndex 
     {
         auto m_enum = NetworkManager::Device::staticMetaObject.enumerator(NetworkManager::Device::staticMetaObject.indexOfEnumerator("Type"));
 
-        QString hw_address = tr("unknown", "hardware address");
-        QString security = tr("none", "security");
+        QString hw_address = NmModel::tr("unknown", "hardware address");
+        QString security = NmModel::tr("none", "security");
         int bit_rate = -1;
         switch (dev->type())
         {
@@ -945,21 +945,21 @@ QVariant NmModel::dataRole<NmModel::ActiveConnectionInfoRole>(const QModelIndex 
             default:
                 break;
         }
-        str << QStringLiteral("<big><strong>") << tr("General", "Active connection information") << QStringLiteral("</strong></big><br/>")
-            << QStringLiteral("<strong>") << tr("Interface", "Active connection information") << QStringLiteral("</strong>: ")
+        str << QStringLiteral("<big><strong>") << NmModel::tr("General", "Active connection information") << QStringLiteral("</strong></big><br/>")
+            << QStringLiteral("<strong>") << NmModel::tr("Interface", "Active connection information") << QStringLiteral("</strong>: ")
                 << m_enum.valueToKey(dev->type()) << QStringLiteral(" (") << dev->interfaceName() << QStringLiteral(")<br/>")
-            << QStringLiteral("<strong>") << tr("Hardware Address", "Active connection information") << QStringLiteral("</strong>: ")
+            << QStringLiteral("<strong>") << NmModel::tr("Hardware Address", "Active connection information") << QStringLiteral("</strong>: ")
                 << hw_address << QStringLiteral("<br/>")
-            << QStringLiteral("<strong>") << tr("Driver", "Active connection information") << QStringLiteral("</strong>: ")
+            << QStringLiteral("<strong>") << NmModel::tr("Driver", "Active connection information") << QStringLiteral("</strong>: ")
                 << dev->driver() << QStringLiteral("<br/>")
-            << QStringLiteral("<strong>") << tr("Speed", "Active connection information") << QStringLiteral("</strong>: ");
+            << QStringLiteral("<strong>") << NmModel::tr("Speed", "Active connection information") << QStringLiteral("</strong>: ");
         if (0 <= bit_rate)
-            str << bit_rate << tr(" Kb/s");
+            str << bit_rate << NmModel::tr(" Kb/s");
         else
-            str << tr("unknown", "Speed");
+            str << NmModel::tr("unknown", "Speed");
         str
                 << QStringLiteral("<br/>")
-            << QStringLiteral("<strong>") << tr("Security", "Active connection information") << QStringLiteral("</strong>: ")
+            << QStringLiteral("<strong>") << NmModel::tr("Security", "Active connection information") << QStringLiteral("</strong>: ")
                 << security << QStringLiteral("<br/>")
             ;
     }

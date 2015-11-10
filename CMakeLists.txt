@@ -12,10 +12,13 @@ find_package(Qt5 ${QT_MIN_VERSION} REQUIRED COMPONENTS
     Gui
     Network
     DBus
+
+    LinguistTools
 )
 find_package(KF5NetworkManagerQt REQUIRED)
 
-add_definitions(-DQT_NO_SIGNALS_SLOTS_KEYWORDS)
+set(TRANSLATION_DIR "${CMAKE_INSTALL_PREFIX}/share/${PROJECT_NAME}")
+add_definitions(-DQT_NO_SIGNALS_SLOTS_KEYWORDS "-DTRANSLATION_DIR=\"${TRANSLATION_DIR}\"")
 
 set(SRCS
     src/icons.cpp
@@ -24,11 +27,22 @@ set(SRCS
     src/connectioninfo.cpp
     src/nmlist.cpp
     src/tray.cpp
+    src/translate.cpp
     src/main.cpp
 )
 
+
+file(GLOB TSS "translations/${PROJECT_NAME}_*.ts")
+if (UPDATE_TRANSLATIONS)
+    message(WARNING "!! Disable updating translation after make (-DUPDATE_TRANSLATIONS=no) to avoid 'make clean' delete them !!")
+    qt5_create_translation(QMS ${TSS} "src")
+else ()
+    qt5_add_translation(QMS ${TSS})
+endif()
+
 add_executable(nm-tray
     ${SRCS}
+    ${QMS}
 )
 
 set_property(TARGET nm-tray PROPERTY CXX_STANDARD 11)
@@ -45,3 +59,4 @@ if (WITH_MODEMMANAGER_SUPPORT)
 endif()
 
 install(TARGETS nm-tray RUNTIME DESTINATION "${CMAKE_INSTALL_PREFIX}/bin")
+install(FILES ${QMS} DESTINATION "${TRANSLATION_DIR}")
