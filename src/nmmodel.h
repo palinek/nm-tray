@@ -3,7 +3,7 @@
 This file is a part of nm-tray.
 
 Copyright (c)
-    2015 Palo Kisa <palo.kisa@gmail.com>
+    2015~now Palo Kisa <palo.kisa@gmail.com>
 
 nm-tray is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
