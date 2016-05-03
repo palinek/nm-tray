@@ -33,7 +33,7 @@ class Tray : public QObject
 Q_OBJECT
 
 public:
-    Tray(QObject *parent = 0);
+    Tray(QObject *parent = nullptr);
     ~Tray();
 
 private Q_SLOTS:

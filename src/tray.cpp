@@ -143,7 +143,7 @@ void TrayPrivate::updateIcon()
 }
 
 
-Tray::Tray(QObject *parent/* = 0*/)
+Tray::Tray(QObject *parent/* = nullptr*/)
     : QObject{parent}
     , d{new TrayPrivate}
 {

@@ -38,7 +38,7 @@ class ConnectionInfo : public QDialog
     Q_OBJECT
 
 public:
-    explicit ConnectionInfo(NmModel * model, QWidget *parent = 0);
+    explicit ConnectionInfo(NmModel * model, QWidget *parent = nullptr);
     ~ConnectionInfo();
 
 private:
