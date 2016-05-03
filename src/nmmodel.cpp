@@ -24,11 +24,13 @@ COPYRIGHT_HEADER*/
 #include "nmmodel_p.h"
 #include "icons.h"
 
+#include <NetworkManagerQt/GenericTypes>
 #include <NetworkManagerQt/VpnConnection>
 #include <NetworkManagerQt/WirelessDevice>
 #include <NetworkManagerQt/WiredDevice>
 #include <NetworkManagerQt/WimaxDevice>
 #include <NetworkManagerQt/WirelessSetting>
+#include <NetworkManagerQt/WirelessSecuritySetting>
 /*
 #include <NetworkManagerQt/AdslSetting>
 #include <NetworkManagerQt/CdmaSetting>
@@ -813,6 +815,54 @@ QVariant NmModel::dataRole<NmModel::ActiveConnectionStateRole>(const QModelIndex
 }
 
 template <>
+QVariant NmModel::dataRole<NmModel::IconSecurityTypeRole>(const QModelIndex & index) const
+{
+    auto const internal_id = static_cast<ItemId>(index.internalId());
+    switch (internal_id)
+    {
+        case ITEM_ROOT:
+        case ITEM_ACTIVE:
+        case ITEM_CONNECTION:
+        case ITEM_DEVICE:
+        case ITEM_WIFINET:
+        case ITEM_DEVICE_LEAF:
+            return -1;
+        case ITEM_CONNECTION_LEAF:
+        case ITEM_ACTIVE_LEAF:
+            {
+                NetworkManager::ConnectionSettings::Ptr settings = ITEM_CONNECTION_LEAF == internal_id
+                    ? d->mConnections[index.row()]->settings()
+                    : d->mActiveConns[index.row()]->connection()->settings();
+                if (NetworkManager::ConnectionSettings::Wireless == settings->connectionType())
+                {
+                    NetworkManager::WirelessSecuritySetting::Ptr w_sett = settings->setting(NetworkManager::Setting::WirelessSecurity).staticCast<NetworkManager::WirelessSecuritySetting>();
+                    if (w_sett.isNull())
+                        return icons::SECURITY_LOW;
+                    else if (NetworkManager::WirelessSecuritySetting::WpaNone != w_sett->keyMgmt())
+                        return icons::SECURITY_HIGH;
+                    else
+                        return icons::SECURITY_LOW;
+                }
+                return -1;
+            }
+        case ITEM_WIFINET_LEAF:
+            return d->mWifiNets[index.row()]->referenceAccessPoint()->capabilities().testFlag(NetworkManager::AccessPoint::Privacy)
+                ? icons::SECURITY_HIGH
+                : icons::SECURITY_LOW;
+    }
+}
+
+template <>
+QVariant NmModel::dataRole<NmModel::IconSecurityRole>(const QModelIndex & index) const
+{
+    const auto type = dataRole<IconSecurityTypeRole>(index).toInt();
+    if (0 <= type)
+        return icons::getIcon(static_cast<icons::Icon>(type));
+    else
+        return QVariant{};
+}
+
+template <>
 QVariant NmModel::dataRole<NmModel::SignalRole>(const QModelIndex & index) const
 {
     switch (static_cast<ItemId>(index.internalId()))
@@ -1144,6 +1194,12 @@ QVariant NmModel::data(const QModelIndex &index, int role) const
             case IconRole:
                 ret = dataRole<IconRole>(index);
                 break;
+            case IconSecurityTypeRole:
+                ret = dataRole<IconSecurityTypeRole>(index);
+                break;
+            case IconSecurityRole:
+                ret = dataRole<IconSecurityRole>(index);
+                break;
             default:
                 ret = QVariant{};
                 break;
@@ -1321,21 +1377,24 @@ void NmModel::activateConnection(QModelIndex const & index)
                 if (conn.isNull())
                 {
                     //TODO: in what form should we output the warning messages
-                    qWarning() << QStringLiteral("can't find connection for '%1' on device '%2'").arg(conn_name).arg(dev_name);
-                    return;
+                    qWarning() << QStringLiteral("can't find connection for '%1' on device '%2', will create new...").arg(conn_name).arg(dev_name);
+                    spec_object = conn_uni;
+                } else
+                {
+                    conn_uni = conn->path();
                 }
-                conn_uni = conn->path();
-
-                //spec_object = net->ssid();
             }
             break;
         default:
             Q_ASSERT(false);
     }
-qDebug() << __FUNCTION__ << conn_uni << dev_uni << conn_name << dev_name;
+qDebug() << __FUNCTION__ << conn_uni << dev_uni << conn_name << dev_name << spec_object;
     //TODO: check vpn type etc..
-    QDBusPendingReply<QDBusObjectPath> reply = NetworkManager::activateConnection(conn_uni, dev_uni, spec_object);
-    QDBusPendingCallWatcher *watcher = new QDBusPendingCallWatcher(reply, this);
+    QDBusPendingCallWatcher * watcher;
+    if (spec_object.isEmpty())
+        watcher = new QDBusPendingCallWatcher{NetworkManager::activateConnection(conn_uni, dev_uni, spec_object), this};
+    else
+        watcher = new QDBusPendingCallWatcher{NetworkManager::addAndActivateConnection(NMVariantMapMap{}, dev_uni, spec_object), this};
     connect(watcher, &QDBusPendingCallWatcher::finished, [conn_name, dev_name] (QDBusPendingCallWatcher * watcher) {
         if (watcher->isError() || !watcher->isValid())
         {

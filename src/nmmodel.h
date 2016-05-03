@@ -53,6 +53,8 @@ public:
             , ActiveConnectionUuidRole = ConnectionUuidRole
             , ActiveConnectionInfoRole
             , ActiveConnectionStateRole
+            , IconSecurityTypeRole
+            , IconSecurityRole
 
             , SignalRole
     };

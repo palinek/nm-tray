@@ -3,7 +3,7 @@
 This file is a part of nm-tray.
 
 Copyright (c)
-    2015~now Palo Kisa <palo.kisa@gmail.com>
+    2016~now Palo Kisa <palo.kisa@gmail.com>
 
 nm-tray is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
@@ -20,33 +20,27 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 COPYRIGHT_HEADER*/
-#if !defined(ICONS_H)
-#define ICONS_H
 
-#include <QIcon>
+#if !defined(WINDOW_MENU_H)
+#define WINDOW_MENU_H
 
-namespace icons
+#include <QMenu>
+
+class WindowMenuPrivate;
+class NmModel;
+
+class WindowMenu : public QMenu
 {
-    enum Icon {
-        NETWORK_OFFLINE
-            , NETWORK_WIRED
-            , NETWORK_WIRED_DISCONNECTED
-            , NETWORK_WIFI_ACQUIRING
-            , NETWORK_WIFI_NONE
-            , NETWORK_WIFI_WEAK
-            , NETWORK_WIFI_OK
-            , NETWORK_WIFI_GOOD
-            , NETWORK_WIFI_EXCELENT
-            , NETWORK_WIFI_DISCONNECTED
+    Q_OBJECT
+public:
+    WindowMenu(NmModel * nmModel, QWidget * parent = nullptr);
+    ~WindowMenu();
 
-            , SECURITY_LOW
-            , SECURITY_HIGH
+private:
+    QScopedPointer<WindowMenuPrivate> d_ptr;
+    Q_DECLARE_PRIVATE(WindowMenu);
+};
 
-            , PREFERENCES_NETWORK
-    };
 
-    QIcon getIcon(Icon ico);
-    Icon wifiSignalIcon(const int signal);
-}
+#endif //WINDOW_MENU_H
 
-#endif

@@ -33,7 +33,7 @@ namespace icons
         switch (ico)
         {
             case NETWORK_OFFLINE:
-                icon_names << QStringLiteral("network-offline");
+                icon_names << QStringLiteral("network-offline-symbolic")<< QStringLiteral("network-offline");
                 break;
             case NETWORK_WIRED:
                 icon_names << QStringLiteral("network-wired-symbolic") << QStringLiteral("network-wired");
@@ -66,6 +66,12 @@ namespace icons
             case NETWORK_WIFI_EXCELENT:
                 icon_names << QStringLiteral("network-wireless-signal-excellent-symbolic") << QStringLiteral("network-wireless-signal-excellent")
                     << QStringLiteral("network-wireless-connected-100-symbolic") << QStringLiteral("network-wireless-connected-100");
+                break;
+            case SECURITY_LOW:
+                icon_names << QStringLiteral("security-low-symbolic")<< QStringLiteral("security-low");
+                break;
+            case SECURITY_HIGH:
+                icon_names << QStringLiteral("security-high-symbolic")<< QStringLiteral("security-high");
                 break;
             case PREFERENCES_NETWORK:
                 icon_names << QStringLiteral("preferences-system-network");

@@ -41,6 +41,8 @@ set(SRCS
     src/nmproxy.cpp
     src/connectioninfo.cpp
     src/nmlist.cpp
+    src/menuview.cpp
+    src/windowmenu.cpp
     src/tray.cpp
     src/translate.cpp
     src/main.cpp

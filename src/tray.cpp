@@ -26,6 +26,7 @@ COPYRIGHT_HEADER*/
 #include <QMenu>
 #include <QMessageBox>
 #include <QApplication>
+#include <QPersistentModelIndex>
 #include <QDebug>
 
 #include <NetworkManagerQt/Manager>
@@ -37,7 +38,7 @@ COPYRIGHT_HEADER*/
 
 #include "nmlist.h"
 #include "connectioninfo.h"
-#include <QPersistentModelIndex>
+#include "windowmenu.h"
 
 
 class TrayPrivate
@@ -48,6 +49,7 @@ public:
     void primaryConnectionUpdate();
     void setShown(QPersistentModelIndex const & index);
     void updateIcon();
+    void openCloseDialog(QDialog * dialog);
 
 public:
     QSystemTrayIcon mTrayIcon;
@@ -56,6 +58,7 @@ public:
     QAction * mActEnableNetwork;
     QAction * mActEnableWifi;
     QAction * mActConnInfo;
+    QAction * mActDebugInfo;
     NmModel mNmModel;
     NmProxy mActiveConnections;
     QPersistentModelIndex mPrimaryConnection;
@@ -142,6 +145,17 @@ void TrayPrivate::updateIcon()
     mTrayIcon.setIcon(icons::getIcon(mIconCurrent));
 }
 
+void TrayPrivate::openCloseDialog(QDialog * dialog)
+{
+    if (dialog->isHidden() || dialog->isMinimized())
+    {
+        dialog->showNormal();
+        dialog->activateWindow();
+        dialog->raise();
+    } else
+        dialog->close();
+}
+
 
 Tray::Tray(QObject *parent/* = nullptr*/)
     : QObject{parent}
@@ -166,6 +180,7 @@ Tray::Tray(QObject *parent/* = nullptr*/)
     d->mActEnableWifi = d->mContextMenu.addAction(Tray::tr("Enable Wi-fi"));
     d->mContextMenu.addSeparator();
     d->mActConnInfo = d->mContextMenu.addAction(QIcon::fromTheme(QStringLiteral("dialog-information")), Tray::tr("Connection information"));
+    d->mActDebugInfo = d->mContextMenu.addAction(QIcon::fromTheme(QStringLiteral("dialog-information")), Tray::tr("Debug information"));
     d->mContextMenu.addSeparator();
     connect(d->mContextMenu.addAction(QIcon::fromTheme(QStringLiteral("help-about")), Tray::tr("About")), &QAction::triggered
             , this, &Tray::onAboutTriggered);
@@ -184,14 +199,19 @@ Tray::Tray(QObject *parent/* = nullptr*/)
                 d->mInfoDialog.reset(nullptr);
             });
         }
-        if (d->mInfoDialog->isHidden() || d->mInfoDialog->isMinimized())
-        {
-            d->mInfoDialog->showNormal();
-            d->mInfoDialog->activateWindow();
-            d->mInfoDialog->raise();
-        } else
-            d->mInfoDialog->close();
+        d->openCloseDialog(d->mInfoDialog.data());
     });
+    connect(d->mActDebugInfo, &QAction::triggered, [this] (bool ) {
+        if (d->mConnDialog.isNull())
+        {
+            d->mConnDialog.reset(new NmList{Tray::tr("nm-tray info"), &d->mNmModel});
+            connect(d->mConnDialog.data(), &QDialog::finished, [this] {
+                d->mConnDialog.reset(nullptr);
+            });
+        }
+        d->openCloseDialog(d->mConnDialog.data());
+    });
+
 
     connect(NetworkManager::notifier(), &NetworkManager::Notifier::networkingEnabledChanged, &d->mStateTimer, static_cast<void (QTimer::*)()>(&QTimer::start));
     connect(NetworkManager::notifier(), &NetworkManager::Notifier::wirelessEnabledChanged, &d->mStateTimer, static_cast<void (QTimer::*)()>(&QTimer::start));
@@ -236,22 +256,10 @@ void Tray::onQuitTriggered()
 
 void Tray::onActivated()
 {
-    if (d->mConnDialog.isNull())
-    {
-        d->mConnDialog.reset(new NmList{Tray::tr("nm-tray info"), &d->mNmModel});
-        connect(d->mConnDialog.data(), &QDialog::finished, [this] {
-            d->mConnDialog.reset(nullptr);
-        });
-    }
-    if (d->mConnDialog->isHidden() || d->mConnDialog->isMinimized())
-    {
-        d->mConnDialog->showNormal();
-        d->mConnDialog->activateWindow();
-        d->mConnDialog->raise();
-    } else
-        d->mConnDialog->close();
+    QMenu * menu = new WindowMenu(&d->mNmModel);
+    menu->setAttribute(Qt::WA_DeleteOnClose);
+    menu->popup(QCursor::pos());
 }
-
 
 void Tray::setActionsStates()
 {
