@@ -87,7 +87,7 @@ void NmModelPrivate::removeActiveConnection(int pos)
     disconnect(conn.data(), &NetworkManager::ActiveConnection::connectionChanged, this, &NmModelPrivate::onActiveConnectionUpdated);
     disconnect(conn.data(), &NetworkManager::ActiveConnection::default4Changed, this, &NmModelPrivate::onActiveConnectionUpdated);
     disconnect(conn.data(), &NetworkManager::ActiveConnection::default6Changed, this, &NmModelPrivate::onActiveConnectionUpdated);
-#if NM_CHECK_VERSION(0, 9, 10)
+#if NM_CHECK_VERSION(0, 9, 10) && NM_CHECK_VERSION(BIN_NM_MAJOR, MIN_NM_MINOR, BIN_NM_PATCH)
     disconnect(conn.data(), &NetworkManager::ActiveConnection::dhcp4ConfigChanged, this, &NmModelPrivate::onActiveConnectionUpdated);
     disconnect(conn.data(), &NetworkManager::ActiveConnection::dhcp6ConfigChanged, this, &NmModelPrivate::onActiveConnectionUpdated);
     disconnect(conn.data(), &NetworkManager::ActiveConnection::ipV4ConfigChanged, this, &NmModelPrivate::onActiveConnectionUpdated);
@@ -120,7 +120,7 @@ void NmModelPrivate::addActiveConnection(NetworkManager::ActiveConnection::Ptr c
     connect(conn.data(), &NetworkManager::ActiveConnection::connectionChanged, this, &NmModelPrivate::onActiveConnectionUpdated);
     connect(conn.data(), &NetworkManager::ActiveConnection::default4Changed, this, &NmModelPrivate::onActiveConnectionUpdated);
     connect(conn.data(), &NetworkManager::ActiveConnection::default6Changed, this, &NmModelPrivate::onActiveConnectionUpdated);
-#if NM_CHECK_VERSION(0, 9, 10)
+#if NM_CHECK_VERSION(0, 9, 10) && NM_CHECK_VERSION(BIN_NM_MAJOR, MIN_NM_MINOR, BIN_NM_PATCH)
     connect(conn.data(), &NetworkManager::ActiveConnection::dhcp4ConfigChanged, this, &NmModelPrivate::onActiveConnectionUpdated);
     connect(conn.data(), &NetworkManager::ActiveConnection::dhcp6ConfigChanged, this, &NmModelPrivate::onActiveConnectionUpdated);
     connect(conn.data(), &NetworkManager::ActiveConnection::ipV4ConfigChanged, this, &NmModelPrivate::onActiveConnectionUpdated);
@@ -198,14 +198,14 @@ void NmModelPrivate::removeDevice(int pos)
     disconnect(device.data(), &NetworkManager::Device::ipV6ConfigChanged, this, &NmModelPrivate::onDeviceUpdated);
     disconnect(device.data(), &NetworkManager::Device::ipInterfaceChanged, this, &NmModelPrivate::onDeviceUpdated);
     disconnect(device.data(), &NetworkManager::Device::managedChanged, this, &NmModelPrivate::onDeviceUpdated);
-#if NM_CHECK_VERSION(0, 9, 10)
+#if NM_CHECK_VERSION(0, 9, 10) && NM_CHECK_VERSION(BIN_NM_MAJOR, MIN_NM_MINOR, BIN_NM_PATCH)
     disconnect(device.data(), &NetworkManager::Device::physicalPortIdChanged, this, &NmModelPrivate::onDeviceUpdated);
     disconnect(device.data(), &NetworkManager::Device::mtuChanged, this, &NmModelPrivate::onDeviceUpdated);
 #endif
-#if NM_CHECK_VERSION(1, 2, 0)
+#if NM_CHECK_VERSION(1, 2, 0) && NM_CHECK_VERSION(BIN_NM_MAJOR, MIN_NM_MINOR, BIN_NM_PATCH)
     disconnect(device.data(), &NetworkManager::Device::nmPluginMissingChanged, this, &NmModelPrivate::onDeviceUpdated);
 #endif
-#if NM_CHECK_VERSION(1, 0, 6)
+#if NM_CHECK_VERSION(1, 0, 6) && NM_CHECK_VERSION(BIN_NM_MAJOR, MIN_NM_MINOR, BIN_NM_PATCH)
     disconnect(device.data(), &NetworkManager::Device::meteredChanged, this, &NmModelPrivate::onDeviceUpdated);
 #endif
     disconnect(device.data(), &NetworkManager::Device::connectionStateChanged, this, &NmModelPrivate::onDeviceUpdated);
@@ -267,14 +267,14 @@ void NmModelPrivate::addDevice(NetworkManager::Device::Ptr device)
     connect(device.data(), &NetworkManager::Device::ipV6ConfigChanged, this, &NmModelPrivate::onDeviceUpdated);
     connect(device.data(), &NetworkManager::Device::ipInterfaceChanged, this, &NmModelPrivate::onDeviceUpdated);
     connect(device.data(), &NetworkManager::Device::managedChanged, this, &NmModelPrivate::onDeviceUpdated);
-#if NM_CHECK_VERSION(0, 9, 10)
+#if NM_CHECK_VERSION(0, 9, 10) && NM_CHECK_VERSION(BIN_NM_MAJOR, MIN_NM_MINOR, BIN_NM_PATCH)
     connect(device.data(), &NetworkManager::Device::physicalPortIdChanged, this, &NmModelPrivate::onDeviceUpdated);
     connect(device.data(), &NetworkManager::Device::mtuChanged, this, &NmModelPrivate::onDeviceUpdated);
 #endif
-#if NM_CHECK_VERSION(1, 2, 0)
+#if NM_CHECK_VERSION(1, 2, 0) && NM_CHECK_VERSION(BIN_NM_MAJOR, MIN_NM_MINOR, BIN_NM_PATCH)
     connect(device.data(), &NetworkManager::Device::nmPluginMissingChanged, this, &NmModelPrivate::onDeviceUpdated);
 #endif
-#if NM_CHECK_VERSION(1, 0, 6)
+#if NM_CHECK_VERSION(1, 0, 6) && NM_CHECK_VERSION(BIN_NM_MAJOR, MIN_NM_MINOR, BIN_NM_PATCH)
     connect(device.data(), &NetworkManager::Device::meteredChanged, this, &NmModelPrivate::onDeviceUpdated);
 #endif
     connect(device.data(), &NetworkManager::Device::connectionStateChanged, this, &NmModelPrivate::onDeviceUpdated);

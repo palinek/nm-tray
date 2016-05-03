@@ -21,6 +21,20 @@ include(GNUInstallDirs)
 set(TRANSLATION_DIR "${CMAKE_INSTALL_FULL_DATADIR}/${PROJECT_NAME}")
 add_definitions(-DQT_NO_SIGNALS_SLOTS_KEYWORDS "-DTRANSLATION_DIR=\"${TRANSLATION_DIR}\"")
 
+#workaround for binary KF5NetworkManagerQt package built with different version of NetworkManager as present on current machine
+if (DEFINED ${BIN_NM_VERSION})
+    string(REPLACE "." ";" BIN_NM_VERSION_LIST "${BIN_NM_VERSION}")
+    list(GET BIN_NM_VERSION_LIST 0 BIN_NM_MAJOR)
+    list(GET BIN_NM_VERSION_LIST 1 BIN_NM_MINOR)
+    list(GET BIN_NM_VERSION_LIST 2 BIN_NM_PATCH)
+else ()
+    set(BIN_NM_MAJOR 999)
+    set(BIN_NM_MINOR 0)
+    set(BIN_NM_PATCH 0)
+endif ()
+add_definitions(-DBIN_NM_MAJOR=${BIN_NM_MAJOR} -DBIN_NM_MINOR=${BIN_NM_MINOR} -DBIN_NM_PATCH=${BIN_NM_PATCH})
+
+
 set(SRCS
     src/icons.cpp
     src/nmmodel.cpp
