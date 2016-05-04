@@ -31,6 +31,8 @@ COPYRIGHT_HEADER*/
 #include <NetworkManagerQt/WimaxDevice>
 #include <NetworkManagerQt/WirelessSetting>
 #include <NetworkManagerQt/WirelessSecuritySetting>
+#include <NetworkManagerQt/Utils>
+#include <NetworkManagerQt/ConnectionSettings>
 /*
 #include <NetworkManagerQt/AdslSetting>
 #include <NetworkManagerQt/CdmaSetting>
@@ -56,7 +58,50 @@ COPYRIGHT_HEADER*/
 #include <NetworkManagerQt/GenericSetting>
 */
 #include <QDBusPendingCallWatcher>
+#include <QInputDialog>
 
+namespace
+{
+    NetworkManager::ConnectionSettings::Ptr assembleWpaXPskSettings(const NetworkManager::AccessPoint::Ptr accessPoint)
+    {
+        //TODO: enhance getting the password from user
+        bool ok;
+        QString password = QInputDialog::getText(nullptr, NmModel::tr("nm-tray - wireless password")
+                , NmModel::tr("Password is needed for connection to '%1':").arg(accessPoint->ssid())
+                , QLineEdit::Password, QString(), &ok);
+        if (!ok)
+            return NetworkManager::ConnectionSettings::Ptr{nullptr};
+
+        NetworkManager::ConnectionSettings::Ptr settings{new NetworkManager::ConnectionSettings{NetworkManager::ConnectionSettings::Wireless}};
+        settings->setId(accessPoint->ssid());
+        settings->setUuid(NetworkManager::ConnectionSettings::createNewUuid());
+        settings->setAutoconnect(true);
+        //Note: workaround for wrongly (randomly) initialized gateway-ping-timeout
+#if NM_CHECK_VERSION(0, 9, 10) && NM_CHECK_VERSION(BIN_NM_MAJOR, MIN_NM_MINOR, BIN_NM_PATCH)
+        settings->setGatewayPingTimeout(0);
+#endif
+
+        NetworkManager::WirelessSetting::Ptr wifi_sett
+            = settings->setting(NetworkManager::Setting::Wireless).dynamicCast<NetworkManager::WirelessSetting>();
+        wifi_sett->setInitialized(true);
+        wifi_sett->setSsid(accessPoint->ssid().toUtf8());
+        wifi_sett->setSecurity("802-11-wireless-security");
+
+        NetworkManager::WirelessSecuritySetting::Ptr security_sett
+            = settings->setting(NetworkManager::Setting::WirelessSecurity).dynamicCast<NetworkManager::WirelessSecuritySetting>();
+        security_sett->setInitialized(true);
+        if (NetworkManager::AccessPoint::Adhoc == accessPoint->mode())
+        {
+            wifi_sett->setMode(NetworkManager::WirelessSetting::Adhoc);
+            security_sett->setKeyMgmt(NetworkManager::WirelessSecuritySetting::WpaNone);
+        } else
+        {
+            security_sett->setKeyMgmt(NetworkManager::WirelessSecuritySetting::WpaPsk);
+        }
+        security_sett->setPsk(password);
+        return settings;
+    }
+}
 
 NmModelPrivate::NmModelPrivate()
 {
@@ -980,6 +1025,7 @@ QVariant NmModel::dataRole<NmModel::ActiveConnectionInfoRole>(const QModelIndex 
                     Q_ASSERT(nullptr != spec_dev);
                     hw_address = spec_dev->hardwareAddress();
                     bit_rate = spec_dev->bitRate();
+                    auto access_point = spec_dev->activeAccessPoint();
                     //TODO: we probably should get it from Connection object
                     security = "TODO:";
                 }
@@ -1329,6 +1375,7 @@ void NmModel::activateConnection(QModelIndex const & index)
     QString conn_uni, dev_uni;
     QString conn_name, dev_name;
     QString spec_object;
+    NMVariantMapMap map_settings;
     switch (id)
     {
         case ITEM_CONNECTION_LEAF:
@@ -1361,12 +1408,16 @@ void NmModel::activateConnection(QModelIndex const & index)
         case ITEM_WIFINET_LEAF:
             {
                 auto const & net = d->mWifiNets[index.row()];
-                conn_uni = net->referenceAccessPoint()->uni();
-                conn_name = net->referenceAccessPoint()->ssid();
+                auto access_point = net->referenceAccessPoint();
+                Q_ASSERT(!access_point.isNull());
                 dev_uni = net->device();
-                //find the device name
-                auto const & dev = d->findDeviceUni(dev_uni);
+                auto dev = d->findDeviceUni(dev_uni);
                 Q_ASSERT(!dev.isNull());
+                auto spec_dev = dev->as<NetworkManager::WirelessDevice>();
+                Q_ASSERT(nullptr != spec_dev);
+                conn_uni = access_point->uni();
+                conn_name = access_point->ssid();
+                //find the device name
                 NetworkManager::Connection::Ptr conn;
                 dev_name = dev->interfaceName();
                 for (auto const & dev_conn : dev->availableConnections())
@@ -1379,6 +1430,30 @@ void NmModel::activateConnection(QModelIndex const & index)
                     //TODO: in what form should we output the warning messages
                     qWarning().noquote() << QStringLiteral("can't find connection for '%1' on device '%2', will create new...").arg(conn_name).arg(dev_name);
                     spec_object = conn_uni;
+                    NetworkManager::WirelessSecurityType sec_type = NetworkManager::findBestWirelessSecurity(spec_dev->wirelessCapabilities()
+                            , true, (spec_dev->mode() == NetworkManager::WirelessDevice::Adhoc)
+                            , access_point->capabilities(), access_point->wpaFlags(), access_point->rsnFlags());
+                    switch (sec_type)
+                    {
+                        case NetworkManager::UnknownSecurity:
+                            qWarning().noquote() << QStringLiteral("unknown security to use for '%1'").arg(conn_name);
+                        case NetworkManager::NoneSecurity:
+                            //nothing to do
+                            break;
+                        case NetworkManager::WpaPsk:
+                        case NetworkManager::Wpa2Psk:
+                            if (NetworkManager::ConnectionSettings::Ptr settings = assembleWpaXPskSettings(access_point))
+                            {
+                                map_settings = settings->toMap();
+                            } else
+                            {
+                                qWarning().noquote() << QStringLiteral("connection settings assembly for '%1' failed, abandoning activation...")
+                                    .arg(conn_name);
+                                return;
+                            }
+                            break;
+                            //TODO: other types...
+                    }
                 } else
                 {
                     conn_uni = conn->path();
@@ -1394,7 +1469,7 @@ qDebug() << __FUNCTION__ << conn_uni << dev_uni << conn_name << dev_name << spec
     if (spec_object.isEmpty())
         watcher = new QDBusPendingCallWatcher{NetworkManager::activateConnection(conn_uni, dev_uni, spec_object), this};
     else
-        watcher = new QDBusPendingCallWatcher{NetworkManager::addAndActivateConnection(NMVariantMapMap{}, dev_uni, spec_object), this};
+        watcher = new QDBusPendingCallWatcher{NetworkManager::addAndActivateConnection(map_settings, dev_uni, spec_object), this};
     connect(watcher, &QDBusPendingCallWatcher::finished, [conn_name, dev_name] (QDBusPendingCallWatcher * watcher) {
         if (watcher->isError() || !watcher->isValid())
         {
