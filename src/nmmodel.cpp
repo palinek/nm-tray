@@ -1323,7 +1323,7 @@ void NmModel::activateConnection(QModelIndex const & index)
     if (!isValidDataIndex(index) || (ITEM_CONNECTION_LEAF != id && ITEM_WIFINET_LEAF != id))
     {
         //TODO: in what form should we output the warning messages
-        qWarning() << "got invalid index for connection activation" << index;
+        qWarning().noquote() << "got invalid index for connection activation" << index;
         return;
     }
     QString conn_uni, dev_uni;
@@ -1353,7 +1353,7 @@ void NmModel::activateConnection(QModelIndex const & index)
                 if (dev_uni.isEmpty())
                 {
                     //TODO: in what form should we output the warning messages
-                    qWarning() << QStringLiteral("can't find device '%1' to activate connection '%2' on").arg(dev_name).arg(conn->name());
+                    qWarning().noquote() << QStringLiteral("can't find device '%1' to activate connection '%2' on").arg(dev_name).arg(conn->name());
                     return;
                 }
             }
@@ -1377,7 +1377,7 @@ void NmModel::activateConnection(QModelIndex const & index)
                 if (conn.isNull())
                 {
                     //TODO: in what form should we output the warning messages
-                    qWarning() << QStringLiteral("can't find connection for '%1' on device '%2', will create new...").arg(conn_name).arg(dev_name);
+                    qWarning().noquote() << QStringLiteral("can't find connection for '%1' on device '%2', will create new...").arg(conn_name).arg(dev_name);
                     spec_object = conn_uni;
                 } else
                 {
@@ -1399,7 +1399,7 @@ qDebug() << __FUNCTION__ << conn_uni << dev_uni << conn_name << dev_name << spec
         if (watcher->isError() || !watcher->isValid())
         {
             //TODO: in what form should we output the warning messages
-            qWarning() << QStringLiteral("activation of connection '%1' on interface '%2' failed: %3").arg(conn_name)
+            qWarning().noquote() << QStringLiteral("activation of connection '%1' on interface '%2' failed: %3").arg(conn_name)
                     .arg(dev_name).arg(watcher->error().message());
          }
          watcher->deleteLater();
@@ -1412,7 +1412,7 @@ void NmModel::deactivateConnection(QModelIndex const & index)
     if (!isValidDataIndex(index) || ITEM_ACTIVE_LEAF != id)
     {
         //TODO: in what form should we output the warning messages
-        qWarning() << "got invalid index for connection deactivation" << index;
+        qWarning().noquote() << "got invalid index for connection deactivation" << index;
         return;
     }
 
@@ -1424,7 +1424,7 @@ qDebug() << __FUNCTION__ << active->path();
         if (watcher->isError() || !watcher->isValid())
         {
             //TODO: in what form should we output the warning messages
-            qWarning() << QStringLiteral("deactivation of connection '%1' failed: %3").arg(active->connection()->name())
+            qWarning().noquote() << QStringLiteral("deactivation of connection '%1' failed: %3").arg(active->connection()->name())
                     .arg(watcher->error().message());
          }
          watcher->deleteLater();
