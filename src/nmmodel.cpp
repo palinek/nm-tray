@@ -478,8 +478,11 @@ void NmModelPrivate::onWifiNetworkUpdated()
 void NmModelPrivate::onDeviceAdded(QString const & uni)
 {
     NetworkManager::Device::Ptr dev = NetworkManager::findNetworkInterface(uni);
-    Q_ASSERT(!dev.isNull() && dev->isValid());
-    emit deviceAdd(dev);
+    if (!dev.isNull())
+    {
+        Q_ASSERT(dev->isValid());
+        emit deviceAdd(dev);
+    }
 }
 
 void NmModelPrivate::onDeviceRemoved(QString const & uni)
@@ -495,8 +498,11 @@ void NmModelPrivate::onDeviceRemoved(QString const & uni)
 void NmModelPrivate::onActiveConnectionAdded(QString const & path)
 {
     NetworkManager::ActiveConnection::Ptr conn = NetworkManager::findActiveConnection(path);//XXX: const QString &uni
-    Q_ASSERT(!conn.isNull() && conn->isValid());
-    emit activeConnectionAdd(conn);
+    if (!conn.isNull())
+    {
+        Q_ASSERT(conn->isValid());
+        emit activeConnectionAdd(conn);
+    }
 }
 
 void NmModelPrivate::onActiveConnectionRemoved(QString const & path)
@@ -517,8 +523,11 @@ void NmModelPrivate::onActiveConnectionsChanged()
 void NmModelPrivate::onConnectionAdded(QString const & path)
 {
     NetworkManager::Connection::Ptr conn = NetworkManager::findConnection(path);
-    Q_ASSERT(!conn.isNull() && conn->isValid());
-    emit connectionAdd(conn);
+    if (!conn.isNull())
+    {
+        Q_ASSERT(conn->isValid());
+        emit connectionAdd(conn);
+    }
 }
 
 void NmModelPrivate::onConnectionRemoved(QString const & path)
