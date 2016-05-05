@@ -27,6 +27,7 @@ COPYRIGHT_HEADER*/
 #include "menuview.h"
 
 #include <QWidgetAction>
+#include <functional>
 
 class WindowMenuPrivate
 {
@@ -38,7 +39,30 @@ public:
 
     QScopedPointer<NmProxy> mActiveModel;
     QWidgetAction * mActiveAction;
+
+    template <typename F>
+    void onActivated(QModelIndex const & index
+            , QAbstractItemModel const * topParent
+            , F const & functor);
 };
+
+template <typename F>
+void WindowMenuPrivate::onActivated(QModelIndex const & index
+        , QAbstractItemModel const * topParent
+        , F const & functor)
+{
+    QModelIndex i = index;
+    for (QAbstractProxyModel const * proxy = qobject_cast<QAbstractProxyModel const *>(index.model())
+            ; nullptr != proxy && topParent != proxy
+            ; proxy = qobject_cast<QAbstractProxyModel const *>(proxy->sourceModel())
+            )
+    {
+        i = proxy->mapToSource(i);
+    }
+    functor(i);
+}
+
+
 
 WindowMenu::WindowMenu(NmModel * nmModel, QWidget * parent /*= nullptr*/)
     : QMenu{parent}
@@ -52,13 +76,7 @@ WindowMenu::WindowMenu(NmModel * nmModel, QWidget * parent /*= nullptr*/)
     d->mActiveModel->setNmModel(d->mNmModel, NmModel::ActiveConnectionType);
     MenuView * active_view = new MenuView{d->mActiveModel.data()};
     connect(active_view, &QAbstractItemView::activated, [this, d, active_view] (const QModelIndex & index) {
-        if (QAbstractProxyModel const * proxy = qobject_cast<QAbstractProxyModel *>(active_view->model()))
-        {
-            d->mActiveModel->deactivateConnection(proxy->mapToSource(index));
-        } else
-        {
-            d->mWirelessModel->deactivateConnection(index);
-        }
+        d->onActivated(index, d->mActiveModel.data(), std::bind(&NmProxy::deactivateConnection, d->mActiveModel.data(), std::placeholders::_1));
         close();
     });
 
@@ -70,13 +88,7 @@ WindowMenu::WindowMenu(NmModel * nmModel, QWidget * parent /*= nullptr*/)
     d->mWirelessModel->setNmModel(d->mNmModel, NmModel::WifiNetworkType);
     MenuView * wifi_view = new MenuView{d->mWirelessModel.data()};
     connect(wifi_view, &QAbstractItemView::activated, [this, d, wifi_view] (const QModelIndex & index) {
-        if (QAbstractProxyModel const * proxy = qobject_cast<QAbstractProxyModel *>(wifi_view->model()))
-        {
-            d->mWirelessModel->activateConnection(proxy->mapToSource(index));
-        } else
-        {
-            d->mWirelessModel->activateConnection(index);
-        }
+        d->onActivated(index, d->mWirelessModel.data(), std::bind(&NmProxy::activateConnection, d->mWirelessModel.data(), std::placeholders::_1));
         close();
     });
 
@@ -94,4 +106,3 @@ WindowMenu::WindowMenu(NmModel * nmModel, QWidget * parent /*= nullptr*/)
 WindowMenu::~WindowMenu()
 {
 }
-
