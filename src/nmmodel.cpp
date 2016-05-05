@@ -549,11 +549,16 @@ NmModel::NmModel(QObject * parent)
 {
     connect(d.data(), &NmModelPrivate::connectionAdd, [this] (NetworkManager::Connection::Ptr conn) {
 //qDebug() << "connectionAdd" << conn->name();
-        const int cnt = d->mConnections.size();
-        Q_ASSERT(0 > d->mConnections.indexOf(conn));
-        beginInsertRows(createIndex(1, 0, ITEM_CONNECTION), cnt, cnt);
-        d->addConnection(conn);
-        endInsertRows();
+        if (0 > d->mConnections.indexOf(conn))
+        {
+            const int cnt = d->mConnections.size();
+            beginInsertRows(createIndex(1, 0, ITEM_CONNECTION), cnt, cnt);
+            d->addConnection(conn);
+            endInsertRows();
+        } else
+        {
+            //TODO: onConnectionUpdate
+        }
     });
     connect(d.data(), &NmModelPrivate::connectionUpdate, [this] (NetworkManager::Connection * conn) {
 //qDebug() << "connectionUpdate" << conn->name();
@@ -577,11 +582,16 @@ NmModel::NmModel(QObject * parent)
     });
     connect(d.data(), &NmModelPrivate::activeConnectionAdd, [this] (NetworkManager::ActiveConnection::Ptr conn) {
 //qDebug() << "activecCnnectionAdd" << conn->connection()->name();
-        const int cnt = d->mActiveConns.size();
-        Q_ASSERT(0 > d->mActiveConns.indexOf(conn));
-        beginInsertRows(createIndex(0, 0, ITEM_ACTIVE), cnt, cnt);
-        d->addActiveConnection(conn);
-        endInsertRows();
+        if (0 > d->mActiveConns.indexOf(conn))
+        {
+            const int cnt = d->mActiveConns.size();
+            beginInsertRows(createIndex(0, 0, ITEM_ACTIVE), cnt, cnt);
+            d->addActiveConnection(conn);
+            endInsertRows();
+        } else
+        {
+            //TODO: onActiveConnectionUpdate
+        }
     });
     connect(d.data(), &NmModelPrivate::activeConnectionUpdate, [this] (NetworkManager::ActiveConnection * conn) {
 //qDebug() << "activecCnnectionUpdate" << conn->connection()->name();
@@ -622,11 +632,16 @@ NmModel::NmModel(QObject * parent)
     });
     connect(d.data(), &NmModelPrivate::deviceAdd, [this] (NetworkManager::Device::Ptr dev) {
 //qDebug() << "deviceAdd" << dev->interfaceName();
-        const int cnt = d->mDevices.size();
-        Q_ASSERT(0 > d->mDevices.indexOf(dev));
-        beginInsertRows(createIndex(2, 0, ITEM_DEVICE), cnt, cnt);
-        d->addDevice(dev);
-        endInsertRows();
+        if (0 > d->mDevices.indexOf(dev))
+        {
+            const int cnt = d->mDevices.size();
+            beginInsertRows(createIndex(2, 0, ITEM_DEVICE), cnt, cnt);
+            d->addDevice(dev);
+            endInsertRows();
+        } else
+        {
+            //TODO: onDeviceUpdate
+        }
     });
     connect(d.data(), &NmModelPrivate::deviceUpdate, [this] (NetworkManager::Device * dev) {
 //qDebug() << "deviceUpdate" << dev << dev->interfaceName();
@@ -654,11 +669,16 @@ NmModel::NmModel(QObject * parent)
         NetworkManager::WirelessNetwork::Ptr net = w_dev->findNetwork(ssid);
         if (!net.isNull())
         {
-            Q_ASSERT(0 > d->mWifiNets.indexOf(net));
-            const int cnt = d->mWifiNets.size();
-            beginInsertRows(createIndex(3, 0, ITEM_WIFINET), cnt, cnt);
-            d->addWifiNetwork(net);
-            endInsertRows();
+            if (0 > d->mWifiNets.indexOf(net))
+            {
+                const int cnt = d->mWifiNets.size();
+                beginInsertRows(createIndex(3, 0, ITEM_WIFINET), cnt, cnt);
+                d->addWifiNetwork(net);
+                endInsertRows();
+            } else
+            {
+                //TODO: onWifiNetworkUpdate
+            }
         }
     });
     connect(d.data(), &NmModelPrivate::wifiNetworkUpdate, [this] (NetworkManager::WirelessNetwork * net) {
@@ -695,13 +715,15 @@ NmModel::NmModel(QObject * parent)
     connect(d.data(), &NmModelPrivate::wifiNetworkRemove, [this] (NetworkManager::Device * dev, QString const & ssid) {
 //qDebug() << "wifiNetworkRemove" << dev << dev->interfaceName() << ssid;
         NetworkManager::WirelessNetwork::Ptr net = d->findWifiNetwork(ssid, dev->uni());
-        Q_ASSERT(!net.isNull());
-        auto pos = d->mWifiNets.indexOf(net);
-        if (0 <= pos)
+        if (!net.isNull())
         {
-            beginRemoveRows(createIndex(3, 0, ITEM_WIFINET), pos, pos);
-            d->removeWifiNetwork(pos);
-            endRemoveRows();
+            auto pos = d->mWifiNets.indexOf(net);
+            if (0 <= pos)
+            {
+                beginRemoveRows(createIndex(3, 0, ITEM_WIFINET), pos, pos);
+                d->removeWifiNetwork(pos);
+                endRemoveRows();
+            }
         }
     });
 //qDebug() << __FUNCTION__ << "finished";
