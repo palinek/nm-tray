@@ -85,11 +85,11 @@ MenuView::MenuView(QAbstractItemModel * model, QWidget * parent /*= nullptr*/)
     , mProxy{new QSortFilterProxyModel{this}}
     , mMaxItemsToShow(10)
 {
-    setEditTriggers(QAbstractItemView::NoEditTriggers);
+    setEditTriggers(NoEditTriggers);
     setSizeAdjustPolicy(AdjustToContents);
     setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     setSelectionBehavior(SelectRows);
-    setSelectionMode(SingleSelection);
+    setSelectionMode(NoSelection);
     setFrameShape(QFrame::HLine);
     setFrameShadow(QFrame::Plain);
 
