@@ -1071,12 +1071,16 @@ QVariant NmModel::dataRole<NmModel::ActiveConnectionInfoRole>(const QModelIndex 
                 }
                 break;
             case NetworkManager::Device::Wimax:
+                //Wimax support was dropped in network manager 1.2.0
+                //we should never get here in runtime with nm >= 1.2.0
+#if !MY_NM_CHECK_VERSION(1, 2, 0)
                 {
                     auto spec_dev = dev->as<NetworkManager::WimaxDevice>();
                     Q_ASSERT(nullptr != spec_dev);
                     hw_address = spec_dev->hardwareAddress();
                     //bit_rate = spec_dev->bitRate();
                 }
+#endif
                 break;
             default:
                 break;
