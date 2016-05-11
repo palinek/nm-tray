@@ -18,3 +18,7 @@ This software is licensed under [GNU GPLv2 or later](https://www.gnu.org/license
     cmake ..
     make
     ./nm-tray
+
+## Packages
+
+For [arch users](https://www.archlinux.org/) there is an AUR packge [nm-tray-git](https://aur.archlinux.org/packages/nm-tray-git/) (thanks to [pmattern](https://github.com/pmattern)).
