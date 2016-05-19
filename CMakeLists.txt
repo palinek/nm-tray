@@ -37,6 +37,7 @@ add_definitions(-DBIN_NM_MAJOR=${BIN_NM_MAJOR} -DBIN_NM_MINOR=${BIN_NM_MINOR} -D
 
 
 set(SRCS
+    src/log.cpp
     src/icons.cpp
     src/nmmodel.cpp
     src/nmproxy.cpp

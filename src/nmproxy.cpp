@@ -21,7 +21,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 COPYRIGHT_HEADER*/
 #include "nmproxy.h"
-#include <QDebug>
+#include "log.h"
 
 void NmProxy::setSourceModel(QAbstractItemModel * sourceModel)
 {
@@ -76,7 +76,7 @@ void NmProxy::setNmModel(NmModel * model, NmModel::ItemType shownType)
 {
     root = model->indexTypeRoot(shownType);
     setSourceModel(model);
-//qDebug() << __FUNCTION__ << model->indexTypeRoot(shownType) << "->" << root;
+//qCDebug(NM_TRAY) << __FUNCTION__ << model->indexTypeRoot(shownType) << "->" << root;
 }
 
 QModelIndex NmProxy::index(int row, int column, const QModelIndex & proxyParent) const
@@ -84,7 +84,7 @@ QModelIndex NmProxy::index(int row, int column, const QModelIndex & proxyParent)
     QModelIndex i;
     if (hasIndex(row, column, proxyParent))
         i = createIndex(row, column);
-//qDebug() << __FUNCTION__ << row << column << proxyParent << "->" << i;
+//qCDebug(NM_TRAY) << __FUNCTION__ << row << column << proxyParent << "->" << i;
     return i;
 }
 
@@ -92,7 +92,7 @@ QModelIndex NmProxy::parent(const QModelIndex &/*proxyIndex*/) const
 {
     //showing only one level/list: leaf -> invalid, root -> invalid
     QModelIndex i;
-//qDebug() << __FUNCTION__ << proxyIndex << "->" << i;
+//qCDebug(NM_TRAY) << __FUNCTION__ << proxyIndex << "->" << i;
     return i;
 }
 
@@ -125,7 +125,7 @@ QModelIndex NmProxy::mapToSource(const QModelIndex & proxyIndex) const
     QModelIndex i;
     if (proxyIndex.isValid())
         i = sourceModel()->index(proxyIndex.row(), proxyIndex.column(), root);
-//qDebug() << __FUNCTION__ << proxyIndex << "->" << i;
+//qCDebug(NM_TRAY) << __FUNCTION__ << proxyIndex << "->" << i;
     return i;
 }
 
@@ -134,7 +134,7 @@ QModelIndex NmProxy::mapFromSource(const QModelIndex & sourceIndex) const
     QModelIndex i;
     if (sourceIndex.isValid() && root != sourceIndex)
         i = createIndex(sourceIndex.row(), sourceIndex.column());
-//qDebug() << __FUNCTION__ << sourceIndex << "->" << i;
+//qCDebug(NM_TRAY) << __FUNCTION__ << sourceIndex << "->" << i;
     return i;
 }
 

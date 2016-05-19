@@ -23,6 +23,7 @@ COPYRIGHT_HEADER*/
 #include "nmmodel.h"
 #include "nmmodel_p.h"
 #include "icons.h"
+#include "log.h"
 
 #include <NetworkManagerQt/GenericTypes>
 #include <NetworkManagerQt/VpnConnection>
@@ -129,7 +130,7 @@ NmModelPrivate::NmModelPrivate()
 
     //TODO: listening to NetworkManager::Notifier::serviceAppeared/Disapeared !?!
     
-//qDebug() << mActiveConns.size() << mConnections.size() << mDevices.size();
+//qCDebug(NM_TRAY) << mActiveConns.size() << mConnections.size() << mDevices.size();
 }
 
 NmModelPrivate::~NmModelPrivate()
@@ -557,7 +558,7 @@ NmModel::NmModel(QObject * parent)
     , d{new NmModelPrivate}
 {
     connect(d.data(), &NmModelPrivate::connectionAdd, [this] (NetworkManager::Connection::Ptr conn) {
-//qDebug() << "connectionAdd" << conn->name();
+//qCDebug(NM_TRAY) << "connectionAdd" << conn->name();
         if (0 > d->mConnections.indexOf(conn))
         {
             const int cnt = d->mConnections.size();
@@ -570,7 +571,7 @@ NmModel::NmModel(QObject * parent)
         }
     });
     connect(d.data(), &NmModelPrivate::connectionUpdate, [this] (NetworkManager::Connection * conn) {
-//qDebug() << "connectionUpdate" << conn->name();
+//qCDebug(NM_TRAY) << "connectionUpdate" << conn->name();
         auto i = std::find(d->mConnections.cbegin(), d->mConnections.cend(), conn);
         if (d->mConnections.cend() != i)
         {
@@ -579,7 +580,7 @@ NmModel::NmModel(QObject * parent)
         }
     });
     connect(d.data(), &NmModelPrivate::connectionRemove, [this] (NetworkManager::Connection * conn) {
-//qDebug() << "connectionRemove" << conn->name();
+//qCDebug(NM_TRAY) << "connectionRemove" << conn->name();
         auto i = std::find(d->mConnections.cbegin(), d->mConnections.cend(), conn);
         if (d->mConnections.cend() != i)
         {
@@ -590,7 +591,7 @@ NmModel::NmModel(QObject * parent)
         }
     });
     connect(d.data(), &NmModelPrivate::activeConnectionAdd, [this] (NetworkManager::ActiveConnection::Ptr conn) {
-//qDebug() << "activecCnnectionAdd" << conn->connection()->name();
+//qCDebug(NM_TRAY) << "activecCnnectionAdd" << conn->connection()->name();
         if (0 > d->mActiveConns.indexOf(conn))
         {
             const int cnt = d->mActiveConns.size();
@@ -603,7 +604,7 @@ NmModel::NmModel(QObject * parent)
         }
     });
     connect(d.data(), &NmModelPrivate::activeConnectionUpdate, [this] (NetworkManager::ActiveConnection * conn) {
-//qDebug() << "activecCnnectionUpdate" << conn->connection()->name();
+//qCDebug(NM_TRAY) << "activecCnnectionUpdate" << conn->connection()->name();
         auto i = std::find(d->mActiveConns.cbegin(), d->mActiveConns.cend(), conn);
         if (d->mActiveConns.cend() != i)
         {
@@ -612,7 +613,7 @@ NmModel::NmModel(QObject * parent)
         }
     });
     connect(d.data(), &NmModelPrivate::activeConnectionRemove, [this] (NetworkManager::ActiveConnection * conn) {
-//qDebug() << "activecCnnectionRemove" << conn->connection()->name();
+//qCDebug(NM_TRAY) << "activecCnnectionRemove" << conn->connection()->name();
         auto i = std::find(d->mActiveConns.cbegin(), d->mActiveConns.cend(), conn);
         if (d->mActiveConns.cend() != i)
         {
@@ -623,7 +624,7 @@ NmModel::NmModel(QObject * parent)
         }
     });
     connect(d.data(), &NmModelPrivate::activeConnectionsReset, [this] () {
-//qDebug() << "activecCnnectionReset";
+//qCDebug(NM_TRAY) << "activecCnnectionReset";
         const int cnt = d->mActiveConns.size();
         if (0 < cnt)
         {
@@ -640,7 +641,7 @@ NmModel::NmModel(QObject * parent)
         }
     });
     connect(d.data(), &NmModelPrivate::deviceAdd, [this] (NetworkManager::Device::Ptr dev) {
-//qDebug() << "deviceAdd" << dev->interfaceName();
+//qCDebug(NM_TRAY) << "deviceAdd" << dev->interfaceName();
         if (0 > d->mDevices.indexOf(dev))
         {
             const int cnt = d->mDevices.size();
@@ -653,7 +654,7 @@ NmModel::NmModel(QObject * parent)
         }
     });
     connect(d.data(), &NmModelPrivate::deviceUpdate, [this] (NetworkManager::Device * dev) {
-//qDebug() << "deviceUpdate" << dev << dev->interfaceName();
+//qCDebug(NM_TRAY) << "deviceUpdate" << dev << dev->interfaceName();
         auto i = std::find(d->mDevices.cbegin(), d->mDevices.cend(), dev);
         if (d->mDevices.cend() != i)
         {
@@ -662,7 +663,7 @@ NmModel::NmModel(QObject * parent)
         }
     });
     connect(d.data(), &NmModelPrivate::deviceRemove, [this] (NetworkManager::Device * dev) {
-//qDebug() << "deviceRemove" << dev->interfaceName();
+//qCDebug(NM_TRAY) << "deviceRemove" << dev->interfaceName();
         auto i = std::find(d->mDevices.cbegin(), d->mDevices.cend(), dev);
         if (d->mDevices.cend() != i)
         {
@@ -673,7 +674,7 @@ NmModel::NmModel(QObject * parent)
         }
     });
     connect(d.data(), &NmModelPrivate::wifiNetworkAdd, [this] (NetworkManager::Device * dev, QString const & ssid) {
-//qDebug() << "wifiNetworkAdd" << dev << dev->interfaceName() << ssid;
+//qCDebug(NM_TRAY) << "wifiNetworkAdd" << dev << dev->interfaceName() << ssid;
         NetworkManager::WirelessDevice * w_dev = qobject_cast<NetworkManager::WirelessDevice *>(dev);
         NetworkManager::WirelessNetwork::Ptr net = w_dev->findNetwork(ssid);
         if (!net.isNull())
@@ -691,7 +692,7 @@ NmModel::NmModel(QObject * parent)
         }
     });
     connect(d.data(), &NmModelPrivate::wifiNetworkUpdate, [this] (NetworkManager::WirelessNetwork * net) {
-//qDebug() << "wifiNetworkUpdate" << net << net->ssid();
+//qCDebug(NM_TRAY) << "wifiNetworkUpdate" << net << net->ssid();
         auto i = std::find(d->mWifiNets.cbegin(), d->mWifiNets.cend(), net);
         if (d->mWifiNets.cend() != i)
         {
@@ -722,7 +723,7 @@ NmModel::NmModel(QObject * parent)
         }
     });
     connect(d.data(), &NmModelPrivate::wifiNetworkRemove, [this] (NetworkManager::Device * dev, QString const & ssid) {
-//qDebug() << "wifiNetworkRemove" << dev << dev->interfaceName() << ssid;
+//qCDebug(NM_TRAY) << "wifiNetworkRemove" << dev << dev->interfaceName() << ssid;
         NetworkManager::WirelessNetwork::Ptr net = d->findWifiNetwork(ssid, dev->uni());
         if (!net.isNull())
         {
@@ -735,7 +736,7 @@ NmModel::NmModel(QObject * parent)
             }
         }
     });
-//qDebug() << __FUNCTION__ << "finished";
+//qCDebug(NM_TRAY) << __FUNCTION__ << "finished";
 }
 
 NmModel::~NmModel()
@@ -768,13 +769,13 @@ int NmModel::rowCount(const QModelIndex &parent/* = QModelIndex()*/) const
             cnt = d->mWifiNets.size();
     }
 
-//qDebug() << __FUNCTION__ << parent << cnt;
+//qCDebug(NM_TRAY) << __FUNCTION__ << parent << cnt;
     return cnt;
 }
 
 int NmModel::columnCount(const QModelIndex & /*parent = QModelIndex()*/) const
 {
-//qDebug() << __FUNCTION__ << parent << 1;
+//qCDebug(NM_TRAY) << __FUNCTION__ << parent << 1;
     //XXX: more columns for wifi connections (for name && icons...)??
     return 1;
 }
@@ -1183,11 +1184,11 @@ QVariant NmModel::dataRole<NmModel::ActiveConnectionInfoRole>(const QModelIndex 
         }
         str << *sett;
         /*
-qDebug() << QStringLiteral("<big><strong>") << sett->name() << QStringLiteral("</strong></big>\n");
+qCDebug(NM_TRAY) << QStringLiteral("<big><strong>") << sett->name() << QStringLiteral("</strong></big>\n");
         str << QStringLiteral("<big><strong>") << sett->name() << QStringLiteral("</strong></big>\n");
         for (auto i = sett->toMap().cbegin(), i_e = sett->toMap().cend(); i != i_e; ++i)
         {
-qDebug() << QStringLiteral("<strong>") << i.key() << QStringLiteral("</strong>: ") << i.value().toString() << QLatin1Char('\n');
+qCDebug(NM_TRAY) << QStringLiteral("<strong>") << i.key() << QStringLiteral("</strong>: ") << i.value().toString() << QLatin1Char('\n');
             str << QStringLiteral("<strong>") << i.key() << QStringLiteral("</strong>: ") << i.value().toString() << QLatin1Char('\n');
         }
         */
@@ -1249,7 +1250,7 @@ QVariant NmModel::dataRole<NmModel::IconRole>(const QModelIndex & index) const
 
 QVariant NmModel::data(const QModelIndex &index, int role) const
 {
-//qDebug() << __FUNCTION__ << index << role;
+//qCDebug(NM_TRAY) << __FUNCTION__ << index << role;
     Q_ASSERT(isValidDataIndex(index));
     QVariant ret;
     if (index.isValid())
@@ -1294,13 +1295,13 @@ QVariant NmModel::data(const QModelIndex &index, int role) const
                 ret = QVariant{};
                 break;
         }
-//qDebug() << __FUNCTION__ << "ret" << index << role << ret;
+//qCDebug(NM_TRAY) << __FUNCTION__ << "ret" << index << role << ret;
     return ret;
 }
 
 QModelIndex NmModel::index(int row, int column, const QModelIndex &parent/* = QModelIndex()*/) const
 {
-//qDebug() << __FUNCTION__ << row << column << parent;
+//qCDebug(NM_TRAY) << __FUNCTION__ << row << column << parent;
     if (!hasIndex(row, column, parent))
         return QModelIndex{};
     const int id = parent.internalId();
@@ -1345,7 +1346,7 @@ QModelIndex NmModel::index(int row, int column, const QModelIndex &parent/* = QM
         return QModelIndex{};
     }
 
-//qDebug() << __FUNCTION__ << "ret: " << row << column << int_id;
+//qCDebug(NM_TRAY) << __FUNCTION__ << "ret: " << row << column << int_id;
     return createIndex(row, column, int_id);
 }
 
@@ -1379,7 +1380,7 @@ QModelIndex NmModel::parent(const QModelIndex &index) const
         }
     }
 
-//qDebug() << __FUNCTION__ << index << parent_i;
+//qCDebug(NM_TRAY) << __FUNCTION__ << index << parent_i;
     return parent_i;
 }
 
@@ -1413,7 +1414,7 @@ void NmModel::activateConnection(QModelIndex const & index)
     if (!isValidDataIndex(index) || (ITEM_CONNECTION_LEAF != id && ITEM_WIFINET_LEAF != id))
     {
         //TODO: in what form should we output the warning messages
-        qWarning().noquote() << "got invalid index for connection activation" << index;
+        qCWarning(NM_TRAY).noquote() << "got invalid index for connection activation" << index;
         return;
     }
     QString conn_uni, dev_uni;
@@ -1444,7 +1445,7 @@ void NmModel::activateConnection(QModelIndex const & index)
                 if (dev_uni.isEmpty())
                 {
                     //TODO: in what form should we output the warning messages
-                    qWarning().noquote() << QStringLiteral("can't find device '%1' to activate connection '%2' on").arg(dev_name).arg(conn->name());
+                    qCWarning(NM_TRAY).noquote() << QStringLiteral("can't find device '%1' to activate connection '%2' on").arg(dev_name).arg(conn->name());
                     return;
                 }
             }
@@ -1472,7 +1473,7 @@ void NmModel::activateConnection(QModelIndex const & index)
                 if (conn.isNull())
                 {
                     //TODO: in what form should we output the warning messages
-                    qWarning().noquote() << QStringLiteral("can't find connection for '%1' on device '%2', will create new...").arg(conn_name).arg(dev_name);
+                    qCWarning(NM_TRAY).noquote() << QStringLiteral("can't find connection for '%1' on device '%2', will create new...").arg(conn_name).arg(dev_name);
                     spec_object = conn_uni;
                     NetworkManager::WirelessSecurityType sec_type = NetworkManager::findBestWirelessSecurity(spec_dev->wirelessCapabilities()
                             , true, (spec_dev->mode() == NetworkManager::WirelessDevice::Adhoc)
@@ -1480,7 +1481,7 @@ void NmModel::activateConnection(QModelIndex const & index)
                     switch (sec_type)
                     {
                         case NetworkManager::UnknownSecurity:
-                            qWarning().noquote() << QStringLiteral("unknown security to use for '%1'").arg(conn_name);
+                            qCWarning(NM_TRAY).noquote() << QStringLiteral("unknown security to use for '%1'").arg(conn_name);
                         case NetworkManager::NoneSecurity:
                             //nothing to do
                             break;
@@ -1491,7 +1492,7 @@ void NmModel::activateConnection(QModelIndex const & index)
                                 map_settings = settings->toMap();
                             } else
                             {
-                                qWarning().noquote() << QStringLiteral("connection settings assembly for '%1' failed, abandoning activation...")
+                                qCWarning(NM_TRAY).noquote() << QStringLiteral("connection settings assembly for '%1' failed, abandoning activation...")
                                     .arg(conn_name);
                                 return;
                             }
@@ -1507,7 +1508,7 @@ void NmModel::activateConnection(QModelIndex const & index)
         default:
             Q_ASSERT(false);
     }
-qDebug() << __FUNCTION__ << conn_uni << dev_uni << conn_name << dev_name << spec_object;
+qCDebug(NM_TRAY) << __FUNCTION__ << conn_uni << dev_uni << conn_name << dev_name << spec_object;
     //TODO: check vpn type etc..
     QDBusPendingCallWatcher * watcher;
     if (spec_object.isEmpty())
@@ -1518,7 +1519,7 @@ qDebug() << __FUNCTION__ << conn_uni << dev_uni << conn_name << dev_name << spec
         if (watcher->isError() || !watcher->isValid())
         {
             //TODO: in what form should we output the warning messages
-            qWarning().noquote() << QStringLiteral("activation of connection '%1' on interface '%2' failed: %3").arg(conn_name)
+            qCWarning(NM_TRAY).noquote() << QStringLiteral("activation of connection '%1' on interface '%2' failed: %3").arg(conn_name)
                     .arg(dev_name).arg(watcher->error().message());
          }
          watcher->deleteLater();
@@ -1531,19 +1532,19 @@ void NmModel::deactivateConnection(QModelIndex const & index)
     if (!isValidDataIndex(index) || ITEM_ACTIVE_LEAF != id)
     {
         //TODO: in what form should we output the warning messages
-        qWarning().noquote() << "got invalid index for connection deactivation" << index;
+        qCWarning(NM_TRAY).noquote() << "got invalid index for connection deactivation" << index;
         return;
     }
 
     auto const & active = d->mActiveConns[index.row()];
-qDebug() << __FUNCTION__ << active->path();
+qCDebug(NM_TRAY) << __FUNCTION__ << active->path();
     QDBusPendingReply<> reply = NetworkManager::deactivateConnection(active->path());
     QDBusPendingCallWatcher *watcher = new QDBusPendingCallWatcher(reply, this);
     connect(watcher, &QDBusPendingCallWatcher::finished, [active] (QDBusPendingCallWatcher * watcher) {
         if (watcher->isError() || !watcher->isValid())
         {
             //TODO: in what form should we output the warning messages
-            qWarning().noquote() << QStringLiteral("deactivation of connection '%1' failed: %3").arg(active->connection()->name())
+            qCWarning(NM_TRAY).noquote() << QStringLiteral("deactivation of connection '%1' failed: %3").arg(active->connection()->name())
                     .arg(watcher->error().message());
          }
          watcher->deleteLater();

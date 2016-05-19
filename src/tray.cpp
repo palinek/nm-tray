@@ -80,7 +80,7 @@ void TrayPrivate::updateState(QModelIndex const & index, bool removing)
 {
     const auto state = static_cast<NetworkManager::ActiveConnection::State>(mActiveConnections.data(index, NmModel::ActiveConnectionStateRole).toInt());
     const bool is_primary = mPrimaryConnection == index;
-//qDebug() << __FUNCTION__ << index << removing << mActiveConnections.data(index, NmModel::NameRole) << mActiveConnections.data(index, NmModel::ConnectionUuidRole).toString() << is_primary << mActiveConnections.data(index, NmModel::ConnectionTypeRole).toInt() << state;
+//qCDebug(NM_TRAY) << __FUNCTION__ << index << removing << mActiveConnections.data(index, NmModel::NameRole) << mActiveConnections.data(index, NmModel::ConnectionUuidRole).toString() << is_primary << mActiveConnections.data(index, NmModel::ConnectionTypeRole).toInt() << state;
 
     if (removing || NetworkManager::ActiveConnection::Deactivated == state || NetworkManager::ActiveConnection::Deactivating == state)
     {
@@ -114,10 +114,10 @@ void TrayPrivate::primaryConnectionUpdate()
         return;
     }
 
-//qDebug() << __FUNCTION__ << prim_conn->uuid();
+//qCDebug(NM_TRAY) << __FUNCTION__ << prim_conn->uuid();
 
     QModelIndexList l = mActiveConnections.match(mActiveConnections.index(0, 0, QModelIndex{}), NmModel::ActiveConnectionUuidRole, prim_conn->uuid(), -1, Qt::MatchExactly);
-//qDebug() << __FUNCTION__ << l.size();
+//qCDebug(NM_TRAY) << __FUNCTION__ << l.size();
     //nothing to do if the connection not populated in model yet
     if (0 >= l.size())
         return;
@@ -218,17 +218,17 @@ Tray::Tray(QObject *parent/* = nullptr*/)
     connect(NetworkManager::notifier(), &NetworkManager::Notifier::wirelessHardwareEnabledChanged, &d->mStateTimer, static_cast<void (QTimer::*)()>(&QTimer::start));
     connect(NetworkManager::notifier(), &NetworkManager::Notifier::primaryConnectionChanged, this, &Tray::onPrimaryConnectionChanged);
     connect(&d->mActiveConnections, &QAbstractItemModel::rowsInserted, [this] (QModelIndex const & parent, int first, int last) {
-//qDebug() << "rowsInserted" << parent;
+//qCDebug(NM_TRAY) << "rowsInserted" << parent;
         for (int i = first; i <= last; ++i)
             d->updateState(d->mActiveConnections.index(i, 0, parent), false);
     });
     connect(&d->mActiveConnections, &QAbstractItemModel::rowsAboutToBeRemoved, [this] (QModelIndex const & parent, int first, int last) {
-//qDebug() << "rowsAboutToBeRemoved";
+//qCDebug(NM_TRAY) << "rowsAboutToBeRemoved";
         for (int i = first; i <= last; ++i)
             d->updateState(d->mActiveConnections.index(i, 0, parent), true);
     });
     connect(&d->mActiveConnections, &QAbstractItemModel::dataChanged, [this] (const QModelIndex & topLeft, const QModelIndex & bottomRight, const QVector<int> & /*roles*/) {
-//qDebug() << "dataChanged";
+//qCDebug(NM_TRAY) << "dataChanged";
         for (auto const & i : QItemSelection{topLeft, bottomRight}.indexes())
             d->updateState(i, false);
     });
