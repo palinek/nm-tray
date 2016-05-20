@@ -27,7 +27,6 @@ COPYRIGHT_HEADER*/
 #include <QMessageBox>
 #include <QApplication>
 #include <QPersistentModelIndex>
-#include <QDebug>
 
 #include <NetworkManagerQt/Manager>
 #include <NetworkManagerQt/WirelessDevice>
@@ -35,6 +34,7 @@ COPYRIGHT_HEADER*/
 #include "icons.h"
 #include "nmmodel.h"
 #include "nmproxy.h"
+#include "log.h"
 
 #include "nmlist.h"
 #include "connectioninfo.h"
@@ -49,6 +49,7 @@ public:
     void primaryConnectionUpdate();
     void setShown(QPersistentModelIndex const & index);
     void updateIcon();
+    void refreshIcon();
     void openCloseDialog(QDialog * dialog);
 
 public:
@@ -141,7 +142,13 @@ void TrayPrivate::updateIcon()
         return;
 
     mIconCurrent = mIcon2Show;
-    QStringList icon_names;
+    refreshIcon();
+}
+
+void TrayPrivate::refreshIcon()
+{
+    //Note: the icons::getIcon chooses the right icon from list of possible candidates
+    // -> we need to refresh the icon in case of icon theme change
     mTrayIcon.setIcon(icons::getIcon(mIconCurrent));
 }
 
@@ -186,6 +193,8 @@ Tray::Tray(QObject *parent/* = nullptr*/)
             , this, &Tray::onAboutTriggered);
     connect(d->mContextMenu.addAction(QIcon::fromTheme(QStringLiteral("application-exit")), Tray::tr("Quit")), &QAction::triggered
             , this, &Tray::onQuitTriggered);
+    //for listening on the QEvent::ThemeChange (is delivered only to QWidget objects)
+    d->mContextMenu.installEventFilter(this);
 
     d->mActEnableNetwork->setCheckable(true);
     d->mActEnableWifi->setCheckable(true);
@@ -239,6 +248,14 @@ Tray::Tray(QObject *parent/* = nullptr*/)
 
 Tray::~Tray()
 {
+}
+
+bool Tray::eventFilter(QObject * object, QEvent * event)
+{
+    Q_ASSERT(&d->mContextMenu == object);
+    if (QEvent::ThemeChange == event->type())
+        d->refreshIcon();
+    return false;
 }
 
 void Tray::onAboutTriggered()

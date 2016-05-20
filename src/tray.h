@@ -36,6 +36,9 @@ public:
     Tray(QObject *parent = nullptr);
     ~Tray();
 
+protected:
+    virtual bool eventFilter(QObject * object, QEvent * event) override;
+
 private Q_SLOTS:
     //menu
     void onAboutTriggered();
