@@ -177,6 +177,7 @@ Tray::Tray(QObject *parent/* = nullptr*/)
 
     d->mIconCurrent = static_cast<icons::Icon>(-1);
     d->setShown(QModelIndex{});
+    d->refreshIcon(); //force setting the icon instantly
 
     //postpone updating of the icon
     connect(&d->mIconTimer, &QTimer::timeout, [this] { d->updateIcon(); });
