@@ -822,6 +822,7 @@ QVariant NmModel::dataRole<NmModel::ItemTypeRole>(const QModelIndex & index) con
         case ITEM_WIFINET_LEAF:
             return WifiNetworkType;
     }
+    return QVariant{};
 }
 
 template <>
@@ -848,6 +849,7 @@ QVariant NmModel::dataRole<NmModel::NameRole>(const QModelIndex & index) const
         case ITEM_WIFINET_LEAF:
             return d->mWifiNets[index.row()]->referenceAccessPoint()->ssid();
     }
+    return QVariant{};
 }
 
 template <>
@@ -879,6 +881,7 @@ QVariant NmModel::dataRole<NmModel::ConnectionTypeRole>(const QModelIndex & inde
         case ITEM_WIFINET_LEAF:
             return NetworkManager::ConnectionSettings::Wireless;
     }
+    return QVariant{};
 }
 
 template <>
@@ -898,6 +901,7 @@ QVariant NmModel::dataRole<NmModel::ActiveConnectionStateRole>(const QModelIndex
         case ITEM_ACTIVE_LEAF:
             return d->mActiveConns[index.row()]->state();
     }
+    return QVariant{};
 }
 
 template <>
@@ -936,6 +940,7 @@ QVariant NmModel::dataRole<NmModel::IconSecurityTypeRole>(const QModelIndex & in
                 ? icons::SECURITY_HIGH
                 : icons::SECURITY_LOW;
     }
+    return QVariant{};
 }
 
 template <>
@@ -991,6 +996,7 @@ QVariant NmModel::dataRole<NmModel::SignalRole>(const QModelIndex & index) const
         case ITEM_WIFINET_LEAF:
             return d->mWifiNets[index.row()]->signalStrength();
     }
+    return QVariant{};
 }
 
 template <>
@@ -1011,6 +1017,7 @@ QVariant NmModel::dataRole<NmModel::ConnectionUuidRole>(const QModelIndex & inde
         case ITEM_CONNECTION_LEAF:
             return d->mConnections[index.row()]->uuid();
     }
+    return QVariant{};
 }
 
 template <>
@@ -1240,6 +1247,7 @@ QVariant NmModel::dataRole<NmModel::IconTypeRole>(const QModelIndex & index) con
         case ITEM_WIFINET_LEAF:
             return icons::wifiSignalIcon(d->mWifiNets[index.row()]->signalStrength());
     }
+    return QVariant{};
 }
 
 template <>
