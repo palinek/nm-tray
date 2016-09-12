@@ -61,15 +61,6 @@ COPYRIGHT_HEADER*/
 #include <QDBusPendingCallWatcher>
 #include <QInputDialog>
 
-//workaround for binary KF5NetworkManagerQt package built with different version of NetworkManager as present on current machine
-#define BIN_NM_CHECK_VERSION(major, minor, patch) \
-    (BIN_NM_MAJOR > (major) || \
-     (BIN_NM_MAJOR == (major) && BIN_NM_MINOR > (minor)) || \
-     (BIN_NM_MAJOR == (major) && BIN_NM_MINOR == (minor) && BIN_NM_PATCH >= (patch)))
-
-#define MY_NM_CHECK_VERSION(major, minor, patch) \
-    (NM_CHECK_VERSION(major, minor, patch) && BIN_NM_CHECK_VERSION(major, minor, patch))
-
 namespace
 {
     NetworkManager::ConnectionSettings::Ptr assembleWpaXPskSettings(const NetworkManager::AccessPoint::Ptr accessPoint)
@@ -87,9 +78,7 @@ namespace
         settings->setUuid(NetworkManager::ConnectionSettings::createNewUuid());
         settings->setAutoconnect(true);
         //Note: workaround for wrongly (randomly) initialized gateway-ping-timeout
-#if MY_NM_CHECK_VERSION(0, 9, 10)
         settings->setGatewayPingTimeout(0);
-#endif
 
         NetworkManager::WirelessSetting::Ptr wifi_sett
             = settings->setting(NetworkManager::Setting::Wireless).dynamicCast<NetworkManager::WirelessSetting>();
@@ -144,12 +133,10 @@ void NmModelPrivate::removeActiveConnection(int pos)
     disconnect(conn.data(), &NetworkManager::ActiveConnection::connectionChanged, this, &NmModelPrivate::onActiveConnectionUpdated);
     disconnect(conn.data(), &NetworkManager::ActiveConnection::default4Changed, this, &NmModelPrivate::onActiveConnectionUpdated);
     disconnect(conn.data(), &NetworkManager::ActiveConnection::default6Changed, this, &NmModelPrivate::onActiveConnectionUpdated);
-#if MY_NM_CHECK_VERSION(0, 9, 10)
     disconnect(conn.data(), &NetworkManager::ActiveConnection::dhcp4ConfigChanged, this, &NmModelPrivate::onActiveConnectionUpdated);
     disconnect(conn.data(), &NetworkManager::ActiveConnection::dhcp6ConfigChanged, this, &NmModelPrivate::onActiveConnectionUpdated);
     disconnect(conn.data(), &NetworkManager::ActiveConnection::ipV4ConfigChanged, this, &NmModelPrivate::onActiveConnectionUpdated);
     disconnect(conn.data(), &NetworkManager::ActiveConnection::ipV6ConfigChanged, this, &NmModelPrivate::onActiveConnectionUpdated);
-#endif
     disconnect(conn.data(), &NetworkManager::ActiveConnection::idChanged, this, &NmModelPrivate::onActiveConnectionUpdated);
     disconnect(conn.data(), &NetworkManager::ActiveConnection::typeChanged, this, &NmModelPrivate::onActiveConnectionUpdated);
     disconnect(conn.data(), &NetworkManager::ActiveConnection::masterChanged, this, &NmModelPrivate::onActiveConnectionUpdated);
@@ -177,12 +164,10 @@ void NmModelPrivate::addActiveConnection(NetworkManager::ActiveConnection::Ptr c
     connect(conn.data(), &NetworkManager::ActiveConnection::connectionChanged, this, &NmModelPrivate::onActiveConnectionUpdated);
     connect(conn.data(), &NetworkManager::ActiveConnection::default4Changed, this, &NmModelPrivate::onActiveConnectionUpdated);
     connect(conn.data(), &NetworkManager::ActiveConnection::default6Changed, this, &NmModelPrivate::onActiveConnectionUpdated);
-#if MY_NM_CHECK_VERSION(0, 9, 10)
     connect(conn.data(), &NetworkManager::ActiveConnection::dhcp4ConfigChanged, this, &NmModelPrivate::onActiveConnectionUpdated);
     connect(conn.data(), &NetworkManager::ActiveConnection::dhcp6ConfigChanged, this, &NmModelPrivate::onActiveConnectionUpdated);
     connect(conn.data(), &NetworkManager::ActiveConnection::ipV4ConfigChanged, this, &NmModelPrivate::onActiveConnectionUpdated);
     connect(conn.data(), &NetworkManager::ActiveConnection::ipV6ConfigChanged, this, &NmModelPrivate::onActiveConnectionUpdated);
-#endif
     connect(conn.data(), &NetworkManager::ActiveConnection::idChanged, this, &NmModelPrivate::onActiveConnectionUpdated);
     connect(conn.data(), &NetworkManager::ActiveConnection::typeChanged, this, &NmModelPrivate::onActiveConnectionUpdated);
     connect(conn.data(), &NetworkManager::ActiveConnection::masterChanged, this, &NmModelPrivate::onActiveConnectionUpdated);
@@ -255,16 +240,10 @@ void NmModelPrivate::removeDevice(int pos)
     disconnect(device.data(), &NetworkManager::Device::ipV6ConfigChanged, this, &NmModelPrivate::onDeviceUpdated);
     disconnect(device.data(), &NetworkManager::Device::ipInterfaceChanged, this, &NmModelPrivate::onDeviceUpdated);
     disconnect(device.data(), &NetworkManager::Device::managedChanged, this, &NmModelPrivate::onDeviceUpdated);
-#if MY_NM_CHECK_VERSION(0, 9, 10)
     disconnect(device.data(), &NetworkManager::Device::physicalPortIdChanged, this, &NmModelPrivate::onDeviceUpdated);
     disconnect(device.data(), &NetworkManager::Device::mtuChanged, this, &NmModelPrivate::onDeviceUpdated);
-#endif
-#if MY_NM_CHECK_VERSION(1, 2, 0)
     disconnect(device.data(), &NetworkManager::Device::nmPluginMissingChanged, this, &NmModelPrivate::onDeviceUpdated);
-#endif
-#if MY_NM_CHECK_VERSION(1, 0, 6)
     disconnect(device.data(), &NetworkManager::Device::meteredChanged, this, &NmModelPrivate::onDeviceUpdated);
-#endif
     disconnect(device.data(), &NetworkManager::Device::connectionStateChanged, this, &NmModelPrivate::onDeviceUpdated);
     disconnect(device.data(), &NetworkManager::Device::stateReasonChanged, this, &NmModelPrivate::onDeviceUpdated);
     disconnect(device.data(), &NetworkManager::Device::udiChanged, this, &NmModelPrivate::onDeviceUpdated);
@@ -324,16 +303,10 @@ void NmModelPrivate::addDevice(NetworkManager::Device::Ptr device)
     connect(device.data(), &NetworkManager::Device::ipV6ConfigChanged, this, &NmModelPrivate::onDeviceUpdated);
     connect(device.data(), &NetworkManager::Device::ipInterfaceChanged, this, &NmModelPrivate::onDeviceUpdated);
     connect(device.data(), &NetworkManager::Device::managedChanged, this, &NmModelPrivate::onDeviceUpdated);
-#if MY_NM_CHECK_VERSION(0, 9, 10)
     connect(device.data(), &NetworkManager::Device::physicalPortIdChanged, this, &NmModelPrivate::onDeviceUpdated);
     connect(device.data(), &NetworkManager::Device::mtuChanged, this, &NmModelPrivate::onDeviceUpdated);
-#endif
-#if MY_NM_CHECK_VERSION(1, 2, 0)
     connect(device.data(), &NetworkManager::Device::nmPluginMissingChanged, this, &NmModelPrivate::onDeviceUpdated);
-#endif
-#if MY_NM_CHECK_VERSION(1, 0, 6)
     connect(device.data(), &NetworkManager::Device::meteredChanged, this, &NmModelPrivate::onDeviceUpdated);
-#endif
     connect(device.data(), &NetworkManager::Device::connectionStateChanged, this, &NmModelPrivate::onDeviceUpdated);
     connect(device.data(), &NetworkManager::Device::stateReasonChanged, this, &NmModelPrivate::onDeviceUpdated);
     connect(device.data(), &NetworkManager::Device::udiChanged, this, &NmModelPrivate::onDeviceUpdated);
@@ -1081,14 +1054,12 @@ QVariant NmModel::dataRole<NmModel::ActiveConnectionInfoRole>(const QModelIndex 
             case NetworkManager::Device::Wimax:
                 //Wimax support was dropped in network manager 1.2.0
                 //we should never get here in runtime with nm >= 1.2.0
-#if !MY_NM_CHECK_VERSION(1, 2, 0)
                 {
                     auto spec_dev = dev->as<NetworkManager::WimaxDevice>();
                     Q_ASSERT(nullptr != spec_dev);
                     hw_address = spec_dev->hardwareAddress();
                     //bit_rate = spec_dev->bitRate();
                 }
-#endif
                 break;
             default:
                 break;
