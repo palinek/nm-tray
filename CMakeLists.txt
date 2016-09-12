@@ -1,5 +1,8 @@
 project(nm-tray)
 cmake_minimum_required(VERSION 3.1.0 FATAL_ERROR)
+
+set(NM_TRAY_VERSION "0.1.0")
+
 set(QT_MIN_VERSION "5.4.0")
 
 set(CMAKE_AUTOMOC on)
@@ -19,7 +22,7 @@ find_package(KF5NetworkManagerQt REQUIRED)
 include(GNUInstallDirs)
 
 set(TRANSLATION_DIR "${CMAKE_INSTALL_FULL_DATADIR}/${PROJECT_NAME}")
-add_definitions(-DQT_NO_SIGNALS_SLOTS_KEYWORDS "-DTRANSLATION_DIR=\"${TRANSLATION_DIR}\"")
+add_definitions(-DQT_NO_SIGNALS_SLOTS_KEYWORDS "-DTRANSLATION_DIR=\"${TRANSLATION_DIR}\"" "-DNM_TRAY_VERSION=\"${NM_TRAY_VERSION}\"")
 
 #workaround for binary KF5NetworkManagerQt package built with different version of NetworkManager as present on current machine
 if (DEFINED BIN_NM_VERSION)

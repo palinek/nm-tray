@@ -262,7 +262,9 @@ bool Tray::eventFilter(QObject * object, QEvent * event)
 void Tray::onAboutTriggered()
 {
     QMessageBox::about(nullptr, Tray::tr("%1 about").arg(QStringLiteral("nm-tray"))
-                , Tray::tr("This is the about nm-tray!"));
+                , Tray::tr("<strong><a href=\"https://github.com/palinek/nm-tray\">nm-tray</a></strong> is a simple Qt based"
+                    " frontend for <a href=\"https://wiki.gnome.org/Projects/NetworkManager\">NetworkManager</a>.<br/><br/>"
+                    "Version: " NM_TRAY_VERSION));
 }
 
 
