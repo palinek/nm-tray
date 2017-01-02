@@ -222,11 +222,16 @@ Tray::Tray(QObject *parent/* = nullptr*/)
         d->openCloseDialog(d->mConnDialog.data());
     });
 
+    // Note: Force all the updates as the NetworkManager::Notifier signals aren't
+    // emitted at application startup.
+    d->primaryConnectionUpdate();
+    setActionsStates();
 
     connect(NetworkManager::notifier(), &NetworkManager::Notifier::networkingEnabledChanged, &d->mStateTimer, static_cast<void (QTimer::*)()>(&QTimer::start));
     connect(NetworkManager::notifier(), &NetworkManager::Notifier::wirelessEnabledChanged, &d->mStateTimer, static_cast<void (QTimer::*)()>(&QTimer::start));
     connect(NetworkManager::notifier(), &NetworkManager::Notifier::wirelessHardwareEnabledChanged, &d->mStateTimer, static_cast<void (QTimer::*)()>(&QTimer::start));
     connect(NetworkManager::notifier(), &NetworkManager::Notifier::primaryConnectionChanged, this, &Tray::onPrimaryConnectionChanged);
+
     connect(&d->mActiveConnections, &QAbstractItemModel::rowsInserted, [this] (QModelIndex const & parent, int first, int last) {
 //qCDebug(NM_TRAY) << "rowsInserted" << parent;
         for (int i = first; i <= last; ++i)
