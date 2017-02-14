@@ -1,0 +1,38 @@
+<?xml version="1.0"?>
+<!DOCTYPE node PUBLIC "-//freedesktop//DTD D-BUS Object Introspection 1.0//EN" "http://www.freedesktop.org/standards/dbus/1.0/introspect.dtd">
+<node>
+  <interface name="org.freedesktop.Notifications">
+    <method name="GetServerInformation">
+      <arg direction="out" type="s" name="name"/>
+      <arg direction="out" type="s" name="vendor"/>
+      <arg direction="out" type="s" name="version"/>
+      <arg direction="out" type="s" name="spec_version"/>
+    </method>
+    <method name="CloseNotification">
+      <arg direction="in" type="u" name="id"/>
+    </method>
+    <method name="Notify">
+      <annotation value="QVariantMap" name="org.qtproject.QtDBus.QtTypeName.In6"/>
+      <arg direction="in" type="s" name="app_name"/>
+      <arg direction="in" type="u" name="replaces_id"/>
+      <arg direction="in" type="s" name="app_icon"/>
+      <arg direction="in" type="s" name="summary"/>
+      <arg direction="in" type="s" name="body"/>
+      <arg direction="in" type="as" name="actions"/>
+      <arg direction="in" type="a{sv}" name="hints"/>
+      <arg direction="in" type="i" name="expire_timeout"/>
+      <arg direction="out" type="u" name="id"/>
+    </method>
+    <method name="GetCapabilities">
+      <arg direction="out" type="as" name="capabilities"/>
+    </method>
+    <signal name="ActionInvoked">
+      <arg type="u"/>
+      <arg type="s"/>
+    </signal>
+    <signal name="NotificationClosed">
+      <arg type="u"/>
+      <arg type="u"/>
+    </signal>
+  </interface>
+</node>

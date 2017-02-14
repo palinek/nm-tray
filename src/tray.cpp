@@ -35,11 +35,14 @@ COPYRIGHT_HEADER*/
 #include "nmmodel.h"
 #include "nmproxy.h"
 #include "log.h"
+#include "dbus/org.freedesktop.Notifications.h"
 
 #include "nmlist.h"
 #include "connectioninfo.h"
 #include "windowmenu.h"
 
+// config keys
+static const QString ENABLE_NOTIFICATIONS = QStringLiteral("enableNotifications");
 
 class TrayPrivate
 {
@@ -51,6 +54,7 @@ public:
     void updateIcon();
     void refreshIcon();
     void openCloseDialog(QDialog * dialog);
+    void notify(QModelIndex const & index, bool removing);
 
 public:
     QSystemTrayIcon mTrayIcon;
@@ -64,21 +68,30 @@ public:
     NmProxy mActiveConnections;
     QPersistentModelIndex mPrimaryConnection;
     QPersistentModelIndex mShownConnection;
+    QList<QPersistentModelIndex> mConnectionsToNotify; //!< just "created" connections to which notification wasn't sent yet
     icons::Icon mIconCurrent;
     icons::Icon mIcon2Show;
     QTimer mIconTimer;
     QScopedPointer<QDialog> mConnDialog;
     QScopedPointer<QDialog> mInfoDialog;
 
+    org::freedesktop::Notifications mNotification;
+
+
+    // configuration
+    bool mEnableNotifications; //!< should info about connection establishment etc. be send by org.freedesktop.Notifications
 };
 
 TrayPrivate::TrayPrivate()
+    : mNotification{QStringLiteral("org.freedesktop.Notifications"), QStringLiteral("/org/freedesktop/Notifications"), QDBusConnection::sessionBus()}
 {
     mActiveConnections.setNmModel(&mNmModel, NmModel::ActiveConnectionType);
 }
 
 void TrayPrivate::updateState(QModelIndex const & index, bool removing)
 {
+    notify(index, removing);
+
     const auto state = static_cast<NetworkManager::ActiveConnection::State>(mActiveConnections.data(index, NmModel::ActiveConnectionStateRole).toInt());
     const bool is_primary = mPrimaryConnection == index;
 //qCDebug(NM_TRAY) << __FUNCTION__ << index << removing << mActiveConnections.data(index, NmModel::NameRole) << mActiveConnections.data(index, NmModel::ConnectionUuidRole).toString() << is_primary << mActiveConnections.data(index, NmModel::ConnectionTypeRole).toInt() << state;
@@ -163,11 +176,52 @@ void TrayPrivate::openCloseDialog(QDialog * dialog)
         dialog->close();
 }
 
+void TrayPrivate::notify(QModelIndex const & index, bool removing)
+{
+    if (!mEnableNotifications)
+    {
+        return;
+    }
+
+    QString summary, body;
+    if (removing)
+    {
+        mConnectionsToNotify.removeOne(index);
+        summary = Tray::tr("Connection lost");
+        body = Tray::tr("We have just lost the connection to %1 '%2'.");
+    } else
+    {
+        const int notif_i = mConnectionsToNotify.indexOf(index);
+        // do nothing if not just added or the connection is not activated yet
+        if (-1 == notif_i
+                || NetworkManager::ActiveConnection::Activated != static_cast<NetworkManager::ActiveConnection::State>(mActiveConnections.data(index, NmModel::ActiveConnectionStateRole).toInt())
+           )
+        {
+            return;
+        }
+        mConnectionsToNotify.removeAt(notif_i); // fire the notification only once
+        summary = Tray::tr("Connection established");
+        body = Tray::tr("We have just established the connection to %1 '%2'.");
+    }
+
+    // TODO: do somehow check the result?
+    mNotification.Notify(Tray::tr("NetworkManager(nm-tray)")
+            , 0
+            , icons::getIcon(static_cast<icons::Icon>(mActiveConnections.data(index, NmModel::IconTypeRole).toInt())).name()
+            , summary
+            , body.arg(mActiveConnections.data(index, NmModel::ConnectionTypeStringRole).toString()).arg(mActiveConnections.data(index, NmModel::NameRole).toString())
+            , {}
+            , {}
+            , -1);
+}
+
 
 Tray::Tray(QObject *parent/* = nullptr*/)
     : QObject{parent}
     , d{new TrayPrivate}
 {
+    d->mEnableNotifications = QSettings{}.value(ENABLE_NOTIFICATIONS, true).toBool();
+
     connect(&d->mTrayIcon, &QSystemTrayIcon::activated, this, &Tray::onActivated);
 
     //postpone the update in case of signals flood
@@ -187,6 +241,8 @@ Tray::Tray(QObject *parent/* = nullptr*/)
     d->mActEnableNetwork = d->mContextMenu.addAction(Tray::tr("Enable Networking"));
     d->mActEnableWifi = d->mContextMenu.addAction(Tray::tr("Enable Wi-fi"));
     d->mContextMenu.addSeparator();
+    QAction * enable_notifications = d->mContextMenu.addAction(Tray::tr("Enable notifications"));
+    d->mContextMenu.addSeparator();
     d->mActConnInfo = d->mContextMenu.addAction(QIcon::fromTheme(QStringLiteral("dialog-information")), Tray::tr("Connection information"));
     d->mActDebugInfo = d->mContextMenu.addAction(QIcon::fromTheme(QStringLiteral("dialog-information")), Tray::tr("Debug information"));
     d->mContextMenu.addSeparator();
@@ -199,8 +255,11 @@ Tray::Tray(QObject *parent/* = nullptr*/)
 
     d->mActEnableNetwork->setCheckable(true);
     d->mActEnableWifi->setCheckable(true);
+    enable_notifications->setCheckable(true);
+    enable_notifications->setChecked(d->mEnableNotifications);
     connect(d->mActEnableNetwork, &QAction::triggered, [this] (bool checked) { NetworkManager::setNetworkingEnabled(checked); });
     connect(d->mActEnableWifi, &QAction::triggered, [this] (bool checked) { NetworkManager::setWirelessEnabled(checked); });
+    connect(enable_notifications, &QAction::triggered, [this] (bool checked) { d->mEnableNotifications = checked; QSettings{}.setValue(ENABLE_NOTIFICATIONS, checked); });
     connect(d->mActConnInfo, &QAction::triggered, [this] (bool ) {
         if (d->mInfoDialog.isNull())
         {
@@ -233,9 +292,16 @@ Tray::Tray(QObject *parent/* = nullptr*/)
     connect(NetworkManager::notifier(), &NetworkManager::Notifier::primaryConnectionChanged, this, &Tray::onPrimaryConnectionChanged);
 
     connect(&d->mActiveConnections, &QAbstractItemModel::rowsInserted, [this] (QModelIndex const & parent, int first, int last) {
-//qCDebug(NM_TRAY) << "rowsInserted" << parent;
         for (int i = first; i <= last; ++i)
-            d->updateState(d->mActiveConnections.index(i, 0, parent), false);
+        {
+            const QModelIndex index = d->mActiveConnections.index(i, 0, parent);
+//qCDebug(NM_TRAY) << "rowsInserted" << index;
+            if (d->mEnableNotifications)
+            {
+                d->mConnectionsToNotify.append(index);
+            }
+            d->updateState(index, false);
+        }
     });
     connect(&d->mActiveConnections, &QAbstractItemModel::rowsAboutToBeRemoved, [this] (QModelIndex const & parent, int first, int last) {
 //qCDebug(NM_TRAY) << "rowsAboutToBeRemoved";

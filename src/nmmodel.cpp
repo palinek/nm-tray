@@ -858,6 +858,17 @@ QVariant NmModel::dataRole<NmModel::ConnectionTypeRole>(const QModelIndex & inde
 }
 
 template <>
+QVariant NmModel::dataRole<NmModel::ConnectionTypeStringRole>(const QModelIndex & index) const
+{
+    const QVariant conn_type = dataRole<ConnectionTypeRole>(index);
+    if (!conn_type.isValid())
+    {
+        return QVariant{};
+    }
+    return NetworkManager::ConnectionSettings::typeAsString(static_cast<NetworkManager::ConnectionSettings::ConnectionType>(conn_type.toInt()));
+}
+
+template <>
 QVariant NmModel::dataRole<NmModel::ActiveConnectionStateRole>(const QModelIndex & index) const
 {
     switch (static_cast<ItemId>(index.internalId()))
@@ -1244,6 +1255,9 @@ QVariant NmModel::data(const QModelIndex &index, int role) const
                 break;
             case ConnectionTypeRole:
                 ret = dataRole<ConnectionTypeRole>(index);
+                break;
+            case ConnectionTypeStringRole:
+                ret = dataRole<ConnectionTypeStringRole>(index);
                 break;
             case ActiveConnectionStateRole:
                 ret = dataRole<ActiveConnectionStateRole>(index);

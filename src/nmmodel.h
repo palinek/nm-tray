@@ -49,6 +49,8 @@ public:
             , IconRole
             , ConnectionTypeRole
             , ActiveConnectionTypeRole = ConnectionTypeRole
+            , ConnectionTypeStringRole
+            , ActiveConnectionTypeStringRole = ConnectionTypeStringRole
             , ConnectionUuidRole
             , ActiveConnectionUuidRole = ConnectionUuidRole
             , ActiveConnectionInfoRole

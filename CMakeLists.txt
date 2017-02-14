@@ -54,6 +54,11 @@ else ()
     qt5_add_translation(QMS ${TSS})
 endif()
 
+qt5_add_dbus_interface(SRCS
+    dbus/org.freedesktop.Notifications.xml
+    dbus/org.freedesktop.Notifications
+)
+
 add_executable(nm-tray
     ${SRCS}
     ${QMS}

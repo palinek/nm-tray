@@ -29,6 +29,8 @@ COPYRIGHT_HEADER*/
 int main(int argc, char * argv[])
 {
     QApplication app{argc, argv};
+    app.setOrganizationName(QStringLiteral("nm-tray"));
+    app.setApplicationName(QStringLiteral("nm-tray"));
     app.setWindowIcon(icons::getIcon(icons::PREFERENCES_NETWORK));
     app.setQuitOnLastWindowClosed(false);
 
