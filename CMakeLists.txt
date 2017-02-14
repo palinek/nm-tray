@@ -23,6 +23,10 @@ include(GNUInstallDirs)
 
 set(TRANSLATION_DIR "${CMAKE_INSTALL_FULL_DATADIR}/${PROJECT_NAME}")
 add_definitions(-DQT_NO_SIGNALS_SLOTS_KEYWORDS "-DTRANSLATION_DIR=\"${TRANSLATION_DIR}\"" "-DNM_TRAY_VERSION=\"${NM_TRAY_VERSION}\"")
+if (NOT NM_TRAY_XDG_AUTOSTART_DIR)
+    #Note: we need the default to be /etc... (not the ${CMAKE_INSTALL_PREFIX}/etc)
+    set(NM_TRAY_XDG_AUTOSTART_DIR "/${CMAKE_INSTALL_SYSCONFDIR}/xdg/autostart")
+endif ()
 
 set(SRCS
     src/log.cpp
@@ -67,3 +71,5 @@ endif()
 
 install(TARGETS nm-tray RUNTIME DESTINATION "${CMAKE_INSTALL_FULL_BINDIR}" COMPONENT runtime)
 install(FILES ${QMS} DESTINATION "${TRANSLATION_DIR}" COMPONENT translations)
+install(FILES "resources/nm-tray.desktop" DESTINATION "${CMAKE_INSTALL_FULL_DATAROOTDIR}/applications" COMPONENT data)
+install(FILES "resources/nm-tray-autostart.desktop" DESTINATION "${NM_TRAY_XDG_AUTOSTART_DIR}" COMPONENT data)

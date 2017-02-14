@@ -1,0 +1,6 @@
+[Desktop Entry]
+Type=Application
+Name=nm-tray
+Comment=NetworkManager frontend (tray icon)
+TryExec=nm-tray
+Exec=nm-tray
