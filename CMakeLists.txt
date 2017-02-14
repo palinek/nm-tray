@@ -28,6 +28,9 @@ if (NOT NM_TRAY_XDG_AUTOSTART_DIR)
     set(NM_TRAY_XDG_AUTOSTART_DIR "/${CMAKE_INSTALL_SYSCONFDIR}/xdg/autostart")
 endif ()
 
+message(STATUS "Translations destination dir: ${TRANSLATION_DIR}")
+message(STATUS "Autostart .desktop entry destination dir: ${NM_TRAY_XDG_AUTOSTART_DIR}\n   (can be overriden by setting the NM_TRAY_XDG_AUTOSTART_DIR cmake variable)")
+
 set(SRCS
     src/log.cpp
     src/icons.cpp
