@@ -28,6 +28,7 @@ COPYRIGHT_HEADER*/
 
 #include <QWidgetAction>
 #include <functional>
+#include <QTimer>
 
 class WindowMenuPrivate
 {
@@ -40,11 +41,24 @@ public:
     QScopedPointer<NmProxy> mActiveModel;
     QWidgetAction * mActiveAction;
 
+    QAction * mMakeDirtyAction;
+    QTimer mDelaySizeRefreshTimer;
+
+    WindowMenuPrivate(WindowMenu * q);
     template <typename F>
     void onActivated(QModelIndex const & index
             , QAbstractItemModel const * topParent
             , F const & functor);
+    void forceSizeRefresh();
+private:
+    WindowMenu * q_ptr;
+    Q_DECLARE_PUBLIC(WindowMenu);
 };
+
+WindowMenuPrivate::WindowMenuPrivate(WindowMenu * q)
+    : q_ptr{q}
+{
+}
 
 template <typename F>
 void WindowMenuPrivate::onActivated(QModelIndex const & index
@@ -62,11 +76,31 @@ void WindowMenuPrivate::onActivated(QModelIndex const & index
     functor(i);
 }
 
+void WindowMenuPrivate::forceSizeRefresh()
+{
+    Q_Q(WindowMenu);
+    if (!q->isVisible())
+    {
+        return;
+    }
+
+    const QSize old_size = q->size();
+    //TODO: how to force the menu to recalculate it's size in a more elegant way?
+    q->addAction(mMakeDirtyAction);
+    q->removeAction(mMakeDirtyAction);
+    // ensure to be visible (should the resize make it out of screen)
+    if (old_size != q->size())
+    {
+        q->popup(q->geometry().topLeft());
+    }
+}
+
+
 
 
 WindowMenu::WindowMenu(NmModel * nmModel, QWidget * parent /*= nullptr*/)
     : QMenu{parent}
-    , d_ptr{new WindowMenuPrivate}
+    , d_ptr{new WindowMenuPrivate{this}}
 {
     Q_D(WindowMenu);
     d->mNmModel = nmModel;
@@ -101,6 +135,13 @@ WindowMenu::WindowMenu(NmModel * nmModel, QWidget * parent /*= nullptr*/)
     addSeparator();
     addSection(tr("Wi-Fi network(s)"));
     addAction(d->mWirelessAction);
+
+    d->mMakeDirtyAction = new QAction{this};
+    d->mDelaySizeRefreshTimer.setInterval(200);
+    d->mDelaySizeRefreshTimer.setSingleShot(true);
+    connect(&d->mDelaySizeRefreshTimer, &QTimer::timeout, [d] { d->forceSizeRefresh(); });
+    connect(d->mActiveModel.data(), &QAbstractItemModel::rowsInserted, [d] { d->mDelaySizeRefreshTimer.start(); });
+    connect(d->mWirelessModel.data(), &QAbstractItemModel::rowsInserted, [d] { d->mDelaySizeRefreshTimer.start(); });
 }
 
 WindowMenu::~WindowMenu()
