@@ -33,45 +33,40 @@ namespace icons
         switch (ico)
         {
             case NETWORK_OFFLINE:
-                icon_names << QStringLiteral("network-offline-symbolic")<< QStringLiteral("network-offline");
+                icon_names << QStringLiteral("network-offline-symbolic");
                 break;
             case NETWORK_WIRED:
-                icon_names << QStringLiteral("network-wired-symbolic") << QStringLiteral("network-wired");
+                icon_names << QStringLiteral("network-wired-symbolic");
                 break;
             case NETWORK_WIRED_DISCONNECTED:
-                icon_names << QStringLiteral("network-wired-disconnected-symbolic") << QStringLiteral("network-wired-disconnected");
+                icon_names << QStringLiteral("network-wired-disconnected-symbolic");
                 break;
             case NETWORK_WIFI_DISCONNECTED:
-                icon_names << QStringLiteral("network-wireless-disconnected-symbolic") << QStringLiteral("network-wireless-disconnected");
+                icon_names << QStringLiteral("network-wireless-disconnected-symbolic");
                 break;
             case NETWORK_WIFI_ACQUIRING:
-                icon_names << QStringLiteral("network-wireless-acquiring-symbolic") << QStringLiteral("network-wireless-acquiring");
+                icon_names << QStringLiteral("network-wireless-acquiring-symbolic");
                 break;
             case NETWORK_WIFI_NONE:
-                icon_names << QStringLiteral("network-wireless-signal-none-symbolic") << QStringLiteral("network-wireless-signal-none")
-                    << QStringLiteral("network-wireless-connected-00-symbolic") << QStringLiteral("network-wireless-connected-00");
+                icon_names << QStringLiteral("network-wireless-signal-none-symbolic") << QStringLiteral("network-wireless-connected-00-symbolic");
                 break;
             case NETWORK_WIFI_WEAK:
-                icon_names << QStringLiteral("network-wireless-signal-weak-symbolic") << QStringLiteral("network-wireless-signal-weak")
-                    << QStringLiteral("network-wireless-connected-25-symbolic") << QStringLiteral("network-wireless-connected-25");
+                icon_names << QStringLiteral("network-wireless-signal-weak-symbolic") << QStringLiteral("network-wireless-connected-25-symbolic");
                 break;
             case NETWORK_WIFI_OK:
-                icon_names << QStringLiteral("network-wireless-signal-ok-symbolic") << QStringLiteral("network-wireless-signal-ok")
-                    << QStringLiteral("network-wireless-connected-50-symbolic") << QStringLiteral("network-wireless-connected-50");
+                icon_names << QStringLiteral("network-wireless-signal-ok-symbolic") << QStringLiteral("network-wireless-connected-50-symbolic");
                 break;
             case NETWORK_WIFI_GOOD:
-                icon_names << QStringLiteral("network-wireless-signal-good-symbolic") << QStringLiteral("network-wireless-signal-good")
-                    << QStringLiteral("network-wireless-connected-75-symbolic") << QStringLiteral("network-wireless-connected-75");
+                icon_names << QStringLiteral("network-wireless-signal-good-symbolic") << QStringLiteral("network-wireless-connected-75-symbolic");
                 break;
             case NETWORK_WIFI_EXCELENT:
-                icon_names << QStringLiteral("network-wireless-signal-excellent-symbolic") << QStringLiteral("network-wireless-signal-excellent")
-                    << QStringLiteral("network-wireless-connected-100-symbolic") << QStringLiteral("network-wireless-connected-100");
+                icon_names << QStringLiteral("network-wireless-signal-excellent-symbolic") << QStringLiteral("network-wireless-connected-100-symbolic");
                 break;
             case SECURITY_LOW:
-                icon_names << QStringLiteral("security-low-symbolic")<< QStringLiteral("security-low");
+                icon_names << QStringLiteral("security-low-symbolic");
                 break;
             case SECURITY_HIGH:
-                icon_names << QStringLiteral("security-high-symbolic")<< QStringLiteral("security-high");
+                icon_names << QStringLiteral("security-high-symbolic");
                 break;
             case PREFERENCES_NETWORK:
                 icon_names << QStringLiteral("preferences-system-network");
@@ -84,7 +79,7 @@ namespace icons
                 return icon;
         }
         //TODO: fallback!?!
-        return QIcon::fromTheme(QStringLiteral("preferences-system-network"));
+        return QIcon::fromTheme(QStringLiteral("network-transmit"));
     }
 
     Icon wifiSignalIcon(const int signal)
