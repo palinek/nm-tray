@@ -34,30 +34,6 @@ COPYRIGHT_HEADER*/
 #include <NetworkManagerQt/WirelessSecuritySetting>
 #include <NetworkManagerQt/Utils>
 #include <NetworkManagerQt/ConnectionSettings>
-/*
-#include <NetworkManagerQt/AdslSetting>
-#include <NetworkManagerQt/CdmaSetting>
-#include <NetworkManagerQt/GsmSetting>
-#include <NetworkManagerQt/InfinibandSetting>
-#include <NetworkManagerQt/Ipv4Setting>
-#include <NetworkManagerQt/Ipv6Setting>
-#include <NetworkManagerQt/PppSetting>
-#include <NetworkManagerQt/PppoeSetting>
-#include <NetworkManagerQt/Security8021xSetting>
-#include <NetworkManagerQt/SerialSetting>
-#include <NetworkManagerQt/VpnSetting>
-#include <NetworkManagerQt/WiredSetting>
-#include <NetworkManagerQt/WirelessSecuritySetting>
-#include <NetworkManagerQt/BluetoothSetting>
-#include <NetworkManagerQt/OlpcMeshSetting>
-#include <NetworkManagerQt/VlanSetting>
-#include <NetworkManagerQt/WimaxSetting>
-#include <NetworkManagerQt/BondSetting>
-#include <NetworkManagerQt/BridgeSetting>
-#include <NetworkManagerQt/BridgePortSetting>
-#include <NetworkManagerQt/TeamSetting>
-#include <NetworkManagerQt/GenericSetting>
-*/
 #include <QDBusPendingCallWatcher>
 #include <QInputDialog>
 
@@ -1008,6 +984,7 @@ template <>
 QVariant NmModel::dataRole<NmModel::ActiveConnectionInfoRole>(const QModelIndex & index) const
 {
     NetworkManager::Device::Ptr dev;
+    NetworkManager::ConnectionSettings::Ptr settings;
     switch (static_cast<ItemId>(index.internalId()))
     {
         case ITEM_ROOT:
@@ -1022,10 +999,13 @@ QVariant NmModel::dataRole<NmModel::ActiveConnectionInfoRole>(const QModelIndex 
             break;
         case ITEM_ACTIVE_LEAF:
             {
-                auto dev_list = d->mActiveConns[index.row()]->devices();
+                auto const a_conn = d->mActiveConns[index.row()];
+                auto const dev_list = a_conn->devices();
                 //TODO: work with all devices?!?
                 if (!dev_list.isEmpty())
                     dev = d->findDeviceUni(dev_list.first());
+                Q_ASSERT(!a_conn->connection().isNull());
+                settings = a_conn->connection()->settings();
             }
             break;
     }
@@ -1039,7 +1019,7 @@ QVariant NmModel::dataRole<NmModel::ActiveConnectionInfoRole>(const QModelIndex 
         auto m_enum = NetworkManager::Device::staticMetaObject.enumerator(NetworkManager::Device::staticMetaObject.indexOfEnumerator("Type"));
 
         QString hw_address = NmModel::tr("unknown", "hardware address");
-        QString security = NmModel::tr("none", "security");
+        QString security;
         int bit_rate = -1;
         switch (dev->type())
         {
@@ -1057,9 +1037,13 @@ QVariant NmModel::dataRole<NmModel::ActiveConnectionInfoRole>(const QModelIndex 
                     Q_ASSERT(nullptr != spec_dev);
                     hw_address = spec_dev->hardwareAddress();
                     bit_rate = spec_dev->bitRate();
-                    auto access_point = spec_dev->activeAccessPoint();
-                    //TODO: we probably should get it from Connection object
-                    security = "TODO:";
+                    NetworkManager::Setting::Ptr setting = settings->setting(NetworkManager::Setting::WirelessSecurity);
+                    if (!setting.isNull())
+                    {
+                        QVariantMap const map = setting->toMap();
+                        if (map.contains(QLatin1String(NM_SETTING_WIRELESS_SECURITY_KEY_MGMT)))
+                            security = map.value(QLatin1String(NM_SETTING_WIRELESS_SECURITY_KEY_MGMT)).toString();
+                    }
                 }
                 break;
             case NetworkManager::Device::Wimax:
@@ -1075,114 +1059,62 @@ QVariant NmModel::dataRole<NmModel::ActiveConnectionInfoRole>(const QModelIndex 
             default:
                 break;
         }
-        str << QStringLiteral("<big><strong>") << NmModel::tr("General", "Active connection information") << QStringLiteral("</strong></big><br/>")
-            << QStringLiteral("<strong>") << NmModel::tr("Interface", "Active connection information") << QStringLiteral("</strong>: ")
-                << m_enum.valueToKey(dev->type()) << QStringLiteral(" (") << dev->interfaceName() << QStringLiteral(")<br/>")
-            << QStringLiteral("<strong>") << NmModel::tr("Hardware Address", "Active connection information") << QStringLiteral("</strong>: ")
-                << hw_address << QStringLiteral("<br/>")
-            << QStringLiteral("<strong>") << NmModel::tr("Driver", "Active connection information") << QStringLiteral("</strong>: ")
-                << dev->driver() << QStringLiteral("<br/>")
-            << QStringLiteral("<strong>") << NmModel::tr("Speed", "Active connection information") << QStringLiteral("</strong>: ");
+        str << QStringLiteral("<table>")
+            << QStringLiteral("<tr><td colspan='2'><big><strong>") << NmModel::tr("General", "Active connection information") << QStringLiteral("</strong></big></td></tr>")
+            << QStringLiteral("<tr><td><strong>") << NmModel::tr("Interface", "Active connection information") << QStringLiteral("</strong>: </td><td>")
+                << m_enum.valueToKey(dev->type()) << QStringLiteral(" (") << dev->interfaceName() << QStringLiteral(")</td></tr>")
+            << QStringLiteral("<tr><td><strong>") << NmModel::tr("Hardware Address", "Active connection information") << QStringLiteral("</strong>: </td><td>")
+                << hw_address << QStringLiteral("</td></tr>")
+            << QStringLiteral("<tr><td><strong>") << NmModel::tr("Driver", "Active connection information") << QStringLiteral("</strong>: </td><td>")
+                << dev->driver() << QStringLiteral("</td></tr>")
+            << QStringLiteral("<tr><td><strong>") << NmModel::tr("Speed", "Active connection information") << QStringLiteral("</strong>: </td><td>");
         if (0 <= bit_rate)
             str << bit_rate << NmModel::tr(" Kb/s");
         else
             str << NmModel::tr("unknown", "Speed");
-        str
-                << QStringLiteral("<br/>")
-            << QStringLiteral("<strong>") << NmModel::tr("Security", "Active connection information") << QStringLiteral("</strong>: ")
-                << security << QStringLiteral("<br/>")
-            ;
-    }
-#if 0
-    str << *conn->settings();
-    for (auto sett : conn->settings()->settings())
-    {
-        //TODO: correct info assembly
-        //or return the setting and leave the presentation to the end user
-        switch (sett->type())
+        str << QStringLiteral("</td></tr>");
+        if (!security.isEmpty())
         {
-            case NetworkManager::Setting::Adsl:
-                str << dynamic_cast<NetworkManager::AdslSetting&>(*sett);
-                break;
-            case NetworkManager::Setting::Cdma:
-                str << dynamic_cast<NetworkManager::CdmaSetting&>(*sett);
-                break;
-            case NetworkManager::Setting::Gsm:
-                str << dynamic_cast<NetworkManager::GsmSetting&>(*sett);
-                break;
-            case NetworkManager::Setting::Infiniband:
-                str << dynamic_cast<NetworkManager::InfinibandSetting&>(*sett);
-                break;
-            case NetworkManager::Setting::Ipv4:
-                str << dynamic_cast<NetworkManager::Ipv4Setting&>(*sett);
-                break;
-            case NetworkManager::Setting::Ipv6:
-                str << dynamic_cast<NetworkManager::Ipv6Setting&>(*sett);
-                break;
-            case NetworkManager::Setting::Ppp:
-                str << dynamic_cast<NetworkManager::PppSetting&>(*sett);
-                break;
-            case NetworkManager::Setting::Pppoe:
-                str << dynamic_cast<NetworkManager::PppoeSetting&>(*sett);
-                break;
-            case NetworkManager::Setting::Security8021x:
-                str << dynamic_cast<NetworkManager::Security8021xSetting&>(*sett);
-                break;
-            case NetworkManager::Setting::Serial:
-                str << dynamic_cast<NetworkManager::SerialSetting&>(*sett);
-                break;
-            case NetworkManager::Setting::Vpn:
-                str << dynamic_cast<NetworkManager::VpnSetting&>(*sett);
-                break;
-            case NetworkManager::Setting::Wired:
-                str << dynamic_cast<NetworkManager::WiredSetting&>(*sett);
-                break;
-            case NetworkManager::Setting::Wireless:
-                str << dynamic_cast<NetworkManager::WirelessSetting&>(*sett);
-                break;
-            case NetworkManager::Setting::WirelessSecurity:
-                str << dynamic_cast<NetworkManager::WirelessSecuritySetting&>(*sett);
-                break;
-            case NetworkManager::Setting::Bluetooth:
-                str << dynamic_cast<NetworkManager::BluetoothSetting&>(*sett);
-                break;
-            case NetworkManager::Setting::OlpcMesh:
-                str << dynamic_cast<NetworkManager::OlpcMeshSetting&>(*sett);
-                break;
-            case NetworkManager::Setting::Vlan:
-                str << dynamic_cast<NetworkManager::VlanSetting&>(*sett);
-                break;
-            case NetworkManager::Setting::Wimax:
-                str << dynamic_cast<NetworkManager::WimaxSetting&>(*sett);
-                break;
-            case NetworkManager::Setting::Bond:
-                str << dynamic_cast<NetworkManager::BondSetting&>(*sett);
-                break;
-            case NetworkManager::Setting::Bridge:
-                str << dynamic_cast<NetworkManager::BridgeSetting&>(*sett);
-                break;
-            case NetworkManager::Setting::BridgePort:
-                str << dynamic_cast<NetworkManager::BridgePortSetting&>(*sett);
-                break;
-            case NetworkManager::Setting::Team:
-                str << dynamic_cast<NetworkManager::TeamSetting&>(*sett);
-                break;
-            case NetworkManager::Setting::Generic:
-                str << dynamic_cast<NetworkManager::GenericSetting&>(*sett);
-                break;
+            str << QStringLiteral("<tr><td><strong>") << NmModel::tr("Security", "Active connection information") << QStringLiteral("</strong>: </td><td>")
+                << security << QStringLiteral("</td></tr>");
         }
-        str << *sett;
-        /*
-qCDebug(NM_TRAY) << QStringLiteral("<big><strong>") << sett->name() << QStringLiteral("</strong></big>\n");
-        str << QStringLiteral("<big><strong>") << sett->name() << QStringLiteral("</strong></big>\n");
-        for (auto i = sett->toMap().cbegin(), i_e = sett->toMap().cend(); i != i_e; ++i)
+        //IP4/6
+        QString const ip4 = NmModel::tr("IPv4", "Active connection information");
+        QString const ip6 = NmModel::tr("IPv6", "Active connection information");
+        for (auto const & ip : { std::make_tuple(ip4, dev->ipV4Config()) , std::make_tuple(ip6, dev->ipV6Config()) })
         {
-qCDebug(NM_TRAY) << QStringLiteral("<strong>") << i.key() << QStringLiteral("</strong>: ") << i.value().toString() << QLatin1Char('\n');
-            str << QStringLiteral("<strong>") << i.key() << QStringLiteral("</strong>: ") << i.value().toString() << QLatin1Char('\n');
+            NetworkManager::IpConfig ip_config = std::get<1>(ip);
+            if (ip_config.isValid())
+            {
+                str << QStringLiteral("<tr/><tr><td colspan='2'><big><strong>") << std::get<0>(ip) << QStringLiteral("</strong></big></td></tr>");
+                int i = 1;
+                for (QNetworkAddressEntry const & address : ip_config.addresses())
+                {
+                    QString suffix = (i > 1 ? QString{"(%1)"}.arg(i) : QString{});
+                    str << QStringLiteral("<tr><td><strong>") << NmModel::tr("IP Address", "Active connection information") << suffix << QStringLiteral("</strong>: </td><td>")
+                        << address.ip().toString() << QStringLiteral("</td></tr>")
+                        << QStringLiteral("<tr><td><strong>") << NmModel::tr("Subnet Mask", "Active connection information") << suffix << QStringLiteral("</strong>: </td><td>")
+                        << address.netmask().toString() << QStringLiteral("</td></tr>")
+                        ;
+                    ++i;
+                }
+
+                QString const gtw = ip_config.gateway();
+                if (!gtw.isEmpty())
+                {
+                    str << QStringLiteral("<tr><td><strong>") << NmModel::tr("Default route", "Active connection information") << QStringLiteral("</strong>: </td><td>")
+                        << ip_config.gateway() << QStringLiteral("</td></tr>");
+                }
+                i = 0;
+                for (auto const & nameserver : ip_config.nameservers())
+                {
+                    str << QStringLiteral("<tr><td><strong>") << NmModel::tr("DNS(%1)", "Active connection information").arg(++i) << QStringLiteral("</strong>: </td><td>")
+                        << nameserver.toString() << QStringLiteral("</td></tr>");
+                }
+            }
         }
-        */
+        str << QStringLiteral("</table>");
     }
-#endif
     return info;
 }
 
