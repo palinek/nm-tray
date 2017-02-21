@@ -75,8 +75,7 @@ ConnectionInfo::~ConnectionInfo()
 void ConnectionInfo::addTab(QModelIndex const & index)
 {
     QScrollArea * content = new QScrollArea;
-    QLabel * l = new QLabel;
-    l->setText(mSorted->data(index, NmModel::ActiveConnectionInfoRole).toString());
+    QLabel * l = new QLabel{mSorted->data(index, NmModel::ActiveConnectionInfoRole).toString()};
     content->setWidget(l);
     //QTabWidget takes ownership of the page (if we will not take it back)
     ui->tabWidget->insertTab(index.row(), content, mSorted->data(index, NmModel::IconRole).value<QIcon>(), mSorted->data(index, NmModel::NameRole).toString());
@@ -95,9 +94,9 @@ void ConnectionInfo::changeTab(QModelIndex const & index)
     const int i = index.row();
     QScrollArea * content = qobject_cast<QScrollArea *>(ui->tabWidget->widget(i));
     Q_ASSERT(nullptr != content);
-    QLabel * l = qobject_cast<QLabel *>(content->widget());
-    Q_ASSERT(nullptr != l);
-    l->setText(mSorted->data(index, NmModel::ActiveConnectionInfoRole).toString());
+    // Note: the text is HTML formatted and the QLabel probably creates some DOM internal represntation.
+    // Should the DOM structure change, the QLabel will not update correctly upon the plain setText()
+    content->setWidget(new QLabel{mSorted->data(index, NmModel::ActiveConnectionInfoRole).toString()});
     ui->tabWidget->tabBar()->setTabText(i, mSorted->data(index, NmModel::NameRole).toString());
     ui->tabWidget->tabBar()->setTabIcon(i,  mSorted->data(index, NmModel::IconRole).value<QIcon>());
 }
