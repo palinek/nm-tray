@@ -28,8 +28,17 @@ COPYRIGHT_HEADER*/
 #include <NetworkManagerQt/GenericTypes>
 #include <NetworkManagerQt/VpnConnection>
 #include <NetworkManagerQt/WirelessDevice>
+#include <NetworkManagerQt/AdslDevice>
 #include <NetworkManagerQt/WiredDevice>
 #include <NetworkManagerQt/WimaxDevice>
+#include <NetworkManagerQt/VlanDevice>
+#include <NetworkManagerQt/BondDevice>
+#include <NetworkManagerQt/BridgeDevice>
+#include <NetworkManagerQt/GenericDevice>
+#include <NetworkManagerQt/InfinibandDevice>
+#include <NetworkManagerQt/BluetoothDevice>
+#include <NetworkManagerQt/OlpcMeshDevice>
+#include <NetworkManagerQt/TeamDevice>
 #include <NetworkManagerQt/WirelessSetting>
 #include <NetworkManagerQt/WirelessSecuritySetting>
 #include <NetworkManagerQt/Utils>
@@ -1023,6 +1032,64 @@ QVariant NmModel::dataRole<NmModel::ActiveConnectionInfoRole>(const QModelIndex 
         int bit_rate = -1;
         switch (dev->type())
         {
+            case NetworkManager::Device::Adsl:
+                break;
+            case NetworkManager::Device::Bond:
+                {
+                    auto spec_dev = dev->as<NetworkManager::BondDevice>();
+                    hw_address = spec_dev->hwAddress();
+                }
+                break;
+            case NetworkManager::Device::Bridge:
+                {
+                    auto spec_dev = dev->as<NetworkManager::BridgeDevice>();
+                    hw_address = spec_dev->hwAddress();
+                }
+                break;
+            case NetworkManager::Device::Gre:
+                break;
+            case NetworkManager::Device::Generic:
+                {
+                    auto spec_dev = dev->as<NetworkManager::GenericDevice>();
+                    hw_address = spec_dev->hardwareAddress();
+                }
+                break;
+            case NetworkManager::Device::InfiniBand:
+                {
+                    auto spec_dev = dev->as<NetworkManager::InfinibandDevice>();
+                    hw_address = spec_dev->hwAddress();
+                }
+                break;
+            case NetworkManager::Device::MacVlan:
+            case NetworkManager::Device::Modem:
+                break;
+            case NetworkManager::Device::Bluetooth:
+                {
+                    auto spec_dev = dev->as<NetworkManager::BluetoothDevice>();
+                    hw_address = spec_dev->hardwareAddress();
+                }
+                break;
+            case NetworkManager::Device::OlpcMesh:
+                {
+                    auto spec_dev = dev->as<NetworkManager::OlpcMeshDevice>();
+                    hw_address = spec_dev->hardwareAddress();
+                }
+                break;
+            case NetworkManager::Device::Team:
+                {
+                    auto spec_dev = dev->as<NetworkManager::TeamDevice>();
+                    hw_address = spec_dev->hwAddress();
+                }
+                break;
+            case NetworkManager::Device::Tun:
+            case NetworkManager::Device::Veth:
+                break;
+            case NetworkManager::Device::Vlan:
+                {
+                    auto spec_dev = dev->as<NetworkManager::VlanDevice>();
+                    hw_address = spec_dev->hwAddress();
+                }
+                break;
             case NetworkManager::Device::Ethernet:
                 {
                     auto spec_dev = dev->as<NetworkManager::WiredDevice>();
@@ -1056,8 +1123,11 @@ QVariant NmModel::dataRole<NmModel::ActiveConnectionInfoRole>(const QModelIndex 
                     //bit_rate = spec_dev->bitRate();
                 }
                 break;
-            default:
+            case NetworkManager::Device::UnknownType:
+            case NetworkManager::Device::Unused1:
+            case NetworkManager::Device::Unused2:
                 break;
+
         }
         str << QStringLiteral("<table>")
             << QStringLiteral("<tr><td colspan='2'><big><strong>") << NmModel::tr("General", "Active connection information") << QStringLiteral("</strong></big></td></tr>")
