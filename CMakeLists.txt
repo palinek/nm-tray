@@ -49,7 +49,7 @@ set(SRCS
 file(GLOB TSS "translations/${PROJECT_NAME}_*.ts")
 if (UPDATE_TRANSLATIONS)
     message(WARNING "!! Disable updating translation after make (-DUPDATE_TRANSLATIONS=no) to avoid 'make clean' delete them !!")
-    qt5_create_translation(QMS ${TSS} "src")
+    qt5_create_translation(QMS "translations/${PROJECT_NAME}.ts" ${TSS} "src")
 else ()
     qt5_add_translation(QMS ${TSS})
 endif()
