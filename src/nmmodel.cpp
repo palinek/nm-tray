@@ -1416,6 +1416,7 @@ void NmModel::activateConnection(QModelIndex const & index)
     QString conn_name, dev_name;
     QString spec_object;
     NMVariantMapMap map_settings;
+    bool add_connection = false;
     switch (id)
     {
         case ITEM_CONNECTION_LEAF:
@@ -1423,19 +1424,38 @@ void NmModel::activateConnection(QModelIndex const & index)
                 auto const & conn = d->mConnections[index.row()];
                 conn_uni = conn->path();
                 conn_name = conn->name();
-                dev_name = conn->settings()->interfaceName();
-                for (auto const & dev : d->mDevices)
-                    for (auto const & dev_conn : dev->availableConnections())
-                        if (dev_conn == conn)
-                        {
-                            dev_uni = dev->uni();
-                            dev_name = dev->interfaceName();
-                        }
-                if (dev_uni.isEmpty() && !dev_name.isEmpty())
+                if (NetworkManager::ConnectionSettings::Vpn == conn->settings()->connectionType())
                 {
-                    auto dev = d->findDeviceInterface(dev_name);
-                    if (!dev.isNull())
-                        dev_uni = dev->uni();
+                    spec_object = dev_uni = QStringLiteral("/");
+                    /*
+                    // find first non-vpn active connection
+                    const auto act_i = std::find_if(d->mActiveConns.cbegin(), d->mActiveConns.cend(), [] (NetworkManager::ActiveConnection::Ptr const & conn) -> bool
+                    {
+                    return nullptr != dynamic_cast<NetworkManager::VpnConnection const *>(conn.data());
+                    });
+                    if (act_i != d->mActiveConns.cend() && !(*act_i)->devices().empty())
+                    {
+                    dev_uni = (*act_i)->devices().front();
+                    spec_object = (*act_i)->path();
+                    }
+                    */
+
+                } else
+                {
+                    dev_name = conn->settings()->interfaceName();
+                    for (auto const & dev : d->mDevices)
+                        for (auto const & dev_conn : dev->availableConnections())
+                            if (dev_conn == conn)
+                            {
+                                dev_uni = dev->uni();
+                                dev_name = dev->interfaceName();
+                            }
+                    if (dev_uni.isEmpty() && !dev_name.isEmpty())
+                    {
+                        auto dev = d->findDeviceInterface(dev_name);
+                        if (!dev.isNull())
+                            dev_uni = dev->uni();
+                    }
                 }
                 if (dev_uni.isEmpty())
                 {
@@ -1469,6 +1489,7 @@ void NmModel::activateConnection(QModelIndex const & index)
                 {
                     //TODO: in what form should we output the warning messages
                     qCWarning(NM_TRAY).noquote() << QStringLiteral("can't find connection for '%1' on device '%2', will create new...").arg(conn_name).arg(dev_name);
+                    add_connection = true;
                     spec_object = conn_uni;
                     NetworkManager::WirelessSecurityType sec_type = NetworkManager::findBestWirelessSecurity(spec_dev->wirelessCapabilities()
                             , true, (spec_dev->mode() == NetworkManager::WirelessDevice::Adhoc)
@@ -1506,10 +1527,10 @@ void NmModel::activateConnection(QModelIndex const & index)
 qCDebug(NM_TRAY) << __FUNCTION__ << conn_uni << dev_uni << conn_name << dev_name << spec_object;
     //TODO: check vpn type etc..
     QDBusPendingCallWatcher * watcher;
-    if (spec_object.isEmpty())
-        watcher = new QDBusPendingCallWatcher{NetworkManager::activateConnection(conn_uni, dev_uni, spec_object), this};
-    else
+    if (add_connection)
         watcher = new QDBusPendingCallWatcher{NetworkManager::addAndActivateConnection(map_settings, dev_uni, spec_object), this};
+    else
+        watcher = new QDBusPendingCallWatcher{NetworkManager::activateConnection(conn_uni, dev_uni, spec_object), this};
     connect(watcher, &QDBusPendingCallWatcher::finished, [conn_name, dev_name] (QDBusPendingCallWatcher * watcher) {
         if (watcher->isError() || !watcher->isValid())
         {
