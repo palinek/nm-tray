@@ -112,7 +112,7 @@ WindowMenu::WindowMenu(NmModel * nmModel, QWidget * parent /*= nullptr*/)
     d->mActiveModel.reset(new NmProxy);
     d->mActiveModel->setNmModel(d->mNmModel, NmModel::ActiveConnectionType);
     MenuView * active_view = new MenuView{d->mActiveModel.data()};
-    connect(active_view, &QAbstractItemView::activated, [this, d, active_view] (const QModelIndex & index) {
+    connect(active_view, &QAbstractItemView::activated, [this, d] (const QModelIndex & index) {
         d->onActivated(index, d->mActiveModel.data(), std::bind(&NmProxy::deactivateConnection, d->mActiveModel.data(), std::placeholders::_1));
         close();
     });
@@ -124,7 +124,7 @@ WindowMenu::WindowMenu(NmModel * nmModel, QWidget * parent /*= nullptr*/)
     d->mWirelessModel.reset(new NmProxy);
     d->mWirelessModel->setNmModel(d->mNmModel, NmModel::WifiNetworkType);
     MenuView * wifi_view = new MenuView{d->mWirelessModel.data()};
-    connect(wifi_view, &QAbstractItemView::activated, [this, d, wifi_view] (const QModelIndex & index) {
+    connect(wifi_view, &QAbstractItemView::activated, [this, d] (const QModelIndex & index) {
         d->onActivated(index, d->mWirelessModel.data(), std::bind(&NmProxy::activateConnection, d->mWirelessModel.data(), std::placeholders::_1));
         close();
     });
