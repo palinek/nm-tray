@@ -41,6 +41,7 @@ protected:
 
 private Q_SLOTS:
     //menu
+    void onEditConnectionsTriggered();
     void onAboutTriggered();
     void onQuitTriggered();
     void onActivated();

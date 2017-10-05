@@ -245,6 +245,8 @@ Tray::Tray(QObject *parent/* = nullptr*/)
     d->mContextMenu.addSeparator();
     d->mActConnInfo = d->mContextMenu.addAction(QIcon::fromTheme(QStringLiteral("dialog-information")), Tray::tr("Connection information"));
     d->mActDebugInfo = d->mContextMenu.addAction(QIcon::fromTheme(QStringLiteral("dialog-information")), Tray::tr("Debug information"));
+    connect(d->mContextMenu.addAction(QIcon::fromTheme(QStringLiteral("document-edit")), Tray::tr("Edit connections...")), &QAction::triggered
+            , this, &Tray::onEditConnectionsTriggered);
     d->mContextMenu.addSeparator();
     connect(d->mContextMenu.addAction(QIcon::fromTheme(QStringLiteral("help-about")), Tray::tr("About")), &QAction::triggered
             , this, &Tray::onAboutTriggered);
@@ -328,6 +330,21 @@ bool Tray::eventFilter(QObject * object, QEvent * event)
     if (QEvent::ThemeChange == event->type())
         d->refreshIcon();
     return false;
+}
+
+void Tray::onEditConnectionsTriggered()
+{
+    // Note: let this object dangle, if the process isn't finished until our application is closed
+    QProcess * editor = new QProcess;
+    editor->setProcessChannelMode(QProcess::ForwardedChannels);
+    // TODO: allow the command to be configurable!?
+    qCInfo(NM_TRAY) << "starting the nm-connection-editor";
+    editor->start(QStringLiteral("nm-connection-editor"));
+    editor->closeWriteChannel();
+    connect(editor, static_cast<void(QProcess::*)(int, QProcess::ExitStatus)>(&QProcess::finished), [editor] {
+            qCInfo(NM_TRAY) << "the nm-connection-editor finished";
+            editor->deleteLater();
+    });
 }
 
 void Tray::onAboutTriggered()
