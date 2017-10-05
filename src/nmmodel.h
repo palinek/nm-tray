@@ -53,8 +53,12 @@ public:
             , ActiveConnectionTypeStringRole = ConnectionTypeStringRole
             , ConnectionUuidRole
             , ActiveConnectionUuidRole = ConnectionUuidRole
+            , ConnectionPathRole
+            , ActiveConnectionPathRole = ConnectionPathRole
             , ActiveConnectionInfoRole
             , ActiveConnectionStateRole
+            , ActiveConnectionMasterRole
+            , ActiveConnectionDevicesRole
             , IconSecurityTypeRole
             , IconSecurityRole
 

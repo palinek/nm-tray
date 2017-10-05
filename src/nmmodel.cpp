@@ -874,6 +874,46 @@ QVariant NmModel::dataRole<NmModel::ActiveConnectionStateRole>(const QModelIndex
 }
 
 template <>
+QVariant NmModel::dataRole<NmModel::ActiveConnectionMasterRole>(const QModelIndex & index) const
+{
+    switch (static_cast<ItemId>(index.internalId()))
+    {
+        case ITEM_ROOT:
+        case ITEM_ACTIVE:
+        case ITEM_CONNECTION:
+        case ITEM_DEVICE:
+        case ITEM_CONNECTION_LEAF:
+        case ITEM_DEVICE_LEAF:
+        case ITEM_WIFINET:
+        case ITEM_WIFINET_LEAF:
+            return QVariant{};
+        case ITEM_ACTIVE_LEAF:
+            return d->mActiveConns[index.row()]->master();
+    }
+    return QVariant{};
+}
+
+template <>
+QVariant NmModel::dataRole<NmModel::ActiveConnectionDevicesRole>(const QModelIndex & index) const
+{
+    switch (static_cast<ItemId>(index.internalId()))
+    {
+        case ITEM_ROOT:
+        case ITEM_ACTIVE:
+        case ITEM_CONNECTION:
+        case ITEM_DEVICE:
+        case ITEM_CONNECTION_LEAF:
+        case ITEM_DEVICE_LEAF:
+        case ITEM_WIFINET:
+        case ITEM_WIFINET_LEAF:
+            return QVariant{};
+        case ITEM_ACTIVE_LEAF:
+            return d->mActiveConns[index.row()]->devices();
+    }
+    return QVariant{};
+}
+
+template <>
 QVariant NmModel::dataRole<NmModel::IconSecurityTypeRole>(const QModelIndex & index) const
 {
     auto const internal_id = static_cast<ItemId>(index.internalId());
@@ -985,6 +1025,27 @@ QVariant NmModel::dataRole<NmModel::ConnectionUuidRole>(const QModelIndex & inde
             return d->mActiveConns[index.row()]->uuid();
         case ITEM_CONNECTION_LEAF:
             return d->mConnections[index.row()]->uuid();
+    }
+    return QVariant{};
+}
+
+template <>
+QVariant NmModel::dataRole<NmModel::ConnectionPathRole>(const QModelIndex & index) const
+{
+    switch (static_cast<ItemId>(index.internalId()))
+    {
+        case ITEM_ROOT:
+        case ITEM_ACTIVE:
+        case ITEM_CONNECTION:
+        case ITEM_DEVICE:
+        case ITEM_DEVICE_LEAF:
+        case ITEM_WIFINET:
+        case ITEM_WIFINET_LEAF:
+            return QVariant{};
+        case ITEM_ACTIVE_LEAF:
+            return d->mActiveConns[index.row()]->path();
+        case ITEM_CONNECTION_LEAF:
+            return d->mConnections[index.row()]->path();
     }
     return QVariant{};
 }
@@ -1266,11 +1327,20 @@ QVariant NmModel::data(const QModelIndex &index, int role) const
             case ActiveConnectionStateRole:
                 ret = dataRole<ActiveConnectionStateRole>(index);
                 break;
+            case ActiveConnectionMasterRole:
+                ret = dataRole<ActiveConnectionMasterRole>(index);
+                break;
+            case ActiveConnectionDevicesRole:
+                ret = dataRole<ActiveConnectionDevicesRole>(index);
+                break;
             case SignalRole:
                 ret = dataRole<SignalRole>(index);
                 break;
             case ConnectionUuidRole:
                 ret = dataRole<ConnectionUuidRole>(index);
+                break;
+            case ConnectionPathRole:
+                ret = dataRole<ConnectionPathRole>(index);
                 break;
             case ActiveConnectionInfoRole:
                 ret = dataRole<ActiveConnectionInfoRole>(index);
