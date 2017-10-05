@@ -29,53 +29,68 @@ namespace icons
 {
     QIcon getIcon(Icon ico)
     {
-        QStringList icon_names;
+        static const QStringList i_empty;
+        QStringList const * icon_names = &i_empty;
         switch (ico)
         {
             case NETWORK_OFFLINE:
-                icon_names << QStringLiteral("network-offline-symbolic");
+                static const QStringList i_network_offline = { QStringLiteral("network-offline-symbolic") };
+                icon_names = &i_network_offline;
                 break;
             case NETWORK_WIRED:
-                icon_names << QStringLiteral("network-wired-symbolic");
+                static const QStringList i_network_wired = { QStringLiteral("network-wired-symbolic") };
+                icon_names = &i_network_wired;
                 break;
             case NETWORK_WIRED_DISCONNECTED:
-                icon_names << QStringLiteral("network-wired-disconnected-symbolic");
+                static const QStringList i_network_wired_disconnected = { QStringLiteral("network-wired-disconnected-symbolic") };
+                icon_names = &i_network_wired_disconnected;
                 break;
             case NETWORK_WIFI_DISCONNECTED:
-                icon_names << QStringLiteral("network-wireless-disconnected-symbolic");
+                static const QStringList i_wifi_disconnected = { QStringLiteral("network-wireless-disconnected-symbolic") };
+                icon_names = &i_wifi_disconnected;
                 break;
             case NETWORK_WIFI_ACQUIRING:
-                icon_names << QStringLiteral("network-wireless-acquiring-symbolic");
+                static const QStringList i_wifi_acquiring = { QStringLiteral("network-wireless-acquiring-symbolic") };
+                icon_names = &i_wifi_acquiring;
                 break;
             case NETWORK_WIFI_NONE:
-                icon_names << QStringLiteral("network-wireless-signal-none-symbolic") << QStringLiteral("network-wireless-connected-00-symbolic");
+                static const QStringList i_wifi_none = { QStringLiteral("network-wireless-signal-none-symbolic"), QStringLiteral("network-wireless-connected-00-symbolic") };
+                icon_names = &i_wifi_none;
                 break;
             case NETWORK_WIFI_WEAK:
-                icon_names << QStringLiteral("network-wireless-signal-weak-symbolic") << QStringLiteral("network-wireless-connected-25-symbolic");
+                static const QStringList i_wifi_weak = { QStringLiteral("network-wireless-signal-weak-symbolic"), QStringLiteral("network-wireless-connected-25-symbolic") };
+                icon_names = &i_wifi_weak;
                 break;
             case NETWORK_WIFI_OK:
-                icon_names << QStringLiteral("network-wireless-signal-ok-symbolic") << QStringLiteral("network-wireless-connected-50-symbolic");
+                static const QStringList i_wifi_ok = { QStringLiteral("network-wireless-signal-ok-symbolic"), QStringLiteral("network-wireless-connected-50-symbolic") };
+                icon_names = &i_wifi_ok;
                 break;
             case NETWORK_WIFI_GOOD:
-                icon_names << QStringLiteral("network-wireless-signal-good-symbolic") << QStringLiteral("network-wireless-connected-75-symbolic");
+                static const QStringList i_wifi_good = { QStringLiteral("network-wireless-signal-good-symbolic"),  QStringLiteral("network-wireless-connected-75-symbolic") };
+                icon_names = &i_wifi_good;
                 break;
             case NETWORK_WIFI_EXCELENT:
-                icon_names << QStringLiteral("network-wireless-signal-excellent-symbolic") << QStringLiteral("network-wireless-connected-100-symbolic");
+                static const QStringList i_wifi_excelent = { QStringLiteral("network-wireless-signal-excellent-symbolic"),  QStringLiteral("network-wireless-connected-100-symbolic") };
+                icon_names = &i_wifi_excelent;
                 break;
             case NETWORK_VPN:
-                icon_names << QStringLiteral("network-vpn");
+                static const QStringList i_network_vpn = { QStringLiteral("network-vpn") };
+                icon_names = &i_network_vpn;
                 break;
             case SECURITY_LOW:
-                icon_names << QStringLiteral("security-low-symbolic");
+                static const QStringList i_security_low = { QStringLiteral("security-low-symbolic") };
+                icon_names = &i_security_low;
                 break;
             case SECURITY_HIGH:
-                icon_names << QStringLiteral("security-high-symbolic");
+                static const QStringList i_security_high = { QStringLiteral("security-high-symbolic") };
+                icon_names = &i_security_high;
                 break;
             case PREFERENCES_NETWORK:
-                icon_names << QStringLiteral("preferences-system-network");
+                static const QStringList i_preferences_network = { QStringLiteral("preferences-system-network") };
+                icon_names = &i_preferences_network;
                 break;
         };
-        for (auto const & name : icon_names)
+        for (auto const & name : *icon_names)
         {
             QIcon icon{QIcon::fromTheme(name)};
             if (!icon.isNull())
