@@ -41,6 +41,9 @@ public:
     QScopedPointer<NmProxy> mActiveModel;
     QWidgetAction * mActiveAction;
 
+    QScopedPointer<NmProxy> mConnectionModel;
+    QWidgetAction * mConnectionAction;
+
     QAction * mMakeDirtyAction;
     QTimer mDelaySizeRefreshTimer;
 
@@ -129,12 +132,26 @@ WindowMenu::WindowMenu(NmModel * nmModel, QWidget * parent /*= nullptr*/)
     d->mWirelessAction = new QWidgetAction{this};
     d->mWirelessAction->setDefaultWidget(wifi_view);
 
+    //connection proxy & widgets
+    d->mConnectionModel.reset(new NmProxy);
+    d->mConnectionModel->setNmModel(d->mNmModel, NmModel::ConnectionType);
+    MenuView * connection_view = new MenuView{d->mConnectionModel.data()};
+    connect(connection_view, &QAbstractItemView::activated, [this, d] (const QModelIndex & index) {
+        d->onActivated(index, d->mConnectionModel.data(), std::bind(&NmProxy::activateConnection, d->mConnectionModel.data(), std::placeholders::_1));
+        close();
+    });
+
+    d->mConnectionAction = new QWidgetAction{this};
+    d->mConnectionAction->setDefaultWidget(connection_view);
+
     addSeparator();
     addSection(tr("Active connection(s)"));
     addAction(d->mActiveAction);
     addSeparator();
     addSection(tr("Wi-Fi network(s)"));
     addAction(d->mWirelessAction);
+    addSection(tr("Known connection(s)"));
+    addAction(d->mConnectionAction);
 
     d->mMakeDirtyAction = new QAction{this};
     d->mDelaySizeRefreshTimer.setInterval(200);
@@ -142,6 +159,7 @@ WindowMenu::WindowMenu(NmModel * nmModel, QWidget * parent /*= nullptr*/)
     connect(&d->mDelaySizeRefreshTimer, &QTimer::timeout, [d] { d->forceSizeRefresh(); });
     connect(d->mActiveModel.data(), &QAbstractItemModel::rowsInserted, [d] { d->mDelaySizeRefreshTimer.start(); });
     connect(d->mWirelessModel.data(), &QAbstractItemModel::rowsInserted, [d] { d->mDelaySizeRefreshTimer.start(); });
+    connect(d->mConnectionModel.data(), &QAbstractItemModel::rowsInserted, [d] { d->mDelaySizeRefreshTimer.start(); });
 }
 
 WindowMenu::~WindowMenu()
