@@ -1224,6 +1224,8 @@ QVariant NmModel::dataRole<NmModel::IconTypeRole>(const QModelIndex & index) con
                                 return icons::NETWORK_WIFI_DISCONNECTED;
                         }
                         break;
+                    case NetworkManager::ConnectionSettings::Vpn:
+                        return icons::NETWORK_VPN;
                     default:
                         return NetworkManager::ActiveConnection::Activated == state ? icons::NETWORK_WIRED : icons::NETWORK_WIRED_DISCONNECTED;
                 }

@@ -62,6 +62,9 @@ namespace icons
             case NETWORK_WIFI_EXCELENT:
                 icon_names << QStringLiteral("network-wireless-signal-excellent-symbolic") << QStringLiteral("network-wireless-connected-100-symbolic");
                 break;
+            case NETWORK_VPN:
+                icon_names << QStringLiteral("network-vpn");
+                break;
             case SECURITY_LOW:
                 icon_names << QStringLiteral("security-low-symbolic");
                 break;

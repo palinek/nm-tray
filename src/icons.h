@@ -38,6 +38,7 @@ namespace icons
             , NETWORK_WIFI_GOOD
             , NETWORK_WIFI_EXCELENT
             , NETWORK_WIFI_DISCONNECTED
+            , NETWORK_VPN
 
             , SECURITY_LOW
             , SECURITY_HIGH
