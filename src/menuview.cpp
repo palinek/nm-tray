@@ -109,8 +109,6 @@ MenuView::MenuView(QAbstractItemModel * model, QWidget * parent /*= nullptr*/)
         QScopedPointer<QAbstractItemDelegate> guard{itemDelegate()};
         setItemDelegate(new MultiIconDelegate{this});
     }
-    //XXX: leave this to styling!?!
-    setIconSize({32, 32});
 }
 
 void MenuView::setFilter(QString const & filter)
