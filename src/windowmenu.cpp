@@ -144,13 +144,11 @@ WindowMenu::WindowMenu(NmModel * nmModel, QWidget * parent /*= nullptr*/)
     d->mConnectionAction = new QWidgetAction{this};
     d->mConnectionAction->setDefaultWidget(connection_view);
 
-    addSeparator();
-    addSection(tr("Active connection(s)"));
+    addAction(tr("Active connection(s)"))->setEnabled(false);
     addAction(d->mActiveAction);
-    addSeparator();
-    addSection(tr("Wi-Fi network(s)"));
+    addAction(tr("Wi-Fi network(s)"))->setEnabled(false);
     addAction(d->mWirelessAction);
-    addSection(tr("Known connection(s)"));
+    addAction(tr("Known connection(s)"))->setEnabled(false);
     addAction(d->mConnectionAction);
 
     d->mMakeDirtyAction = new QAction{this};
