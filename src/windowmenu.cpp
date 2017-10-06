@@ -53,6 +53,7 @@ public:
             , QAbstractItemModel const * topParent
             , F const & functor);
     void forceSizeRefresh();
+    void onViewRowChange(QAction * viewAction, QAbstractItemModel const * model);
 private:
     WindowMenu * q_ptr;
     Q_DECLARE_PUBLIC(WindowMenu);
@@ -98,6 +99,12 @@ void WindowMenuPrivate::forceSizeRefresh()
     }
 }
 
+void WindowMenuPrivate::onViewRowChange(QAction * viewAction, QAbstractItemModel const * model)
+{
+    viewAction->setVisible(model->rowCount(QModelIndex{}) > 0);
+    mDelaySizeRefreshTimer.start();
+}
+
 
 
 
@@ -119,6 +126,9 @@ WindowMenu::WindowMenu(NmModel * nmModel, QWidget * parent /*= nullptr*/)
 
     d->mActiveAction = new QWidgetAction{this};
     d->mActiveAction->setDefaultWidget(active_view);
+    connect(d->mActiveModel.data(), &QAbstractItemModel::modelReset, [d] { d->onViewRowChange(d->mActiveAction, d->mActiveModel.data()); });
+    connect(d->mActiveModel.data(), &QAbstractItemModel::rowsInserted, [d] { d->onViewRowChange(d->mActiveAction, d->mActiveModel.data()); });
+    connect(d->mActiveModel.data(), &QAbstractItemModel::rowsRemoved, [d] { d->onViewRowChange(d->mActiveAction, d->mActiveModel.data()); });
 
     //wireless proxy & widgets
     d->mWirelessModel.reset(new NmProxy);
@@ -131,6 +141,9 @@ WindowMenu::WindowMenu(NmModel * nmModel, QWidget * parent /*= nullptr*/)
 
     d->mWirelessAction = new QWidgetAction{this};
     d->mWirelessAction->setDefaultWidget(wifi_view);
+    connect(d->mWirelessModel.data(), &QAbstractItemModel::modelReset, [d] { d->onViewRowChange(d->mWirelessAction, d->mWirelessModel.data()); });
+    connect(d->mWirelessModel.data(), &QAbstractItemModel::rowsInserted, [d] { d->onViewRowChange(d->mWirelessAction, d->mWirelessModel.data()); });
+    connect(d->mWirelessModel.data(), &QAbstractItemModel::rowsRemoved, [d] { d->onViewRowChange(d->mWirelessAction, d->mWirelessModel.data()); });
 
     //connection proxy & widgets
     d->mConnectionModel.reset(new NmProxy);
@@ -143,6 +156,9 @@ WindowMenu::WindowMenu(NmModel * nmModel, QWidget * parent /*= nullptr*/)
 
     d->mConnectionAction = new QWidgetAction{this};
     d->mConnectionAction->setDefaultWidget(connection_view);
+    connect(d->mConnectionModel.data(), &QAbstractItemModel::modelReset, [d] { d->onViewRowChange(d->mConnectionAction, d->mConnectionModel.data()); });
+    connect(d->mConnectionModel.data(), &QAbstractItemModel::rowsInserted, [d] { d->onViewRowChange(d->mConnectionAction, d->mConnectionModel.data()); });
+    connect(d->mConnectionModel.data(), &QAbstractItemModel::rowsRemoved, [d] { d->onViewRowChange(d->mConnectionAction, d->mConnectionModel.data()); });
 
     addAction(tr("Active connection(s)"))->setEnabled(false);
     addAction(d->mActiveAction);
@@ -155,9 +171,10 @@ WindowMenu::WindowMenu(NmModel * nmModel, QWidget * parent /*= nullptr*/)
     d->mDelaySizeRefreshTimer.setInterval(200);
     d->mDelaySizeRefreshTimer.setSingleShot(true);
     connect(&d->mDelaySizeRefreshTimer, &QTimer::timeout, [d] { d->forceSizeRefresh(); });
-    connect(d->mActiveModel.data(), &QAbstractItemModel::rowsInserted, [d] { d->mDelaySizeRefreshTimer.start(); });
-    connect(d->mWirelessModel.data(), &QAbstractItemModel::rowsInserted, [d] { d->mDelaySizeRefreshTimer.start(); });
-    connect(d->mConnectionModel.data(), &QAbstractItemModel::rowsInserted, [d] { d->mDelaySizeRefreshTimer.start(); });
+
+    d->onViewRowChange(d->mActiveAction, d->mActiveModel.data());
+    d->onViewRowChange(d->mWirelessAction, d->mWirelessModel.data());
+    d->onViewRowChange(d->mConnectionAction, d->mConnectionModel.data());
 }
 
 WindowMenu::~WindowMenu()
