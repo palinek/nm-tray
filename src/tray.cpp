@@ -116,6 +116,17 @@ void TrayPrivate::updateState(QModelIndex const & index, bool removing)
             setShown(mPrimaryConnection);
         }
     }
+    //TODO: optimize this text assembly (to not do it every time)?
+    if (mPrimaryConnection.isValid())
+    {
+        mTrayIcon.setToolTip(Tray::tr("<pre>Connection <strong>%1</strong>(%2) active</pre>")
+                .arg(mPrimaryConnection.data(NmModel::NameRole).toString())
+                .arg(mPrimaryConnection.data(NmModel::ActiveConnectionTypeStringRole).toString())
+                );
+    } else
+    {
+        mTrayIcon.setToolTip(Tray::tr("<pre>No active connection</pre>"));
+    }
 }
 
 void TrayPrivate::primaryConnectionUpdate()
