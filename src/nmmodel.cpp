@@ -102,7 +102,9 @@ NmModelPrivate::NmModelPrivate()
     connect(NetworkManager::settingsNotifier(), &NetworkManager::SettingsNotifier::connectionAdded, this, &NmModelPrivate::onConnectionAdded);
     connect(NetworkManager::settingsNotifier(), &NetworkManager::SettingsNotifier::connectionRemoved, this, static_cast<void (NmModelPrivate::*)(QString const &)>(&NmModelPrivate::onConnectionRemoved));
 
-    //TODO: listening to NetworkManager::Notifier::serviceAppeared/Disapeared !?!
+    // Note: the connectionRemoved is never emitted in case network-manager service stop,
+    // we need remove the connections manually.
+    connect(NetworkManager::notifier(), &NetworkManager::Notifier::serviceDisappeared, this, &NmModelPrivate::clearConnections);
     
 //qCDebug(NM_TRAY) << mActiveConns.size() << mConnections.size() << mDevices.size();
 }
