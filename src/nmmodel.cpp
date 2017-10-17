@@ -117,26 +117,7 @@ void NmModelPrivate::removeActiveConnection(int pos)
 {
     //active connections signals
     NetworkManager::ActiveConnection::Ptr conn = mActiveConns.takeAt(pos);
-    disconnect(conn.data(), &NetworkManager::ActiveConnection::connectionChanged, this, &NmModelPrivate::onActiveConnectionUpdated);
-    disconnect(conn.data(), &NetworkManager::ActiveConnection::default4Changed, this, &NmModelPrivate::onActiveConnectionUpdated);
-    disconnect(conn.data(), &NetworkManager::ActiveConnection::default6Changed, this, &NmModelPrivate::onActiveConnectionUpdated);
-    disconnect(conn.data(), &NetworkManager::ActiveConnection::dhcp4ConfigChanged, this, &NmModelPrivate::onActiveConnectionUpdated);
-    disconnect(conn.data(), &NetworkManager::ActiveConnection::dhcp6ConfigChanged, this, &NmModelPrivate::onActiveConnectionUpdated);
-    disconnect(conn.data(), &NetworkManager::ActiveConnection::ipV4ConfigChanged, this, &NmModelPrivate::onActiveConnectionUpdated);
-    disconnect(conn.data(), &NetworkManager::ActiveConnection::ipV6ConfigChanged, this, &NmModelPrivate::onActiveConnectionUpdated);
-    disconnect(conn.data(), &NetworkManager::ActiveConnection::idChanged, this, &NmModelPrivate::onActiveConnectionUpdated);
-    disconnect(conn.data(), &NetworkManager::ActiveConnection::typeChanged, this, &NmModelPrivate::onActiveConnectionUpdated);
-    disconnect(conn.data(), &NetworkManager::ActiveConnection::masterChanged, this, &NmModelPrivate::onActiveConnectionUpdated);
-    disconnect(conn.data(), &NetworkManager::ActiveConnection::specificObjectChanged, this, &NmModelPrivate::onActiveConnectionUpdated);
-    disconnect(conn.data(), &NetworkManager::ActiveConnection::stateChanged, this, &NmModelPrivate::onActiveConnectionUpdated);
-    disconnect(conn.data(), &NetworkManager::ActiveConnection::vpnChanged, this, &NmModelPrivate::onActiveConnectionUpdated);
-    disconnect(conn.data(), &NetworkManager::ActiveConnection::uuidChanged, this, &NmModelPrivate::onActiveConnectionUpdated);
-    disconnect(conn.data(), &NetworkManager::ActiveConnection::devicesChanged, this, &NmModelPrivate::onActiveConnectionUpdated);
-    if (conn->vpn())
-    {
-        disconnect(qobject_cast<NetworkManager::VpnConnection *>(conn.data()), &NetworkManager::VpnConnection::bannerChanged, this, &NmModelPrivate::onActiveConnectionUpdated);
-        disconnect(qobject_cast<NetworkManager::VpnConnection *>(conn.data()), &NetworkManager::VpnConnection::stateChanged, this, &NmModelPrivate::onActiveConnectionUpdated);
-    }
+    conn->disconnect(this);
 }
 
 void NmModelPrivate::clearActiveConnections()
@@ -180,8 +161,7 @@ void NmModelPrivate::removeConnection(int pos)
 {
     //connections signals
     NetworkManager::Connection::Ptr conn = mConnections.takeAt(pos);
-    disconnect(conn.data(), &NetworkManager::Connection::updated, this, &NmModelPrivate::onConnectionUpdated);
-    disconnect(conn.data(), &NetworkManager::Connection::removed, this, static_cast<void (NmModelPrivate::*)()>(&NmModelPrivate::onConnectionRemoved));
+    conn->disconnect(this);
 }
 
 void NmModelPrivate::clearConnections()
@@ -208,57 +188,7 @@ void NmModelPrivate::removeDevice(int pos)
 {
     //connections signals
     NetworkManager::Device::Ptr device = mDevices.takeAt(pos);
-    disconnect(device.data(), &NetworkManager::Device::stateChanged, this, &NmModelPrivate::onDeviceUpdated);
-    disconnect(device.data(), &NetworkManager::Device::activeConnectionChanged, this, &NmModelPrivate::onDeviceUpdated);
-    disconnect(device.data(), &NetworkManager::Device::autoconnectChanged, this, &NmModelPrivate::onDeviceUpdated);
-    disconnect(device.data(), &NetworkManager::Device::availableConnectionChanged, this, &NmModelPrivate::onDeviceUpdated);
-    disconnect(device.data(), &NetworkManager::Device::availableConnectionAppeared, this, &NmModelPrivate::onDeviceUpdated);
-    disconnect(device.data(), &NetworkManager::Device::availableConnectionDisappeared, this, &NmModelPrivate::onDeviceUpdated);
-    disconnect(device.data(), &NetworkManager::Device::capabilitiesChanged, this, &NmModelPrivate::onDeviceUpdated);
-    disconnect(device.data(), &NetworkManager::Device::dhcp4ConfigChanged, this, &NmModelPrivate::onDeviceUpdated);
-    disconnect(device.data(), &NetworkManager::Device::dhcp6ConfigChanged, this, &NmModelPrivate::onDeviceUpdated);
-    disconnect(device.data(), &NetworkManager::Device::driverChanged, this, &NmModelPrivate::onDeviceUpdated);
-    disconnect(device.data(), &NetworkManager::Device::driverVersionChanged, this, &NmModelPrivate::onDeviceUpdated);
-    disconnect(device.data(), &NetworkManager::Device::firmwareMissingChanged, this, &NmModelPrivate::onDeviceUpdated);
-    disconnect(device.data(), &NetworkManager::Device::firmwareVersionChanged, this, &NmModelPrivate::onDeviceUpdated);
-    disconnect(device.data(), &NetworkManager::Device::interfaceNameChanged, this, &NmModelPrivate::onDeviceUpdated);
-    disconnect(device.data(), &NetworkManager::Device::ipV4AddressChanged, this, &NmModelPrivate::onDeviceUpdated);
-    disconnect(device.data(), &NetworkManager::Device::ipV4ConfigChanged, this, &NmModelPrivate::onDeviceUpdated);
-    disconnect(device.data(), &NetworkManager::Device::ipV6ConfigChanged, this, &NmModelPrivate::onDeviceUpdated);
-    disconnect(device.data(), &NetworkManager::Device::ipInterfaceChanged, this, &NmModelPrivate::onDeviceUpdated);
-    disconnect(device.data(), &NetworkManager::Device::managedChanged, this, &NmModelPrivate::onDeviceUpdated);
-    disconnect(device.data(), &NetworkManager::Device::physicalPortIdChanged, this, &NmModelPrivate::onDeviceUpdated);
-    disconnect(device.data(), &NetworkManager::Device::mtuChanged, this, &NmModelPrivate::onDeviceUpdated);
-    disconnect(device.data(), &NetworkManager::Device::nmPluginMissingChanged, this, &NmModelPrivate::onDeviceUpdated);
-    disconnect(device.data(), &NetworkManager::Device::meteredChanged, this, &NmModelPrivate::onDeviceUpdated);
-    disconnect(device.data(), &NetworkManager::Device::connectionStateChanged, this, &NmModelPrivate::onDeviceUpdated);
-    disconnect(device.data(), &NetworkManager::Device::stateReasonChanged, this, &NmModelPrivate::onDeviceUpdated);
-    disconnect(device.data(), &NetworkManager::Device::udiChanged, this, &NmModelPrivate::onDeviceUpdated);
-    switch (device->type())
-    {
-        case NetworkManager::Ethernet:
-            disconnect(qobject_cast<NetworkManager::WiredDevice *>(device.data()), &NetworkManager::WiredDevice::bitRateChanged, this, &NmModelPrivate::onDeviceUpdated);
-            disconnect(qobject_cast<NetworkManager::WiredDevice *>(device.data()), &NetworkManager::WiredDevice::carrierChanged, this, &NmModelPrivate::onDeviceUpdated);
-            disconnect(qobject_cast<NetworkManager::WiredDevice *>(device.data()), &NetworkManager::WiredDevice::hardwareAddressChanged, this, &NmModelPrivate::onDeviceUpdated);
-            disconnect(qobject_cast<NetworkManager::WiredDevice *>(device.data()), &NetworkManager::WiredDevice::permanentHardwareAddressChanged, this, &NmModelPrivate::onDeviceUpdated);
-            break;
-        case NetworkManager::Device::Wifi:
-            disconnect(qobject_cast<NetworkManager::WirelessDevice *>(device.data()), &NetworkManager::WirelessDevice::bitRateChanged, this, &NmModelPrivate::onDeviceUpdated);
-            disconnect(qobject_cast<NetworkManager::WirelessDevice *>(device.data()), &NetworkManager::WirelessDevice::activeAccessPointChanged, this, &NmModelPrivate::onDeviceUpdated);
-            disconnect(qobject_cast<NetworkManager::WirelessDevice *>(device.data()), &NetworkManager::WirelessDevice::modeChanged, this, &NmModelPrivate::onDeviceUpdated);
-            disconnect(qobject_cast<NetworkManager::WirelessDevice *>(device.data()), &NetworkManager::WirelessDevice::wirelessCapabilitiesChanged, this, &NmModelPrivate::onDeviceUpdated);
-            disconnect(qobject_cast<NetworkManager::WirelessDevice *>(device.data()), &NetworkManager::WirelessDevice::hardwareAddressChanged, this, &NmModelPrivate::onDeviceUpdated);
-            disconnect(qobject_cast<NetworkManager::WirelessDevice *>(device.data()), &NetworkManager::WirelessDevice::permanentHardwareAddressChanged, this, &NmModelPrivate::onDeviceUpdated);
-            disconnect(qobject_cast<NetworkManager::WirelessDevice *>(device.data()), &NetworkManager::WirelessDevice::wirelessPropertiesChanged, this, &NmModelPrivate::onDeviceUpdated);
-            disconnect(qobject_cast<NetworkManager::WirelessDevice *>(device.data()), &NetworkManager::WirelessDevice::accessPointAppeared, this, &NmModelPrivate::onDeviceUpdated);
-            disconnect(qobject_cast<NetworkManager::WirelessDevice *>(device.data()), &NetworkManager::WirelessDevice::accessPointDisappeared, this, &NmModelPrivate::onDeviceUpdated);
-            disconnect(qobject_cast<NetworkManager::WirelessDevice *>(device.data()), &NetworkManager::WirelessDevice::networkAppeared, this, &NmModelPrivate::onWifiNetworkAppeared);
-            disconnect(qobject_cast<NetworkManager::WirelessDevice *>(device.data()), &NetworkManager::WirelessDevice::networkDisappeared, this, &NmModelPrivate::onWifiNetworkDisappeared);
-            break;
-        default:
-            //TODO: other device types!
-            break;
-    }
+    device->disconnect(this);
 }
 
 void NmModelPrivate::clearDevices()
@@ -335,9 +265,7 @@ void NmModelPrivate::removeWifiNetwork(int pos)
 {
     //network signals
     NetworkManager::WirelessNetwork::Ptr net = mWifiNets.takeAt(pos);
-    disconnect(net.data(), &NetworkManager::WirelessNetwork::signalStrengthChanged, this, &NmModelPrivate::onWifiNetworkUpdated);
-    disconnect(net.data(), &NetworkManager::WirelessNetwork::referenceAccessPointChanged, this, &NmModelPrivate::onWifiNetworkUpdated);
-    disconnect(net.data(), &NetworkManager::WirelessNetwork::disappeared, this, &NmModelPrivate::onWifiNetworkUpdated);
+    net->disconnect(this);
 }
 
 void NmModelPrivate::clearWifiNetworks()
