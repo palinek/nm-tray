@@ -378,7 +378,8 @@ void NmModelPrivate::onDeviceAdded(QString const & uni)
     NetworkManager::Device::Ptr dev = NetworkManager::findNetworkInterface(uni);
     if (!dev.isNull())
     {
-        Q_ASSERT(dev->isValid());
+        if (dev->isValid())
+            qCWarning(NM_TRAY).noquote() << Q_FUNC_INFO << uni << " is currently invalid...";
         emit deviceAdd(dev);
     }
 }
@@ -388,7 +389,8 @@ void NmModelPrivate::onDeviceRemoved(QString const & uni)
     NetworkManager::Device::Ptr dev = findDeviceUni(uni);
     if (!dev.isNull())
     {
-        Q_ASSERT(dev->isValid());
+        if (dev->isValid())
+            qCWarning(NM_TRAY).noquote() << Q_FUNC_INFO << uni << " is currently invalid...";
         emit deviceRemove(dev.data());
     }
 }
@@ -398,7 +400,8 @@ void NmModelPrivate::onActiveConnectionAdded(QString const & path)
     NetworkManager::ActiveConnection::Ptr conn = NetworkManager::findActiveConnection(path);//XXX: const QString &uni
     if (!conn.isNull())
     {
-        Q_ASSERT(conn->isValid());
+        if (conn->isValid())
+            qCWarning(NM_TRAY).noquote() << Q_FUNC_INFO << path << " is currently invalid...";
         emit activeConnectionAdd(conn);
     }
 }
@@ -408,7 +411,8 @@ void NmModelPrivate::onActiveConnectionRemoved(QString const & path)
     NetworkManager::ActiveConnection::Ptr conn = findActiveConnection(path);//XXX: const QString &uni
     if (!conn.isNull())
     {
-        Q_ASSERT(conn->isValid());
+        if (conn->isValid())
+            qCWarning(NM_TRAY).noquote() << Q_FUNC_INFO << path << " is currently invalid...";
         emit activeConnectionRemove(conn.data());
     }
 }
@@ -423,7 +427,8 @@ void NmModelPrivate::onConnectionAdded(QString const & path)
     NetworkManager::Connection::Ptr conn = NetworkManager::findConnection(path);
     if (!conn.isNull())
     {
-        Q_ASSERT(conn->isValid());
+        if (conn->isValid())
+            qCWarning(NM_TRAY).noquote() << Q_FUNC_INFO << path << " is currently invalid...";
         emit connectionAdd(conn);
     }
 }
@@ -433,7 +438,8 @@ void NmModelPrivate::onConnectionRemoved(QString const & path)
     NetworkManager::Connection::Ptr conn = NetworkManager::findConnection(path);
     if (!conn.isNull())
     {
-        Q_ASSERT(conn->isValid());
+        if (conn->isValid())
+            qCWarning(NM_TRAY).noquote() << Q_FUNC_INFO << path << " is currently invalid...";
         emit connectionRemove(conn.data());
     }
 }
