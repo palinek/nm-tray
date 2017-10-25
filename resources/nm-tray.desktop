@@ -5,4 +5,4 @@ Comment=NetworkManager frontend (tray icon)
 Icon=network-transmit
 TryExec=nm-tray
 Exec=nm-tray
-Categories=Network;System;Monitor;Qt;
+Categories=System;Monitor;Qt;
