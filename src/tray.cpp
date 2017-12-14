@@ -43,6 +43,7 @@ COPYRIGHT_HEADER*/
 
 // config keys
 static const QString ENABLE_NOTIFICATIONS = QStringLiteral("enableNotifications");
+static const QString CONNECTIONS_EDITOR = QStringLiteral("connectionsEditor");
 
 class TrayPrivate
 {
@@ -345,17 +346,35 @@ bool Tray::eventFilter(QObject * object, QEvent * event)
 
 void Tray::onEditConnectionsTriggered()
 {
+    const QStringList connections_editor = QSettings{}.value(CONNECTIONS_EDITOR, QStringList{{"xterm", "-e", "nmtui-edit"}}).toStringList();
+    if (connections_editor.empty() || connections_editor.front().isEmpty())
+    {
+        qCCritical(NM_TRAY) << "Can't start connections editor, because of misconfiguration. Value of"
+            << CONNECTIONS_EDITOR << "key is invalid," << connections_editor;
+        return;
+    }
+
     // Note: let this object dangle, if the process isn't finished until our application is closed
     QProcess * editor = new QProcess;
     editor->setProcessChannelMode(QProcess::ForwardedChannels);
-    // TODO: allow the command to be configurable!?
-    qCInfo(NM_TRAY) << "starting the nm-connection-editor";
-    editor->start(QStringLiteral("nm-connection-editor"));
-    editor->closeWriteChannel();
-    connect(editor, static_cast<void(QProcess::*)(int, QProcess::ExitStatus)>(&QProcess::finished), [editor] {
-            qCInfo(NM_TRAY) << "the nm-connection-editor finished";
+    connect(editor, static_cast<void(QProcess::*)(int, QProcess::ExitStatus)>(&QProcess::finished)
+            , [connections_editor, editor] (int exitCode, QProcess::ExitStatus exitStatus) {
+            qCInfo(NM_TRAY) << "connections editor " << connections_editor << " finished, exitCode=" << exitCode << ", exitStatus=" << exitStatus;
             editor->deleteLater();
     });
+    connect(editor, &QProcess::errorOccurred
+            , [connections_editor, editor] (QProcess::ProcessError error) {
+            qCInfo(NM_TRAY) << "connections editor " << connections_editor << " failed, error=" << error;
+            editor->deleteLater();
+    });
+
+    qCInfo(NM_TRAY) << "starting connections editor " << connections_editor;
+
+    QString program = connections_editor.front();
+    QStringList args;
+    std::copy(connections_editor.cbegin() + 1, connections_editor.cend(), std::back_inserter(args));
+    editor->start(program, args);
+    editor->closeWriteChannel();
 }
 
 void Tray::onAboutTriggered()
