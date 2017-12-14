@@ -81,3 +81,4 @@ install(TARGETS nm-tray RUNTIME DESTINATION "${CMAKE_INSTALL_FULL_BINDIR}" COMPO
 install(FILES ${QMS} DESTINATION "${TRANSLATION_DIR}" COMPONENT translations)
 install(FILES "resources/nm-tray.desktop" DESTINATION "${CMAKE_INSTALL_FULL_DATAROOTDIR}/applications" COMPONENT data)
 install(FILES "resources/nm-tray-autostart.desktop" DESTINATION "${NM_TRAY_XDG_AUTOSTART_DIR}" COMPONENT data)
+install(FILES "resources/nm-tray.conf" DESTINATION "${CMAKE_INSTALL_FULL_DATADIR}/${PROJECT_NAME}" COMPONENT data)
