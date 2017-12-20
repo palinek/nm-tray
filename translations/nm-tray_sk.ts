@@ -14,7 +14,7 @@
     <message>
         <location filename="../src/nmlist.ui" line="14"/>
         <source>Dialog</source>
-        <translation type="unfinished"></translation>
+        <translation>Dialóg</translation>
     </message>
     <message>
         <location filename="../src/nmlist.ui" line="20"/>
@@ -37,7 +37,7 @@
     <message>
         <location filename="../src/nmmodel.cpp" line="792"/>
         <source>root</source>
-        <translation type="unfinished"></translation>
+        <translation>koreň</translation>
     </message>
     <message>
         <location filename="../src/nmmodel.cpp" line="794"/>
@@ -68,12 +68,12 @@
     <message>
         <location filename="../src/nmmodel.cpp" line="55"/>
         <source>nm-tray - wireless password</source>
-        <translation type="unfinished"></translation>
+        <translation>nm-tray - wifi heslo</translation>
     </message>
     <message>
         <location filename="../src/nmmodel.cpp" line="56"/>
         <source>Password is needed for connection to &apos;%1&apos;:</source>
-        <translation type="unfinished"></translation>
+        <translation>Pre pripojenie k &apos;%1&apos; je potrebné heslo:</translation>
     </message>
     <message>
         <location filename="../src/nmmodel.cpp" line="1133"/>
@@ -126,37 +126,37 @@
         <location filename="../src/nmmodel.cpp" line="1152"/>
         <source>IPv4</source>
         <comment>Active connection information</comment>
-        <translation type="unfinished"></translation>
+        <translation>IPv4</translation>
     </message>
     <message>
         <location filename="../src/nmmodel.cpp" line="1153"/>
         <source>IPv6</source>
         <comment>Active connection information</comment>
-        <translation type="unfinished"></translation>
+        <translation>IPv6</translation>
     </message>
     <message>
         <location filename="../src/nmmodel.cpp" line="1164"/>
         <source>IP Address</source>
         <comment>Active connection information</comment>
-        <translation type="unfinished"></translation>
+        <translation>IP adresa</translation>
     </message>
     <message>
         <location filename="../src/nmmodel.cpp" line="1166"/>
         <source>Subnet Mask</source>
         <comment>Active connection information</comment>
-        <translation type="unfinished"></translation>
+        <translation>Maska podsiete</translation>
     </message>
     <message>
         <location filename="../src/nmmodel.cpp" line="1175"/>
         <source>Default route</source>
         <comment>Active connection information</comment>
-        <translation type="unfinished"></translation>
+        <translation>Predvolená cesta</translation>
     </message>
     <message>
         <location filename="../src/nmmodel.cpp" line="1181"/>
         <source>DNS(%1)</source>
         <comment>Active connection information</comment>
-        <translation type="unfinished"></translation>
+        <translation>DNS(%1)</translation>
     </message>
 </context>
 <context>
@@ -164,27 +164,27 @@
     <message>
         <location filename="../src/tray.cpp" line="190"/>
         <source>Connection lost</source>
-        <translation type="unfinished"></translation>
+        <translation>Spojenie stratené</translation>
     </message>
     <message>
         <location filename="../src/tray.cpp" line="191"/>
         <source>We have just lost the connection to %1 &apos;%2&apos;.</source>
-        <translation type="unfinished"></translation>
+        <translation>Práve sme stratili spojenie k %1 &apos;%2&apos;.</translation>
     </message>
     <message>
         <location filename="../src/tray.cpp" line="203"/>
         <source>Connection established</source>
-        <translation type="unfinished"></translation>
+        <translation>Spojenie naviazané</translation>
     </message>
     <message>
         <location filename="../src/tray.cpp" line="204"/>
         <source>We have just established the connection to %1 &apos;%2&apos;.</source>
-        <translation type="unfinished"></translation>
+        <translation>Práve sme naviazali spojenie k %1 &apos;%2&apos;.</translation>
     </message>
     <message>
         <location filename="../src/tray.cpp" line="208"/>
         <source>NetworkManager(nm-tray)</source>
-        <translation type="unfinished"></translation>
+        <translation>NetworkManager(nm-tray)</translation>
     </message>
     <message>
         <location filename="../src/tray.cpp" line="241"/>
@@ -200,7 +200,7 @@
     <message>
         <location filename="../src/tray.cpp" line="244"/>
         <source>Enable notifications</source>
-        <translation type="unfinished"></translation>
+        <translation>Zapnúť notifikácie</translation>
     </message>
     <message>
         <location filename="../src/tray.cpp" line="246"/>
@@ -210,7 +210,7 @@
     <message>
         <location filename="../src/tray.cpp" line="247"/>
         <source>Debug information</source>
-        <translation type="unfinished"></translation>
+        <translation>Debug informácie</translation>
     </message>
     <message>
         <location filename="../src/tray.cpp" line="249"/>
@@ -230,7 +230,7 @@
     <message>
         <location filename="../src/tray.cpp" line="336"/>
         <source>&lt;strong&gt;&lt;a href=&quot;https://github.com/palinek/nm-tray&quot;&gt;nm-tray&lt;/a&gt;&lt;/strong&gt; is a simple Qt based frontend for &lt;a href=&quot;https://wiki.gnome.org/Projects/NetworkManager&quot;&gt;NetworkManager&lt;/a&gt;.&lt;br/&gt;&lt;br/&gt;Version: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;strong&gt;&lt;a href=&quot;https://github.com/palinek/nm-tray&quot;&gt;nm-tray&lt;/a&gt;&lt;/strong&gt; je jednoduchý Qt frontend pre &lt;a href=&quot;https://wiki.gnome.org/Projects/NetworkManager&quot;&gt;NetworkManager&lt;/a&gt;.&lt;br/&gt;&lt;br/&gt;Verzia: %1</translation>
     </message>
     <message>
         <location filename="../src/tray.cpp" line="276"/>
@@ -243,12 +243,12 @@
     <message>
         <location filename="../src/windowmenu.cpp" line="133"/>
         <source>Active connection(s)</source>
-        <translation type="unfinished"></translation>
+        <translation>Aktívne spojenie/a</translation>
     </message>
     <message>
         <location filename="../src/windowmenu.cpp" line="136"/>
         <source>Wi-Fi network(s)</source>
-        <translation type="unfinished"></translation>
+        <translation>Wi-Fi spojenie/a</translation>
     </message>
 </context>
 </TS>
