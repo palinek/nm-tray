@@ -6,7 +6,7 @@
     <message>
         <location filename="../src/connectioninfo.ui" line="14"/>
         <source>Connection information</source>
-        <translation></translation>
+        <translation>Tilkoblingsinformasjon</translation>
     </message>
 </context>
 <context>
@@ -19,17 +19,17 @@
     <message>
         <location filename="../src/nmlist.ui" line="20"/>
         <source>All information</source>
-        <translation></translation>
+        <translation>All informasjon</translation>
     </message>
     <message>
         <location filename="../src/nmlist.ui" line="30"/>
         <source>Active connections</source>
-        <translation></translation>
+        <translation>Aktive tilkoblinger</translation>
     </message>
     <message>
         <location filename="../src/nmlist.ui" line="40"/>
         <source>Available wireless</source>
-        <translation></translation>
+        <translation>Tilgjengelige trådløsnettverk</translation>
     </message>
 </context>
 <context>
@@ -42,17 +42,17 @@
     <message>
         <location filename="../src/nmmodel.cpp" line="794"/>
         <source>active connection(s)</source>
-        <translation></translation>
+        <translation>aktiv(e) tilkobling(er)</translation>
     </message>
     <message>
         <location filename="../src/nmmodel.cpp" line="796"/>
         <source>connection(s)</source>
-        <translation></translation>
+        <translation>tilkobling(er)</translation>
     </message>
     <message>
         <location filename="../src/nmmodel.cpp" line="798"/>
         <source>device(s)</source>
-        <translation></translation>
+        <translation>enhet(er)</translation>
     </message>
     <message>
         <location filename="../src/nmmodel.cpp" line="800"/>
@@ -63,17 +63,17 @@
         <location filename="../src/nmmodel.cpp" line="1030"/>
         <source>unknown</source>
         <comment>hardware address</comment>
-        <translation></translation>
+        <translation>ukjent</translation>
     </message>
     <message>
         <location filename="../src/nmmodel.cpp" line="55"/>
         <source>nm-tray - wireless password</source>
-        <translation></translation>
+        <translation>nm-tray - trådløspassord</translation>
     </message>
     <message>
         <location filename="../src/nmmodel.cpp" line="56"/>
         <source>Password is needed for connection to &apos;%1&apos;:</source>
-        <translation></translation>
+        <translation>Passord kreves for tilkobling til &apos;%1&apos;:</translation>
     </message>
     <message>
         <location filename="../src/nmmodel.cpp" line="1133"/>
@@ -85,7 +85,7 @@
         <location filename="../src/nmmodel.cpp" line="1134"/>
         <source>Interface</source>
         <comment>Active connection information</comment>
-        <translation></translation>
+        <translation>Grensesnitt</translation>
     </message>
     <message>
         <location filename="../src/nmmodel.cpp" line="1136"/>
@@ -103,7 +103,7 @@
         <location filename="../src/nmmodel.cpp" line="1140"/>
         <source>Speed</source>
         <comment>Active connection information</comment>
-        <translation></translation>
+        <translation>Hastighet</translation>
     </message>
     <message>
         <location filename="../src/nmmodel.cpp" line="1142"/>
@@ -114,13 +114,13 @@
         <location filename="../src/nmmodel.cpp" line="1144"/>
         <source>unknown</source>
         <comment>Speed</comment>
-        <translation></translation>
+        <translation>ukjent</translation>
     </message>
     <message>
         <location filename="../src/nmmodel.cpp" line="1148"/>
         <source>Security</source>
         <comment>Active connection information</comment>
-        <translation></translation>
+        <translation>Sikkerhet</translation>
     </message>
     <message>
         <location filename="../src/nmmodel.cpp" line="1152"/>
@@ -144,7 +144,7 @@
         <location filename="../src/nmmodel.cpp" line="1166"/>
         <source>Subnet Mask</source>
         <comment>Active connection information</comment>
-        <translation></translation>
+        <translation>Nettmaske</translation>
     </message>
     <message>
         <location filename="../src/nmmodel.cpp" line="1175"/>
@@ -164,22 +164,22 @@
     <message>
         <location filename="../src/tray.cpp" line="190"/>
         <source>Connection lost</source>
-        <translation></translation>
+        <translation>Tilknytningen gitt tapt</translation>
     </message>
     <message>
         <location filename="../src/tray.cpp" line="191"/>
         <source>We have just lost the connection to %1 &apos;%2&apos;.</source>
-        <translation></translation>
+        <translation>Mistet tilknytningen til %1 &apos;%2&apos;.</translation>
     </message>
     <message>
         <location filename="../src/tray.cpp" line="203"/>
         <source>Connection established</source>
-        <translation></translation>
+        <translation>Tilkobling opprettet</translation>
     </message>
     <message>
         <location filename="../src/tray.cpp" line="204"/>
         <source>We have just established the connection to %1 &apos;%2&apos;.</source>
-        <translation></translation>
+        <translation>Tilkobling etablert til %1 &apos;%2&apos;.</translation>
     </message>
     <message>
         <location filename="../src/tray.cpp" line="208"/>
@@ -189,22 +189,22 @@
     <message>
         <location filename="../src/tray.cpp" line="241"/>
         <source>Enable Networking</source>
-        <translation></translation>
+        <translation>Skru på nettverk</translation>
     </message>
     <message>
         <location filename="../src/tray.cpp" line="242"/>
         <source>Enable Wi-fi</source>
-        <translation></translation>
+        <translation>Skru på Wi-Fi</translation>
     </message>
     <message>
         <location filename="../src/tray.cpp" line="244"/>
         <source>Enable notifications</source>
-        <translation></translation>
+        <translation>Skru på merknader</translation>
     </message>
     <message>
         <location filename="../src/tray.cpp" line="246"/>
         <source>Connection information</source>
-        <translation></translation>
+        <translation>Tilkoblingsinformasjon</translation>
     </message>
     <message>
         <location filename="../src/tray.cpp" line="247"/>
@@ -214,22 +214,22 @@
     <message>
         <location filename="../src/tray.cpp" line="249"/>
         <source>About</source>
-        <translation></translation>
+        <translation>Om</translation>
     </message>
     <message>
         <location filename="../src/tray.cpp" line="251"/>
         <source>Quit</source>
-        <translation></translation>
+        <translation>Avslutt</translation>
     </message>
     <message>
         <location filename="../src/tray.cpp" line="335"/>
         <source>%1 about</source>
-        <translation></translation>
+        <translation>%1 om</translation>
     </message>
     <message>
         <location filename="../src/tray.cpp" line="336"/>
         <source>&lt;strong&gt;&lt;a href=&quot;https://github.com/palinek/nm-tray&quot;&gt;nm-tray&lt;/a&gt;&lt;/strong&gt; is a simple Qt based frontend for &lt;a href=&quot;https://wiki.gnome.org/Projects/NetworkManager&quot;&gt;NetworkManager&lt;/a&gt;.&lt;br/&gt;&lt;br/&gt;Version: %1</source>
-        <translation></translation>
+        <translation>&lt;strong&gt;&lt;a href=&quot;https://github.com/palinek/nm-tray&quot;&gt;nm-tray&lt;/a&gt;&lt;/strong&gt; er en enkel Qt-basert grenseflate for &lt;a href=&quot;https://wiki.gnome.org/Projects/NetworkManager&quot;&gt;NetworkManager&lt;/a&gt;.&lt;br/&gt;&lt;br/&gt;Version: %1</translation>
     </message>
     <message>
         <location filename="../src/tray.cpp" line="276"/>
@@ -242,7 +242,7 @@
     <message>
         <location filename="../src/windowmenu.cpp" line="133"/>
         <source>Active connection(s)</source>
-        <translation></translation>
+        <translation>Aktiv(e) tilkobling(er)</translation>
     </message>
     <message>
         <location filename="../src/windowmenu.cpp" line="136"/>
