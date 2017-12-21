@@ -80,7 +80,7 @@ public:
 
 
     // configuration
-    bool mEnableNotifications; //!< should info about connection establishment etc. be send by org.freedesktop.Notifications
+    bool mEnableNotifications; //!< should info about connection establishment etc. be sent by org.freedesktop.Notifications
 };
 
 TrayPrivate::TrayPrivate()
@@ -200,7 +200,7 @@ void TrayPrivate::notify(QModelIndex const & index, bool removing)
     {
         mConnectionsToNotify.removeOne(index);
         summary = Tray::tr("Connection lost");
-        body = Tray::tr("We have just lost the connection to %1 '%2'.");
+        body = Tray::tr("Lost the connection to %1 '%2'.");
     } else
     {
         const int notif_i = mConnectionsToNotify.indexOf(index);
@@ -213,7 +213,7 @@ void TrayPrivate::notify(QModelIndex const & index, bool removing)
         }
         mConnectionsToNotify.removeAt(notif_i); // fire the notification only once
         summary = Tray::tr("Connection established");
-        body = Tray::tr("We have just established the connection to %1 '%2'.");
+        body = Tray::tr("Established connection to %1 '%2'.");
     }
 
     // TODO: do somehow check the result?
@@ -251,13 +251,13 @@ Tray::Tray(QObject *parent/* = nullptr*/)
     d->mIconTimer.setInterval(0);
 
     d->mActEnableNetwork = d->mContextMenu.addAction(Tray::tr("Enable Networking"));
-    d->mActEnableWifi = d->mContextMenu.addAction(Tray::tr("Enable Wi-fi"));
+    d->mActEnableWifi = d->mContextMenu.addAction(Tray::tr("Enable Wi-Fi"));
     d->mContextMenu.addSeparator();
     QAction * enable_notifications = d->mContextMenu.addAction(Tray::tr("Enable notifications"));
     d->mContextMenu.addSeparator();
     d->mActConnInfo = d->mContextMenu.addAction(QIcon::fromTheme(QStringLiteral("dialog-information")), Tray::tr("Connection information"));
     d->mActDebugInfo = d->mContextMenu.addAction(QIcon::fromTheme(QStringLiteral("dialog-information")), Tray::tr("Debug information"));
-    connect(d->mContextMenu.addAction(QIcon::fromTheme(QStringLiteral("document-edit")), Tray::tr("Edit connections...")), &QAction::triggered
+    connect(d->mContextMenu.addAction(QIcon::fromTheme(QStringLiteral("document-edit")), Tray::tr("Edit connections…")), &QAction::triggered
             , this, &Tray::onEditConnectionsTriggered);
     d->mContextMenu.addSeparator();
     connect(d->mContextMenu.addAction(QIcon::fromTheme(QStringLiteral("help-about")), Tray::tr("About")), &QAction::triggered
@@ -349,8 +349,8 @@ void Tray::onEditConnectionsTriggered()
     const QStringList connections_editor = QSettings{}.value(CONNECTIONS_EDITOR, QStringList{{"xterm", "-e", "nmtui-edit"}}).toStringList();
     if (connections_editor.empty() || connections_editor.front().isEmpty())
     {
-        qCCritical(NM_TRAY) << "Can't start connections editor, because of misconfiguration. Value of"
-            << CONNECTIONS_EDITOR << "key is invalid," << connections_editor;
+        qCCritical(NM_TRAY) << "Can't start connection editor, because of misconfiguration. Value of"
+            << CONNECTIONS_EDITOR << "invalid key," << connections_editor;
         return;
     }
 
@@ -359,16 +359,16 @@ void Tray::onEditConnectionsTriggered()
     editor->setProcessChannelMode(QProcess::ForwardedChannels);
     connect(editor, static_cast<void(QProcess::*)(int, QProcess::ExitStatus)>(&QProcess::finished)
             , [connections_editor, editor] (int exitCode, QProcess::ExitStatus exitStatus) {
-            qCInfo(NM_TRAY) << "connections editor " << connections_editor << " finished, exitCode=" << exitCode << ", exitStatus=" << exitStatus;
+            qCInfo(NM_TRAY) << "connection editor " << connections_editor << " finished, exitCode=" << exitCode << ", exitStatus=" << exitStatus;
             editor->deleteLater();
     });
     connect(editor, &QProcess::errorOccurred
             , [connections_editor, editor] (QProcess::ProcessError error) {
-            qCInfo(NM_TRAY) << "connections editor " << connections_editor << " failed, error=" << error;
+            qCInfo(NM_TRAY) << "connection editor " << connections_editor << " failed, error=" << error;
             editor->deleteLater();
     });
 
-    qCInfo(NM_TRAY) << "starting connections editor " << connections_editor;
+    qCInfo(NM_TRAY) << "starting connection editor " << connections_editor;
 
     QString program = connections_editor.front();
     QStringList args;
