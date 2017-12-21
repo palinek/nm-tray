@@ -257,7 +257,7 @@ Tray::Tray(QObject *parent/* = nullptr*/)
     d->mContextMenu.addSeparator();
     d->mActConnInfo = d->mContextMenu.addAction(QIcon::fromTheme(QStringLiteral("dialog-information")), Tray::tr("Connection information"));
     d->mActDebugInfo = d->mContextMenu.addAction(QIcon::fromTheme(QStringLiteral("dialog-information")), Tray::tr("Debug information"));
-    connect(d->mContextMenu.addAction(QIcon::fromTheme(QStringLiteral("document-edit")), Tray::tr("Edit connections…")), &QAction::triggered
+    connect(d->mContextMenu.addAction(QIcon::fromTheme(QStringLiteral("document-edit")), Tray::tr("Edit connections...")), &QAction::triggered
             , this, &Tray::onEditConnectionsTriggered);
     d->mContextMenu.addSeparator();
     connect(d->mContextMenu.addAction(QIcon::fromTheme(QStringLiteral("help-about")), Tray::tr("About")), &QAction::triggered
