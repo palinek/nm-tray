@@ -184,12 +184,12 @@
     <message>
         <location filename="../src/tray.cpp" line="123"/>
         <source>&lt;pre&gt;Connection &lt;strong&gt;%1&lt;/strong&gt;(%2) active&lt;/pre&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;pre&gt;החיבור &lt;strong&gt;%1&lt;/strong&gt;(%2) פעיל&lt;/pre&gt;</translation>
     </message>
     <message>
         <location filename="../src/tray.cpp" line="129"/>
         <source>&lt;pre&gt;No active connection&lt;/pre&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;pre&gt;אין חיבורים פעילים&lt;/pre&gt;</translation>
     </message>
     <message>
         <location filename="../src/tray.cpp" line="203"/>
@@ -224,7 +224,7 @@
     <message>
         <location filename="../src/tray.cpp" line="260"/>
         <source>Edit connections...</source>
-        <translation type="unfinished"></translation>
+        <translation>עריכת חיבורים…</translation>
     </message>
     <message>
         <location filename="../src/tray.cpp" line="263"/>
@@ -267,7 +267,7 @@
     <message>
         <location filename="../src/windowmenu.cpp" line="167"/>
         <source>Known connection(s)</source>
-        <translation type="unfinished"></translation>
+        <translation>חיבורים מוכרים</translation>
     </message>
 </context>
 </TS>
