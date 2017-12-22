@@ -200,7 +200,7 @@ void TrayPrivate::notify(QModelIndex const & index, bool removing)
     {
         mConnectionsToNotify.removeOne(index);
         summary = Tray::tr("Connection lost");
-        body = Tray::tr("Lost the connection to %1 '%2'.");
+        body = Tray::tr("No longer connected to %1 '%2'.");
     } else
     {
         const int notif_i = mConnectionsToNotify.indexOf(index);
@@ -213,7 +213,7 @@ void TrayPrivate::notify(QModelIndex const & index, bool removing)
         }
         mConnectionsToNotify.removeAt(notif_i); // fire the notification only once
         summary = Tray::tr("Connection established");
-        body = Tray::tr("Established connection to %1 '%2'.");
+        body = Tray::tr("Now connected to %1 '%2'.");
     }
 
     // TODO: do somehow check the result?
