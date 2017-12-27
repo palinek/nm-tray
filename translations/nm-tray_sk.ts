@@ -97,7 +97,7 @@
         <location filename="../src/nmmodel.cpp" line="1135"/>
         <source>Driver</source>
         <comment>Active connection information</comment>
-        <translation>Driver</translation>
+        <translation>Ovládač</translation>
     </message>
     <message>
         <location filename="../src/nmmodel.cpp" line="1137"/>
