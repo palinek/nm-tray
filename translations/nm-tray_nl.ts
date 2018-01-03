@@ -6,7 +6,7 @@
     <message>
         <location filename="../src/connectioninfo.ui" line="14"/>
         <source>Connection information</source>
-        <translation></translation>
+        <translation>Verbindingsinformatie</translation>
     </message>
 </context>
 <context>
@@ -14,22 +14,22 @@
     <message>
         <location filename="../src/nmlist.ui" line="14"/>
         <source>Dialog</source>
-        <translation></translation>
+        <translation>Dialoogvenster</translation>
     </message>
     <message>
         <location filename="../src/nmlist.ui" line="20"/>
         <source>All information</source>
-        <translation></translation>
+        <translation>Alle informatie</translation>
     </message>
     <message>
         <location filename="../src/nmlist.ui" line="30"/>
         <source>Active connections</source>
-        <translation></translation>
+        <translation>Actieve verbindingen</translation>
     </message>
     <message>
         <location filename="../src/nmlist.ui" line="40"/>
         <source>Available wireless</source>
-        <translation></translation>
+        <translation>Beschikbare draadloze verbindingen</translation>
     </message>
 </context>
 <context>
@@ -37,12 +37,12 @@
     <message>
         <location filename="../src/nmmodel.cpp" line="55"/>
         <source>nm-tray - wireless password</source>
-        <translation></translation>
+        <translation>nm-tray - draadloos wachtwoord</translation>
     </message>
     <message>
         <location filename="../src/nmmodel.cpp" line="56"/>
         <source>Password is needed for connection to &apos;%1&apos;:</source>
-        <translation></translation>
+        <translation>Het wachtwoord is benodigd om te verbinden met &apos;%1&apos;:</translation>
     </message>
     <message>
         <location filename="../src/nmmodel.cpp" line="728"/>
@@ -52,58 +52,58 @@
     <message>
         <location filename="../src/nmmodel.cpp" line="730"/>
         <source>active connection(s)</source>
-        <translation></translation>
+        <translation>actieve verbinding(en)</translation>
     </message>
     <message>
         <location filename="../src/nmmodel.cpp" line="732"/>
         <source>connection(s)</source>
-        <translation></translation>
+        <translation>verbinding(en)</translation>
     </message>
     <message>
         <location filename="../src/nmmodel.cpp" line="734"/>
         <source>device(s)</source>
-        <translation></translation>
+        <translation>appara(a)t(en)</translation>
     </message>
     <message>
         <location filename="../src/nmmodel.cpp" line="736"/>
         <source>wifi network(s)</source>
-        <translation></translation>
+        <translation>wi-fi-netwerk(en)</translation>
     </message>
     <message>
         <location filename="../src/nmmodel.cpp" line="1027"/>
         <source>unknown</source>
         <comment>hardware address</comment>
-        <translation></translation>
+        <translation>onbekend</translation>
     </message>
     <message>
         <location filename="../src/nmmodel.cpp" line="1130"/>
         <source>General</source>
         <comment>Active connection information</comment>
-        <translation></translation>
+        <translation>Algemeen</translation>
     </message>
     <message>
         <location filename="../src/nmmodel.cpp" line="1131"/>
         <source>Interface</source>
         <comment>Active connection information</comment>
-        <translation></translation>
+        <translation>Uiterlijk</translation>
     </message>
     <message>
         <location filename="../src/nmmodel.cpp" line="1133"/>
         <source>Hardware Address</source>
         <comment>Active connection information</comment>
-        <translation></translation>
+        <translation>Hardware-adres</translation>
     </message>
     <message>
         <location filename="../src/nmmodel.cpp" line="1135"/>
         <source>Driver</source>
         <comment>Active connection information</comment>
-        <translation></translation>
+        <translation>Stuurprogramma</translation>
     </message>
     <message>
         <location filename="../src/nmmodel.cpp" line="1137"/>
         <source>Speed</source>
         <comment>Active connection information</comment>
-        <translation></translation>
+        <translation>Snelheid</translation>
     </message>
     <message>
         <location filename="../src/nmmodel.cpp" line="1139"/>
@@ -114,13 +114,13 @@
         <location filename="../src/nmmodel.cpp" line="1141"/>
         <source>unknown</source>
         <comment>Speed</comment>
-        <translation></translation>
+        <translation>onbekend</translation>
     </message>
     <message>
         <location filename="../src/nmmodel.cpp" line="1145"/>
         <source>Security</source>
         <comment>Active connection information</comment>
-        <translation></translation>
+        <translation>Beveiliging</translation>
     </message>
     <message>
         <location filename="../src/nmmodel.cpp" line="1149"/>
@@ -138,19 +138,19 @@
         <location filename="../src/nmmodel.cpp" line="1161"/>
         <source>IP Address</source>
         <comment>Active connection information</comment>
-        <translation></translation>
+        <translation>IP-adres</translation>
     </message>
     <message>
         <location filename="../src/nmmodel.cpp" line="1163"/>
         <source>Subnet Mask</source>
         <comment>Active connection information</comment>
-        <translation></translation>
+        <translation>Subnet-mask</translation>
     </message>
     <message>
         <location filename="../src/nmmodel.cpp" line="1172"/>
         <source>Default route</source>
         <comment>Active connection information</comment>
-        <translation></translation>
+        <translation>Standaard route</translation>
     </message>
     <message>
         <location filename="../src/nmmodel.cpp" line="1178"/>
@@ -164,32 +164,32 @@
     <message>
         <location filename="../src/tray.cpp" line="123"/>
         <source>&lt;pre&gt;Connection &lt;strong&gt;%1&lt;/strong&gt;(%2) active&lt;/pre&gt;</source>
-        <translation></translation>
+        <translation>&lt;pre&gt;Verbinding &lt;strong&gt;%1&lt;/strong&gt;(%2) actief&lt;/pre&gt;</translation>
     </message>
     <message>
         <location filename="../src/tray.cpp" line="129"/>
         <source>&lt;pre&gt;No active connection&lt;/pre&gt;</source>
-        <translation></translation>
+        <translation>&lt;pre&gt;Geen actieve verbinding&lt;/pre&gt;</translation>
     </message>
     <message>
         <location filename="../src/tray.cpp" line="202"/>
         <source>Connection lost</source>
-        <translation></translation>
+        <translation>Verbinding verbroken</translation>
     </message>
     <message>
         <location filename="../src/tray.cpp" line="203"/>
         <source>No longer connected to %1 &apos;%2&apos;.</source>
-        <translation></translation>
+        <translation>Niet meer verbonden met %1 &apos;%2&apos;.</translation>
     </message>
     <message>
         <location filename="../src/tray.cpp" line="215"/>
         <source>Connection established</source>
-        <translation></translation>
+        <translation>Verbinding gemaakt</translation>
     </message>
     <message>
         <location filename="../src/tray.cpp" line="216"/>
         <source>Now connected to %1 &apos;%2&apos;.</source>
-        <translation></translation>
+        <translation>Nu verbonden met %1 &apos;%2&apos;.</translation>
     </message>
     <message>
         <location filename="../src/tray.cpp" line="220"/>
@@ -199,57 +199,57 @@
     <message>
         <location filename="../src/tray.cpp" line="253"/>
         <source>Enable Networking</source>
-        <translation></translation>
+        <translation>Netwerk inschakelen</translation>
     </message>
     <message>
         <location filename="../src/tray.cpp" line="254"/>
         <source>Enable Wi-Fi</source>
-        <translation></translation>
+        <translation>Wi-Fi inschakelen</translation>
     </message>
     <message>
         <location filename="../src/tray.cpp" line="256"/>
         <source>Enable notifications</source>
-        <translation></translation>
+        <translation>Meldingen inschakelen</translation>
     </message>
     <message>
         <location filename="../src/tray.cpp" line="258"/>
         <source>Connection information</source>
-        <translation></translation>
+        <translation>Verbindingsinformatie</translation>
     </message>
     <message>
         <location filename="../src/tray.cpp" line="259"/>
         <source>Debug information</source>
-        <translation></translation>
+        <translation>Foutopsporingsinformatie</translation>
     </message>
     <message>
         <location filename="../src/tray.cpp" line="260"/>
         <source>Edit connections...</source>
-        <translation></translation>
+        <translation>Verbindingen bewerken...</translation>
     </message>
     <message>
         <location filename="../src/tray.cpp" line="263"/>
         <source>About</source>
-        <translation></translation>
+        <translation>Over</translation>
     </message>
     <message>
         <location filename="../src/tray.cpp" line="265"/>
         <source>Quit</source>
-        <translation></translation>
+        <translation>Afsluiten</translation>
     </message>
     <message>
         <location filename="../src/tray.cpp" line="290"/>
         <source>nm-tray info</source>
-        <translation></translation>
+        <translation>nm-tray informatie</translation>
     </message>
     <message>
         <location filename="../src/tray.cpp" line="382"/>
         <source>%1 about</source>
-        <translation></translation>
+        <translation>%1 over</translation>
     </message>
     <message>
         <location filename="../src/tray.cpp" line="383"/>
         <source>&lt;strong&gt;&lt;a href=&quot;https://github.com/palinek/nm-tray&quot;&gt;nm-tray&lt;/a&gt;&lt;/strong&gt; is a simple Qt based frontend for &lt;a href=&quot;https://wiki.gnome.org/Projects/NetworkManager&quot;&gt;NetworkManager&lt;/a&gt;.&lt;br/&gt;&lt;br/&gt;Version: %1</source>
-        <translation></translation>
+        <translation>&lt;strong&gt;&lt;a href=&quot;https://github.com/palinek/nm-tray&quot;&gt;nm-tray&lt;/a&gt;&lt;/strong&gt; is eenvoudig, op Qt-gebaseerd frontend voor &lt;a href=&quot;https://wiki.gnome.org/Projects/NetworkManager&quot;&gt;NetworkManager&lt;/a&gt;.&lt;br/&gt;&lt;br/&gt;Versie: %1</translation>
     </message>
 </context>
 <context>
@@ -257,17 +257,17 @@
     <message>
         <location filename="../src/windowmenu.cpp" line="163"/>
         <source>Active connection(s)</source>
-        <translation></translation>
+        <translation>Actieve verbinding(en)</translation>
     </message>
     <message>
         <location filename="../src/windowmenu.cpp" line="165"/>
         <source>Wi-Fi network(s)</source>
-        <translation></translation>
+        <translation>Wi-Fi-netwerk(en)</translation>
     </message>
     <message>
         <location filename="../src/windowmenu.cpp" line="167"/>
         <source>Known connection(s)</source>
-        <translation></translation>
+        <translation>Opgeslagen verbinding(en)</translation>
     </message>
 </context>
 </TS>
