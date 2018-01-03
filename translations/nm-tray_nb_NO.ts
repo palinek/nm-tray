@@ -196,27 +196,27 @@
     <message>
         <location filename="../src/tray.cpp" line="123"/>
         <source>&lt;pre&gt;Connection &lt;strong&gt;%1&lt;/strong&gt;(%2) active&lt;/pre&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;pre&gt;Tilkobling &lt;strong&gt;%1&lt;/strong&gt;(%2) aktiv&lt;/pre&gt;</translation>
     </message>
     <message>
         <location filename="../src/tray.cpp" line="129"/>
         <source>&lt;pre&gt;No active connection&lt;/pre&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;pre&gt;Ingen aktive tilkoblinger&lt;/pre&gt;</translation>
     </message>
     <message>
         <location filename="../src/tray.cpp" line="203"/>
         <source>No longer connected to %1 &apos;%2&apos;.</source>
-        <translation type="unfinished"></translation>
+        <translation>Ikke lenger tilkoblet til %1 &apos;%2&apos;.</translation>
     </message>
     <message>
         <location filename="../src/tray.cpp" line="216"/>
         <source>Now connected to %1 &apos;%2&apos;.</source>
-        <translation type="unfinished"></translation>
+        <translation>Nå tilkoblet til %1 &apos;%2&apos;.</translation>
     </message>
     <message>
         <location filename="../src/tray.cpp" line="254"/>
         <source>Enable Wi-Fi</source>
-        <translation type="unfinished"></translation>
+        <translation>Skru på Wi-Fi</translation>
     </message>
     <message>
         <location filename="../src/tray.cpp" line="256"/>
@@ -236,7 +236,7 @@
     <message>
         <location filename="../src/tray.cpp" line="260"/>
         <source>Edit connections...</source>
-        <translation type="unfinished"></translation>
+        <translation>Rediger tilkoblinger…</translation>
     </message>
     <message>
         <location filename="../src/tray.cpp" line="263"/>
@@ -279,7 +279,7 @@
     <message>
         <location filename="../src/windowmenu.cpp" line="167"/>
         <source>Known connection(s)</source>
-        <translation type="unfinished"></translation>
+        <translation>Kjente tilkoblinger</translation>
     </message>
 </context>
 </TS>
