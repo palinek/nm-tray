@@ -108,7 +108,7 @@
     <message>
         <location filename="../src/nmmodel.cpp" line="1139"/>
         <source> Kb/s</source>
-        <translation>Kb/s</translation>
+        <translation> Kb/s</translation>
     </message>
     <message>
         <location filename="../src/nmmodel.cpp" line="1141"/>
