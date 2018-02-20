@@ -74,6 +74,7 @@ target_link_libraries(nm-tray
 )
 
 if (WITH_MODEMMANAGER_SUPPORT)
+    find_package(KF5ModemManagerQt "5.24.0" REQUIRED)
     target_link_libraries(nm-tray KF5::ModemManagerQt)
 endif()
 
