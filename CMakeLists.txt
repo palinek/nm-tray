@@ -6,7 +6,7 @@ cmake_policy(SET CMP0071 NEW)
 set(NM_TRAY_VERSION "0.3.0")
 
 set(QT_MIN_VERSION "5.4.0")
-set(KF5_MIN_VERSION "5.24.0")
+set(KF5_MIN_VERSION "5.36.0")
 
 set(CMAKE_AUTOMOC on)
 set(CMAKE_AUTOUIC on)
