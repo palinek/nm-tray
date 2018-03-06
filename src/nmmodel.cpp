@@ -1232,6 +1232,7 @@ QVariant NmModel::dataRole<NmModel::IconTypeRole>(const QModelIndex & index) con
                         return NetworkManager::ActiveConnection::Activated == state ? icons::NETWORK_WIRED : icons::NETWORK_WIRED_DISCONNECTED;
                 }
             }
+            break;
         case ITEM_WIFINET_LEAF:
             return icons::wifiSignalIcon(d->mWifiNets[index.row()]->signalStrength());
     }
