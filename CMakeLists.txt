@@ -4,6 +4,7 @@ cmake_minimum_required(VERSION 3.1.0 FATAL_ERROR)
 set(NM_TRAY_VERSION "0.3.0")
 
 set(QT_MIN_VERSION "5.4.0")
+set(KF5_MIN_VERSION "5.24.0")
 
 set(CMAKE_AUTOMOC on)
 set(CMAKE_AUTOUIC on)
@@ -18,7 +19,7 @@ find_package(Qt5 ${QT_MIN_VERSION} REQUIRED COMPONENTS
 
     LinguistTools
 )
-find_package(KF5NetworkManagerQt "5.24.0" REQUIRED)
+find_package(KF5NetworkManagerQt ${KF5_MIN_VERSION} REQUIRED)
 include(GNUInstallDirs)
 
 set(TRANSLATION_DIR "${CMAKE_INSTALL_FULL_DATADIR}/${PROJECT_NAME}")
@@ -75,7 +76,7 @@ target_link_libraries(nm-tray
 
 if (WITH_MODEMMANAGER_SUPPORT)
     find_package(Qt5 ${QT_MIN_VERSION} REQUIRED COMPONENTS Xml)
-    find_package(KF5ModemManagerQt "5.24.0" REQUIRED)
+    find_package(KF5ModemManagerQt ${KF5_MIN_VERSION} REQUIRED)
     target_link_libraries(nm-tray KF5::ModemManagerQt)
 endif()
 
