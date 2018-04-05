@@ -59,7 +59,7 @@
     <message>
         <location filename="../src/nmmodel.cpp" line="736"/>
         <source>wifi network(s)</source>
-        <translation>WiFi-Netzwerk(e)</translation>
+        <translation>WLAN-Netzwerk(e)</translation>
     </message>
     <message>
         <location filename="../src/nmmodel.cpp" line="1027"/>
@@ -70,7 +70,7 @@
     <message>
         <location filename="../src/nmmodel.cpp" line="55"/>
         <source>nm-tray - wireless password</source>
-        <translation>nm-Tray - Wireless Passwort</translation>
+        <translation>nm-Tray - WLAN-Passwort</translation>
     </message>
     <message>
         <location filename="../src/nmmodel.cpp" line="56"/>
