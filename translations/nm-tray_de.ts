@@ -70,12 +70,12 @@
     <message>
         <location filename="../src/nmmodel.cpp" line="55"/>
         <source>nm-tray - wireless password</source>
-        <translation type="unfinished"></translation>
+        <translation>nm-Tray - Wireless Passwort</translation>
     </message>
     <message>
         <location filename="../src/nmmodel.cpp" line="56"/>
         <source>Password is needed for connection to &apos;%1&apos;:</source>
-        <translation type="unfinished"></translation>
+        <translation>Passwort wird für die Verbindung zu &apos;%1&apos; benötigt:</translation>
     </message>
     <message>
         <location filename="../src/nmmodel.cpp" line="1130"/>
@@ -128,7 +128,7 @@
         <location filename="../src/nmmodel.cpp" line="1149"/>
         <source>IPv4</source>
         <comment>Active connection information</comment>
-        <translation type="unfinished"></translation>
+        <translation>IPv4</translation>
     </message>
     <message>
         <location filename="../src/nmmodel.cpp" line="1150"/>
