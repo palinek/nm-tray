@@ -134,7 +134,7 @@
         <location filename="../src/nmmodel.cpp" line="1150"/>
         <source>IPv6</source>
         <comment>Active connection information</comment>
-        <translation type="unfinished"></translation>
+        <translation>IPv6</translation>
     </message>
     <message>
         <location filename="../src/nmmodel.cpp" line="1161"/>
