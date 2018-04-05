@@ -268,17 +268,17 @@
     <message>
         <location filename="../src/windowmenu.cpp" line="163"/>
         <source>Active connection(s)</source>
-        <translation type="unfinished"></translation>
+        <translation>Aktive Verbindungen</translation>
     </message>
     <message>
         <location filename="../src/windowmenu.cpp" line="165"/>
         <source>Wi-Fi network(s)</source>
-        <translation type="unfinished"></translation>
+        <translation>WLAN-Netzwerk(e)</translation>
     </message>
     <message>
         <location filename="../src/windowmenu.cpp" line="167"/>
         <source>Known connection(s)</source>
-        <translation type="unfinished"></translation>
+        <translation>Bekannte Verbindung(en)</translation>
     </message>
 </context>
 </TS>
