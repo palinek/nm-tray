@@ -1043,13 +1043,13 @@ QVariant NmModel::dataRole<NmModel::ActiveConnectionInfoRole>(const QModelIndex 
                     hw_address = spec_dev->hwAddress();
                 }
                 break;
-            case NetworkManager::Device::Gre:
-                break;
             case NetworkManager::Device::Generic:
                 {
                     auto spec_dev = dev->as<NetworkManager::GenericDevice>();
                     hw_address = spec_dev->hardwareAddress();
                 }
+                break;
+            case NetworkManager::Device::Gre:
                 break;
             case NetworkManager::Device::InfiniBand:
                 {
@@ -1057,6 +1057,7 @@ QVariant NmModel::dataRole<NmModel::ActiveConnectionInfoRole>(const QModelIndex 
                     hw_address = spec_dev->hwAddress();
                 }
                 break;
+            case NetworkManager::Device::IpTunnel:
             case NetworkManager::Device::MacVlan:
             case NetworkManager::Device::Modem:
                 break;
@@ -1087,6 +1088,16 @@ QVariant NmModel::dataRole<NmModel::ActiveConnectionInfoRole>(const QModelIndex 
                     hw_address = spec_dev->hwAddress();
                 }
                 break;
+            case NetworkManager::Device::Wimax:
+                //Wimax support was dropped in network manager 1.2.0
+                //we should never get here in runtime with nm >= 1.2.0
+                {
+                    auto spec_dev = dev->as<NetworkManager::WimaxDevice>();
+                    Q_ASSERT(nullptr != spec_dev);
+                    hw_address = spec_dev->hardwareAddress();
+                    //bit_rate = spec_dev->bitRate();
+                }
+                break;
             case NetworkManager::Device::Ethernet:
                 {
                     auto spec_dev = dev->as<NetworkManager::WiredDevice>();
@@ -1110,21 +1121,15 @@ QVariant NmModel::dataRole<NmModel::ActiveConnectionInfoRole>(const QModelIndex 
                     }
                 }
                 break;
-            case NetworkManager::Device::Wimax:
-                //Wimax support was dropped in network manager 1.2.0
-                //we should never get here in runtime with nm >= 1.2.0
-                {
-                    auto spec_dev = dev->as<NetworkManager::WimaxDevice>();
-                    Q_ASSERT(nullptr != spec_dev);
-                    hw_address = spec_dev->hardwareAddress();
-                    //bit_rate = spec_dev->bitRate();
-                }
-                break;
             case NetworkManager::Device::UnknownType:
             case NetworkManager::Device::Unused1:
             case NetworkManager::Device::Unused2:
                 break;
-
+            case NetworkManager::Device::VxLan:
+            case NetworkManager::Device::MacSec:
+            case NetworkManager::Device::Dummy:
+                // Note: these devices are still not implemented in networkmanager-qt (as of v5.44.0)
+                break;
         }
         str << QStringLiteral("<table>")
             << QStringLiteral("<tr><td colspan='2'><big><strong>") << NmModel::tr("General", "Active connection information") << QStringLiteral("</strong></big></td></tr>")
@@ -1227,6 +1232,7 @@ QVariant NmModel::dataRole<NmModel::IconTypeRole>(const QModelIndex & index) con
                         return NetworkManager::ActiveConnection::Activated == state ? icons::NETWORK_WIRED : icons::NETWORK_WIRED_DISCONNECTED;
                 }
             }
+            break;
         case ITEM_WIFINET_LEAF:
             return icons::wifiSignalIcon(d->mWifiNets[index.row()]->signalStrength());
     }
