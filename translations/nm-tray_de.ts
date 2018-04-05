@@ -49,17 +49,17 @@
     <message>
         <location filename="../src/nmmodel.cpp" line="732"/>
         <source>connection(s)</source>
-        <translation>Verbindungen</translation>
+        <translation>Verbindung(en)</translation>
     </message>
     <message>
         <location filename="../src/nmmodel.cpp" line="734"/>
         <source>device(s)</source>
-        <translation>Geräte</translation>
+        <translation>Gerät(e)</translation>
     </message>
     <message>
         <location filename="../src/nmmodel.cpp" line="736"/>
         <source>wifi network(s)</source>
-        <translation>Drahtlose Netzwerke</translation>
+        <translation>WiFi-Netzwerk(e)</translation>
     </message>
     <message>
         <location filename="../src/nmmodel.cpp" line="1027"/>
