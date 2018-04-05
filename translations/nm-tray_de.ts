@@ -140,25 +140,25 @@
         <location filename="../src/nmmodel.cpp" line="1161"/>
         <source>IP Address</source>
         <comment>Active connection information</comment>
-        <translation type="unfinished"></translation>
+        <translation>IP-Adresse</translation>
     </message>
     <message>
         <location filename="../src/nmmodel.cpp" line="1163"/>
         <source>Subnet Mask</source>
         <comment>Active connection information</comment>
-        <translation type="unfinished"></translation>
+        <translation>Subnetzmaske</translation>
     </message>
     <message>
         <location filename="../src/nmmodel.cpp" line="1172"/>
         <source>Default route</source>
         <comment>Active connection information</comment>
-        <translation type="unfinished"></translation>
+        <translation>Standardroute</translation>
     </message>
     <message>
         <location filename="../src/nmmodel.cpp" line="1178"/>
         <source>DNS(%1)</source>
         <comment>Active connection information</comment>
-        <translation type="unfinished"></translation>
+        <translation>DNS(%1)</translation>
     </message>
 </context>
 <context>
@@ -166,17 +166,17 @@
     <message>
         <location filename="../src/tray.cpp" line="202"/>
         <source>Connection lost</source>
-        <translation type="unfinished"></translation>
+        <translation>Die Verbindung wurde unterbrochen</translation>
     </message>
     <message>
         <location filename="../src/tray.cpp" line="215"/>
         <source>Connection established</source>
-        <translation type="unfinished"></translation>
+        <translation>Verbindung hergestellt</translation>
     </message>
     <message>
         <location filename="../src/tray.cpp" line="220"/>
         <source>NetworkManager(nm-tray)</source>
-        <translation type="unfinished"></translation>
+        <translation>NetzwerkManager(nm-Tray)</translation>
     </message>
     <message>
         <location filename="../src/tray.cpp" line="253"/>
@@ -190,32 +190,32 @@
     <message>
         <location filename="../src/tray.cpp" line="123"/>
         <source>&lt;pre&gt;Connection &lt;strong&gt;%1&lt;/strong&gt;(%2) active&lt;/pre&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;pre&gt;Verbindung &lt;strong&gt;%1&lt;/strong&gt;(%2) aktiv&lt;/pre&gt;</translation>
     </message>
     <message>
         <location filename="../src/tray.cpp" line="129"/>
         <source>&lt;pre&gt;No active connection&lt;/pre&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;pre&gt;Keine aktive Verbindung &lt;/pre&gt;</translation>
     </message>
     <message>
         <location filename="../src/tray.cpp" line="203"/>
         <source>No longer connected to %1 &apos;%2&apos;.</source>
-        <translation type="unfinished"></translation>
+        <translation>Nicht mehr verbunden mit %1 &apos;%2&apos;.</translation>
     </message>
     <message>
         <location filename="../src/tray.cpp" line="216"/>
         <source>Now connected to %1 &apos;%2&apos;.</source>
-        <translation type="unfinished"></translation>
+        <translation>Jetzt verbunden mit %1 &apos;%2&apos;.</translation>
     </message>
     <message>
         <location filename="../src/tray.cpp" line="254"/>
         <source>Enable Wi-Fi</source>
-        <translation type="unfinished"></translation>
+        <translation>WLAN aktivieren</translation>
     </message>
     <message>
         <location filename="../src/tray.cpp" line="256"/>
         <source>Enable notifications</source>
-        <translation type="unfinished"></translation>
+        <translation>Benachrichtigungen aktivieren</translation>
     </message>
     <message>
         <location filename="../src/tray.cpp" line="258"/>
@@ -225,12 +225,12 @@
     <message>
         <location filename="../src/tray.cpp" line="259"/>
         <source>Debug information</source>
-        <translation type="unfinished"></translation>
+        <translation>Debuginformationen</translation>
     </message>
     <message>
         <location filename="../src/tray.cpp" line="260"/>
         <source>Edit connections...</source>
-        <translation type="unfinished"></translation>
+        <translation>Verbindungen bearbeiten....</translation>
     </message>
     <message>
         <location filename="../src/tray.cpp" line="263"/>
@@ -250,7 +250,7 @@
     <message>
         <location filename="../src/tray.cpp" line="383"/>
         <source>&lt;strong&gt;&lt;a href=&quot;https://github.com/palinek/nm-tray&quot;&gt;nm-tray&lt;/a&gt;&lt;/strong&gt; is a simple Qt based frontend for &lt;a href=&quot;https://wiki.gnome.org/Projects/NetworkManager&quot;&gt;NetworkManager&lt;/a&gt;.&lt;br/&gt;&lt;br/&gt;Version: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;strong&gt;&lt;a href=&quot;https://github.com/palinek/nm-tray&quot;&gt;nm-tray&lt;/a&gt;&lt;&gt;&lt;/strong&gt; ist ein einfaches Qt-basiertes Frontend für den &lt;a href=&quot;https://wiki.gnome.org/Projects/NetworkManager&quot;&gt;NetworkManager&lt;/a&gt;.&lt;br/&gt;&lt;br/&gt;Version: %1</translation>
     </message>
     <message>
         <source>This is the about nm-tray!</source>
