@@ -27,6 +27,7 @@ COPYRIGHT_HEADER*/
 #include <QLabel>
 #include <QItemSelection>
 #include <QSortFilterProxyModel>
+#include <QTabBar>
 
 ConnectionInfo::ConnectionInfo(NmModel * model, QWidget *parent)
     : QDialog{parent}
