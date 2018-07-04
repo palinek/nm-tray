@@ -392,11 +392,23 @@ void Tray::onQuitTriggered()
 }
 
 
-void Tray::onActivated()
+void Tray::onActivated(const QSystemTrayIcon::ActivationReason reason)
 {
-    QMenu * menu = new WindowMenu(&d->mNmModel);
-    menu->setAttribute(Qt::WA_DeleteOnClose);
-    menu->popup(QCursor::pos());
+    switch (reason)
+    {
+    case QSystemTrayIcon::Trigger:
+    case QSystemTrayIcon::DoubleClick:
+    	{
+			QMenu * menu = new WindowMenu(&d->mNmModel);
+			menu->setAttribute(Qt::WA_DeleteOnClose);
+			menu->popup(QCursor::pos());
+		}
+		break;
+    case QSystemTrayIcon::MiddleClick:
+    	break;
+    default:
+    	;
+    }
 }
 
 void Tray::setActionsStates()
