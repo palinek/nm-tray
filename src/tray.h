@@ -25,6 +25,7 @@ COPYRIGHT_HEADER*/
 
 #include <QObject>
 #include <QScopedPointer>
+#include <QSystemTrayIcon>
 
 class TrayPrivate;
 
@@ -44,7 +45,7 @@ private Q_SLOTS:
     void onEditConnectionsTriggered();
     void onAboutTriggered();
     void onQuitTriggered();
-    void onActivated();
+    void onActivated(const QSystemTrayIcon::ActivationReason reason);
 
     //NetworkManager
     void setActionsStates();

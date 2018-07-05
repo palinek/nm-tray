@@ -22,7 +22,6 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 COPYRIGHT_HEADER*/
 #include "tray.h"
 
-#include <QSystemTrayIcon>
 #include <QMenu>
 #include <QMessageBox>
 #include <QApplication>
@@ -392,11 +391,21 @@ void Tray::onQuitTriggered()
 }
 
 
-void Tray::onActivated()
+void Tray::onActivated(const QSystemTrayIcon::ActivationReason reason)
 {
-    QMenu * menu = new WindowMenu(&d->mNmModel);
-    menu->setAttribute(Qt::WA_DeleteOnClose);
-    menu->popup(QCursor::pos());
+    switch (reason)
+    {
+        case QSystemTrayIcon::Trigger:
+        case QSystemTrayIcon::DoubleClick:
+            {
+                QMenu * menu = new WindowMenu(&d->mNmModel);
+                menu->setAttribute(Qt::WA_DeleteOnClose);
+                menu->popup(QCursor::pos());
+            }
+            break;
+        default:
+            break;
+    }
 }
 
 void Tray::setActionsStates()
