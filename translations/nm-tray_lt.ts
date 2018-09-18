@@ -6,7 +6,7 @@
     <message>
         <location filename="../src/connectioninfo.ui" line="14"/>
         <source>Connection information</source>
-        <translation></translation>
+        <translation>Ryšio informacija</translation>
     </message>
 </context>
 <context>
@@ -14,22 +14,22 @@
     <message>
         <location filename="../src/nmlist.ui" line="14"/>
         <source>Dialog</source>
-        <translation></translation>
+        <translation>Dialogas</translation>
     </message>
     <message>
         <location filename="../src/nmlist.ui" line="20"/>
         <source>All information</source>
-        <translation></translation>
+        <translation>Visa informacija</translation>
     </message>
     <message>
         <location filename="../src/nmlist.ui" line="30"/>
         <source>Active connections</source>
-        <translation></translation>
+        <translation>Aktyvūs ryšiai</translation>
     </message>
     <message>
         <location filename="../src/nmlist.ui" line="40"/>
         <source>Available wireless</source>
-        <translation></translation>
+        <translation>Prieinami belaidžiai</translation>
     </message>
 </context>
 <context>
@@ -37,73 +37,73 @@
     <message>
         <location filename="../src/nmmodel.cpp" line="55"/>
         <source>nm-tray - wireless password</source>
-        <translation></translation>
+        <translation>nm-tray - belaidžio slaptažodis</translation>
     </message>
     <message>
         <location filename="../src/nmmodel.cpp" line="56"/>
         <source>Password is needed for connection to &apos;%1&apos;:</source>
-        <translation></translation>
+        <translation>Norint prisijungti prie &quot;%1&quot;, reikalingas slaptažodis:</translation>
     </message>
     <message>
         <location filename="../src/nmmodel.cpp" line="728"/>
         <source>root</source>
-        <translation></translation>
+        <translation>šaknis</translation>
     </message>
     <message>
         <location filename="../src/nmmodel.cpp" line="730"/>
         <source>active connection(s)</source>
-        <translation></translation>
+        <translation>aktyvus ryšys(-iai)</translation>
     </message>
     <message>
         <location filename="../src/nmmodel.cpp" line="732"/>
         <source>connection(s)</source>
-        <translation></translation>
+        <translation>ryšys(-iai)</translation>
     </message>
     <message>
         <location filename="../src/nmmodel.cpp" line="734"/>
         <source>device(s)</source>
-        <translation></translation>
+        <translation>įrenginys(-iai)</translation>
     </message>
     <message>
         <location filename="../src/nmmodel.cpp" line="736"/>
         <source>wifi network(s)</source>
-        <translation></translation>
+        <translation>belaidis tinklas(-ai)</translation>
     </message>
     <message>
         <location filename="../src/nmmodel.cpp" line="1027"/>
         <source>unknown</source>
         <comment>hardware address</comment>
-        <translation></translation>
+        <translation>nežinoma</translation>
     </message>
     <message>
         <location filename="../src/nmmodel.cpp" line="1130"/>
         <source>General</source>
         <comment>Active connection information</comment>
-        <translation></translation>
+        <translation>Bendra</translation>
     </message>
     <message>
         <location filename="../src/nmmodel.cpp" line="1131"/>
         <source>Interface</source>
         <comment>Active connection information</comment>
-        <translation></translation>
+        <translation>Sąsaja</translation>
     </message>
     <message>
         <location filename="../src/nmmodel.cpp" line="1133"/>
         <source>Hardware Address</source>
         <comment>Active connection information</comment>
-        <translation></translation>
+        <translation>Aparatinės įrangos adresas</translation>
     </message>
     <message>
         <location filename="../src/nmmodel.cpp" line="1135"/>
         <source>Driver</source>
         <comment>Active connection information</comment>
-        <translation></translation>
+        <translation>Tvarkyklė</translation>
     </message>
     <message>
         <location filename="../src/nmmodel.cpp" line="1137"/>
         <source>Speed</source>
         <comment>Active connection information</comment>
-        <translation></translation>
+        <translation>Greitis</translation>
     </message>
     <message>
         <location filename="../src/nmmodel.cpp" line="1139"/>
@@ -114,13 +114,13 @@
         <location filename="../src/nmmodel.cpp" line="1141"/>
         <source>unknown</source>
         <comment>Speed</comment>
-        <translation></translation>
+        <translation>nežinoma</translation>
     </message>
     <message>
         <location filename="../src/nmmodel.cpp" line="1145"/>
         <source>Security</source>
         <comment>Active connection information</comment>
-        <translation></translation>
+        <translation>Saugumas</translation>
     </message>
     <message>
         <location filename="../src/nmmodel.cpp" line="1149"/>
@@ -138,19 +138,19 @@
         <location filename="../src/nmmodel.cpp" line="1161"/>
         <source>IP Address</source>
         <comment>Active connection information</comment>
-        <translation></translation>
+        <translation>IP adresas</translation>
     </message>
     <message>
         <location filename="../src/nmmodel.cpp" line="1163"/>
         <source>Subnet Mask</source>
         <comment>Active connection information</comment>
-        <translation></translation>
+        <translation>Potinklio kaukė</translation>
     </message>
     <message>
         <location filename="../src/nmmodel.cpp" line="1172"/>
         <source>Default route</source>
         <comment>Active connection information</comment>
-        <translation></translation>
+        <translation>Numatytasis maršrutas</translation>
     </message>
     <message>
         <location filename="../src/nmmodel.cpp" line="1178"/>
@@ -164,32 +164,32 @@
     <message>
         <location filename="../src/tray.cpp" line="123"/>
         <source>&lt;pre&gt;Connection &lt;strong&gt;%1&lt;/strong&gt;(%2) active&lt;/pre&gt;</source>
-        <translation></translation>
+        <translation>&lt;pre&gt;Ryšys &lt;strong&gt;%1&lt;/strong&gt;(%2) aktyvus&lt;/pre&gt;</translation>
     </message>
     <message>
         <location filename="../src/tray.cpp" line="129"/>
         <source>&lt;pre&gt;No active connection&lt;/pre&gt;</source>
-        <translation></translation>
+        <translation>&lt;pre&gt;Nėra aktyvių ryšių&lt;/pre&gt;</translation>
     </message>
     <message>
         <location filename="../src/tray.cpp" line="202"/>
         <source>Connection lost</source>
-        <translation></translation>
+        <translation>Ryšys nutrūko</translation>
     </message>
     <message>
         <location filename="../src/tray.cpp" line="203"/>
         <source>No longer connected to %1 &apos;%2&apos;.</source>
-        <translation></translation>
+        <translation>Daugiau nebeprisijungta prie %1 &quot;%2&quot;.</translation>
     </message>
     <message>
         <location filename="../src/tray.cpp" line="215"/>
         <source>Connection established</source>
-        <translation></translation>
+        <translation>Ryšys užmegztas</translation>
     </message>
     <message>
         <location filename="../src/tray.cpp" line="216"/>
         <source>Now connected to %1 &apos;%2&apos;.</source>
-        <translation></translation>
+        <translation>Dabar prisijungta prie %1 &quot;%2&quot;.</translation>
     </message>
     <message>
         <location filename="../src/tray.cpp" line="220"/>
@@ -199,57 +199,57 @@
     <message>
         <location filename="../src/tray.cpp" line="253"/>
         <source>Enable Networking</source>
-        <translation></translation>
+        <translation>Įjungti darbą tinkle</translation>
     </message>
     <message>
         <location filename="../src/tray.cpp" line="254"/>
         <source>Enable Wi-Fi</source>
-        <translation></translation>
+        <translation>Įjungti belaidį</translation>
     </message>
     <message>
         <location filename="../src/tray.cpp" line="256"/>
         <source>Enable notifications</source>
-        <translation></translation>
+        <translation>Įjungti pranešimus</translation>
     </message>
     <message>
         <location filename="../src/tray.cpp" line="258"/>
         <source>Connection information</source>
-        <translation></translation>
+        <translation>Ryšio informacija</translation>
     </message>
     <message>
         <location filename="../src/tray.cpp" line="259"/>
         <source>Debug information</source>
-        <translation></translation>
+        <translation>Derinimo informacija</translation>
     </message>
     <message>
         <location filename="../src/tray.cpp" line="260"/>
         <source>Edit connections...</source>
-        <translation></translation>
+        <translation>Taisyti ryšius...</translation>
     </message>
     <message>
         <location filename="../src/tray.cpp" line="263"/>
         <source>About</source>
-        <translation></translation>
+        <translation>Apie</translation>
     </message>
     <message>
         <location filename="../src/tray.cpp" line="265"/>
         <source>Quit</source>
-        <translation></translation>
+        <translation>Išeiti</translation>
     </message>
     <message>
         <location filename="../src/tray.cpp" line="290"/>
         <source>nm-tray info</source>
-        <translation></translation>
+        <translation>nm-tray informacija</translation>
     </message>
     <message>
         <location filename="../src/tray.cpp" line="382"/>
         <source>%1 about</source>
-        <translation></translation>
+        <translation>Apie %1</translation>
     </message>
     <message>
         <location filename="../src/tray.cpp" line="383"/>
         <source>&lt;strong&gt;&lt;a href=&quot;https://github.com/palinek/nm-tray&quot;&gt;nm-tray&lt;/a&gt;&lt;/strong&gt; is a simple Qt based frontend for &lt;a href=&quot;https://wiki.gnome.org/Projects/NetworkManager&quot;&gt;NetworkManager&lt;/a&gt;.&lt;br/&gt;&lt;br/&gt;Version: %1</source>
-        <translation></translation>
+        <translation>&lt;strong&gt;&lt;a href=&quot;https://github.com/palinek/nm-tray&quot;&gt;nm-tray&lt;/a&gt;&lt;/strong&gt; yra paprasta Qt pagrįsta naudotojo sąsaja, kuri skirta &lt;a href=&quot;https://wiki.gnome.org/Projects/NetworkManager&quot;&gt;NetworkManager&lt;/a&gt;.&lt;br/&gt;&lt;br/&gt;Versija: %1</translation>
     </message>
 </context>
 <context>
@@ -257,17 +257,17 @@
     <message>
         <location filename="../src/windowmenu.cpp" line="163"/>
         <source>Active connection(s)</source>
-        <translation></translation>
+        <translation>Aktyvus ryšys(-iai)</translation>
     </message>
     <message>
         <location filename="../src/windowmenu.cpp" line="165"/>
         <source>Wi-Fi network(s)</source>
-        <translation></translation>
+        <translation>Belaidis tinklas(-ai)</translation>
     </message>
     <message>
         <location filename="../src/windowmenu.cpp" line="167"/>
         <source>Known connection(s)</source>
-        <translation></translation>
+        <translation>Žinomas ryšys(-iai)</translation>
     </message>
 </context>
 </TS>
