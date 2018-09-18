@@ -19,9 +19,14 @@ This software is licensed under [GNU GPLv2 or later](https://www.gnu.org/license
 
 ## Packages
 
+### arch
 For [arch users](https://www.archlinux.org/) there is an AUR package [nm-tray-git](https://aur.archlinux.org/packages/nm-tray-git/) (thanks to [pmattern](https://github.com/pmattern)).
 
+### openSUSE
 nm-tray is in the official repository of [openSUSE](https://www.opensuse.org/) since Leap 15.0. There is a also a [git package](https://build.opensuse.org/package/show/X11:LXQt:git/nm-tray) in the [X11:LXQt:git](https://build.opensuse.org/project/show/X11:LXQt:git) devel project of OBS.
+
+### debian
+Thanks to [agaida](https://github.com/agaida) nm-tray is now in official debian repositories ([nm-tray](https://packages.debian.org/sid/nm-tray)).
 
 ## Translations
 
