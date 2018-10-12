@@ -84,6 +84,8 @@ public Q_SLOTS:
     //NetworkManager management methods
     void activateConnection(QModelIndex const & index);
     void deactivateConnection(QModelIndex const & index);
+    void requestScan(QModelIndex const & index) const;
+    void requestAllWifiScan() const;
 
 private:
     bool isValidDataIndex(const QModelIndex & index) const;

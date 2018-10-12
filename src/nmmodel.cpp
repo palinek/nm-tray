@@ -334,6 +334,22 @@ NetworkManager::WirelessNetwork::Ptr NmModelPrivate::findWifiNetwork(QString con
     return mWifiNets.cend() == i ? NetworkManager::WirelessNetwork::Ptr{} : *i;
 }
 
+void NmModelPrivate::requestScan(NetworkManager::WirelessDevice * dev)
+{
+qCDebug(NM_TRAY) << __FUNCTION__ << dev->interfaceName();
+    QDBusPendingReply<> reply = dev->requestScan();
+    QDBusPendingCallWatcher *watcher = new QDBusPendingCallWatcher(reply, dev);
+    connect(watcher, &QDBusPendingCallWatcher::finished, [dev] (QDBusPendingCallWatcher * watcher) {
+        if (watcher->isError() || !watcher->isValid())
+        {
+            //TODO: in what form should we output the warning messages
+            qCWarning(NM_TRAY).noquote() << QStringLiteral("requestScan on device '%1' failed: %3").arg(dev->interfaceName())
+                    .arg(watcher->error().message());
+         }
+         watcher->deleteLater();
+    });
+}
+
 void NmModelPrivate::onConnectionUpdated()
 {
     emit connectionUpdate(qobject_cast<NetworkManager::Connection *>(sender()));
@@ -1579,4 +1595,35 @@ qCDebug(NM_TRAY) << __FUNCTION__ << active->path();
          }
          watcher->deleteLater();
     });
+}
+
+void NmModel::requestScan(QModelIndex const & index) const
+{
+    if (!isValidDataIndex(index) || ITEM_DEVICE != static_cast<ItemId>(index.internalId()))
+    {
+        //TODO: in what form should we output the warning messages
+        qCWarning(NM_TRAY).noquote() << "got invalid index for scanning request" << index;
+        return;
+    }
+
+    auto const & dev = d->mDevices[index.row()];
+    auto spec_dev = dev->as<NetworkManager::WirelessDevice>();
+    if (nullptr == spec_dev)
+    {
+        //TODO: in what form should we output the warning messages
+        qCWarning(NM_TRAY).noquote() << "dropping request for scan on non wireles device " << dev->interfaceName();
+        return;
+    }
+
+    d->requestScan(spec_dev);
+}
+
+void NmModel::requestAllWifiScan() const
+{
+    for (auto const & dev : d->mDevices)
+    {
+        auto spec_dev = dev->as<NetworkManager::WirelessDevice>();
+        if (nullptr != spec_dev)
+            d->requestScan(spec_dev);
+    }
 }

@@ -64,6 +64,7 @@ public:
     QAction * mActEnableWifi;
     QAction * mActConnInfo;
     QAction * mActDebugInfo;
+    QAction * mRequestScan;
     NmModel mNmModel;
     NmProxy mActiveConnections;
     QPersistentModelIndex mPrimaryConnection;
@@ -256,6 +257,7 @@ Tray::Tray(QObject *parent/* = nullptr*/)
     d->mContextMenu.addSeparator();
     d->mActConnInfo = d->mContextMenu.addAction(QIcon::fromTheme(QStringLiteral("dialog-information")), Tray::tr("Connection information"));
     d->mActDebugInfo = d->mContextMenu.addAction(QIcon::fromTheme(QStringLiteral("dialog-information")), Tray::tr("Debug information"));
+    d->mRequestScan = d->mContextMenu.addAction(QIcon::fromTheme(QStringLiteral("view-refresh")), Tray::tr("Wifi - request scan"));
     connect(d->mContextMenu.addAction(QIcon::fromTheme(QStringLiteral("document-edit")), Tray::tr("Edit connections...")), &QAction::triggered
             , this, &Tray::onEditConnectionsTriggered);
     d->mContextMenu.addSeparator();
@@ -293,6 +295,7 @@ Tray::Tray(QObject *parent/* = nullptr*/)
         }
         d->openCloseDialog(d->mConnDialog.data());
     });
+    connect(d->mRequestScan, &QAction::triggered, &d->mNmModel, &NmModel::requestAllWifiScan);
 
     // Note: Force all the updates as the NetworkManager::Notifier signals aren't
     // emitted at application startup.
@@ -414,7 +417,9 @@ void Tray::setActionsStates()
     d->mActEnableNetwork->setChecked(net_enabled);
 
     d->mActEnableWifi->setChecked(NetworkManager::isWirelessEnabled());
-    d->mActEnableWifi->setEnabled(NetworkManager::isNetworkingEnabled() && NetworkManager::isWirelessHardwareEnabled());
+    const bool wifi_enabled = NetworkManager::isNetworkingEnabled() && NetworkManager::isWirelessHardwareEnabled();
+    d->mActEnableWifi->setEnabled(wifi_enabled);
+    d->mRequestScan->setEnabled(wifi_enabled);
 
     d->mActConnInfo->setEnabled(net_enabled);
 }

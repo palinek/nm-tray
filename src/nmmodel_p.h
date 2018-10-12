@@ -61,6 +61,8 @@ public:
     NetworkManager::Device::Ptr findDeviceInterface(QString const & interfaceName);
     NetworkManager::WirelessNetwork::Ptr findWifiNetwork(QString const & ssid, QString const & devUni);
 
+    void requestScan(NetworkManager::WirelessDevice * dev);
+
 Q_SIGNALS:
     void connectionAdd(NetworkManager::Connection::Ptr conn);
     void connectionUpdate(NetworkManager::Connection * conn);
