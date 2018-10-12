@@ -270,10 +270,10 @@ Tray::Tray(QObject *parent/* = nullptr*/)
     d->mActEnableWifi->setCheckable(true);
     enable_notifications->setCheckable(true);
     enable_notifications->setChecked(d->mEnableNotifications);
-    connect(d->mActEnableNetwork, &QAction::triggered, [this] (bool checked) { NetworkManager::setNetworkingEnabled(checked); });
-    connect(d->mActEnableWifi, &QAction::triggered, [this] (bool checked) { NetworkManager::setWirelessEnabled(checked); });
-    connect(enable_notifications, &QAction::triggered, [this] (bool checked) { d->mEnableNotifications = checked; QSettings{}.setValue(ENABLE_NOTIFICATIONS, checked); });
-    connect(d->mActConnInfo, &QAction::triggered, [this] (bool ) {
+    connect(d->mActEnableNetwork, &QAction::triggered, [] (bool checked) { NetworkManager::setNetworkingEnabled(checked); });
+    connect(d->mActEnableWifi, &QAction::triggered, [] (bool checked) { NetworkManager::setWirelessEnabled(checked); });
+    connect(enable_notifications, &QAction::triggered, this, [this] (bool checked) { d->mEnableNotifications = checked; QSettings{}.setValue(ENABLE_NOTIFICATIONS, checked); });
+    connect(d->mActConnInfo, &QAction::triggered, this, [this] (bool ) {
         if (d->mInfoDialog.isNull())
         {
             d->mInfoDialog.reset(new ConnectionInfo{&d->mNmModel});
@@ -283,7 +283,7 @@ Tray::Tray(QObject *parent/* = nullptr*/)
         }
         d->openCloseDialog(d->mInfoDialog.data());
     });
-    connect(d->mActDebugInfo, &QAction::triggered, [this] (bool ) {
+    connect(d->mActDebugInfo, &QAction::triggered, this, [this] (bool ) {
         if (d->mConnDialog.isNull())
         {
             d->mConnDialog.reset(new NmList{Tray::tr("nm-tray info"), &d->mNmModel});
