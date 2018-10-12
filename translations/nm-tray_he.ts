@@ -35,32 +35,32 @@
 <context>
     <name>NmModel</name>
     <message>
-        <location filename="../src/nmmodel.cpp" line="728"/>
+        <location filename="../src/nmmodel.cpp" line="744"/>
         <source>root</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../src/nmmodel.cpp" line="730"/>
+        <location filename="../src/nmmodel.cpp" line="746"/>
         <source>active connection(s)</source>
         <translation>חיבורים פעילים</translation>
     </message>
     <message>
-        <location filename="../src/nmmodel.cpp" line="732"/>
+        <location filename="../src/nmmodel.cpp" line="748"/>
         <source>connection(s)</source>
         <translation>חיבורים</translation>
     </message>
     <message>
-        <location filename="../src/nmmodel.cpp" line="734"/>
+        <location filename="../src/nmmodel.cpp" line="750"/>
         <source>device(s)</source>
         <translation>התקנים</translation>
     </message>
     <message>
-        <location filename="../src/nmmodel.cpp" line="736"/>
+        <location filename="../src/nmmodel.cpp" line="752"/>
         <source>wifi network(s)</source>
         <translation>רשתות אלחוטיות</translation>
     </message>
     <message>
-        <location filename="../src/nmmodel.cpp" line="1027"/>
+        <location filename="../src/nmmodel.cpp" line="1043"/>
         <source>unknown</source>
         <comment>hardware address</comment>
         <translation>לא ידוע</translation>
@@ -76,84 +76,84 @@
         <translation>נדרשת ססמה כדי להתחבר אל ‚%1’:</translation>
     </message>
     <message>
-        <location filename="../src/nmmodel.cpp" line="1130"/>
+        <location filename="../src/nmmodel.cpp" line="1151"/>
         <source>General</source>
         <comment>Active connection information</comment>
         <translation>כללי</translation>
     </message>
     <message>
-        <location filename="../src/nmmodel.cpp" line="1131"/>
+        <location filename="../src/nmmodel.cpp" line="1152"/>
         <source>Interface</source>
         <comment>Active connection information</comment>
         <translation>מנשק</translation>
     </message>
     <message>
-        <location filename="../src/nmmodel.cpp" line="1133"/>
+        <location filename="../src/nmmodel.cpp" line="1154"/>
         <source>Hardware Address</source>
         <comment>Active connection information</comment>
         <translation>כתובת חומרה</translation>
     </message>
     <message>
-        <location filename="../src/nmmodel.cpp" line="1135"/>
+        <location filename="../src/nmmodel.cpp" line="1156"/>
         <source>Driver</source>
         <comment>Active connection information</comment>
         <translation>מנהל התקן</translation>
     </message>
     <message>
-        <location filename="../src/nmmodel.cpp" line="1137"/>
+        <location filename="../src/nmmodel.cpp" line="1158"/>
         <source>Speed</source>
         <comment>Active connection information</comment>
         <translation>מהירות</translation>
     </message>
     <message>
-        <location filename="../src/nmmodel.cpp" line="1139"/>
+        <location filename="../src/nmmodel.cpp" line="1160"/>
         <source> Kb/s</source>
         <translation> קסל״ש</translation>
     </message>
     <message>
-        <location filename="../src/nmmodel.cpp" line="1141"/>
+        <location filename="../src/nmmodel.cpp" line="1162"/>
         <source>unknown</source>
         <comment>Speed</comment>
         <translation>לא ידועה</translation>
     </message>
     <message>
-        <location filename="../src/nmmodel.cpp" line="1145"/>
+        <location filename="../src/nmmodel.cpp" line="1166"/>
         <source>Security</source>
         <comment>Active connection information</comment>
         <translation>אבטחה</translation>
     </message>
     <message>
-        <location filename="../src/nmmodel.cpp" line="1149"/>
+        <location filename="../src/nmmodel.cpp" line="1170"/>
         <source>IPv4</source>
         <comment>Active connection information</comment>
         <translation></translation>
     </message>
     <message>
-        <location filename="../src/nmmodel.cpp" line="1150"/>
+        <location filename="../src/nmmodel.cpp" line="1171"/>
         <source>IPv6</source>
         <comment>Active connection information</comment>
         <translation></translation>
     </message>
     <message>
-        <location filename="../src/nmmodel.cpp" line="1161"/>
+        <location filename="../src/nmmodel.cpp" line="1182"/>
         <source>IP Address</source>
         <comment>Active connection information</comment>
         <translation>כתובת IP</translation>
     </message>
     <message>
-        <location filename="../src/nmmodel.cpp" line="1163"/>
+        <location filename="../src/nmmodel.cpp" line="1184"/>
         <source>Subnet Mask</source>
         <comment>Active connection information</comment>
         <translation>מסכת רשת</translation>
     </message>
     <message>
-        <location filename="../src/nmmodel.cpp" line="1172"/>
+        <location filename="../src/nmmodel.cpp" line="1193"/>
         <source>Default route</source>
         <comment>Active connection information</comment>
         <translation>נתיב בררת מחדל</translation>
     </message>
     <message>
-        <location filename="../src/nmmodel.cpp" line="1178"/>
+        <location filename="../src/nmmodel.cpp" line="1199"/>
         <source>DNS(%1)</source>
         <comment>Active connection information</comment>
         <translation></translation>
@@ -223,31 +223,36 @@
     </message>
     <message>
         <location filename="../src/tray.cpp" line="260"/>
+        <source>Wifi - request scan</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/tray.cpp" line="261"/>
         <source>Edit connections...</source>
         <translation>עריכת חיבורים…</translation>
     </message>
     <message>
-        <location filename="../src/tray.cpp" line="263"/>
+        <location filename="../src/tray.cpp" line="264"/>
         <source>About</source>
         <translation>על אודות</translation>
     </message>
     <message>
-        <location filename="../src/tray.cpp" line="265"/>
+        <location filename="../src/tray.cpp" line="266"/>
         <source>Quit</source>
         <translation>יציאה</translation>
     </message>
     <message>
-        <location filename="../src/tray.cpp" line="382"/>
+        <location filename="../src/tray.cpp" line="384"/>
         <source>%1 about</source>
         <translation>על אודות %1</translation>
     </message>
     <message>
-        <location filename="../src/tray.cpp" line="383"/>
+        <location filename="../src/tray.cpp" line="385"/>
         <source>&lt;strong&gt;&lt;a href=&quot;https://github.com/palinek/nm-tray&quot;&gt;nm-tray&lt;/a&gt;&lt;/strong&gt; is a simple Qt based frontend for &lt;a href=&quot;https://wiki.gnome.org/Projects/NetworkManager&quot;&gt;NetworkManager&lt;/a&gt;.&lt;br/&gt;&lt;br/&gt;Version: %1</source>
         <translation>&lt;strong&gt;&lt;a href=&quot;https://github.com/palinek/nm-tray&quot;&gt;nm-tray&lt;/a&gt;&lt;/strong&gt; הוא מנשק מבוסס Qt עבור &lt;a href=&quot;https://wiki.gnome.org/Projects/NetworkManager&quot;&gt;NetworkManager&lt;/a&gt;.&lt;br/&gt;&lt;br/&gt;גרסה: %1</translation>
     </message>
     <message>
-        <location filename="../src/tray.cpp" line="290"/>
+        <location filename="../src/tray.cpp" line="291"/>
         <source>nm-tray info</source>
         <translation>פרטי nm-tray</translation>
     </message>

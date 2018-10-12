@@ -36,33 +36,33 @@
 <context>
     <name>NmModel</name>
     <message>
-        <location filename="../src/nmmodel.cpp" line="728"/>
+        <location filename="../src/nmmodel.cpp" line="744"/>
         <source>root</source>
         <translatorcomment>Translated as &quot;network&quot; hence not literally at all. Not sure what&apos;s best here but this seems a bit more reasonable to me.</translatorcomment>
         <translation>Netzwerk</translation>
     </message>
     <message>
-        <location filename="../src/nmmodel.cpp" line="730"/>
+        <location filename="../src/nmmodel.cpp" line="746"/>
         <source>active connection(s)</source>
         <translation>Aktive Verbindungen</translation>
     </message>
     <message>
-        <location filename="../src/nmmodel.cpp" line="732"/>
+        <location filename="../src/nmmodel.cpp" line="748"/>
         <source>connection(s)</source>
         <translation>Verbindung(en)</translation>
     </message>
     <message>
-        <location filename="../src/nmmodel.cpp" line="734"/>
+        <location filename="../src/nmmodel.cpp" line="750"/>
         <source>device(s)</source>
         <translation>Gerät(e)</translation>
     </message>
     <message>
-        <location filename="../src/nmmodel.cpp" line="736"/>
+        <location filename="../src/nmmodel.cpp" line="752"/>
         <source>wifi network(s)</source>
         <translation>WLAN-Netzwerk(e)</translation>
     </message>
     <message>
-        <location filename="../src/nmmodel.cpp" line="1027"/>
+        <location filename="../src/nmmodel.cpp" line="1043"/>
         <source>unknown</source>
         <comment>hardware address</comment>
         <translation>unbekannt</translation>
@@ -78,84 +78,84 @@
         <translation>Passwort wird für die Verbindung zu &apos;%1&apos; benötigt:</translation>
     </message>
     <message>
-        <location filename="../src/nmmodel.cpp" line="1130"/>
+        <location filename="../src/nmmodel.cpp" line="1151"/>
         <source>General</source>
         <comment>Active connection information</comment>
         <translation>Allgemeines</translation>
     </message>
     <message>
-        <location filename="../src/nmmodel.cpp" line="1131"/>
+        <location filename="../src/nmmodel.cpp" line="1152"/>
         <source>Interface</source>
         <comment>Active connection information</comment>
         <translation>Schnittstelle</translation>
     </message>
     <message>
-        <location filename="../src/nmmodel.cpp" line="1133"/>
+        <location filename="../src/nmmodel.cpp" line="1154"/>
         <source>Hardware Address</source>
         <comment>Active connection information</comment>
         <translation>Hardware-Adresse</translation>
     </message>
     <message>
-        <location filename="../src/nmmodel.cpp" line="1135"/>
+        <location filename="../src/nmmodel.cpp" line="1156"/>
         <source>Driver</source>
         <comment>Active connection information</comment>
         <translation>Treiber</translation>
     </message>
     <message>
-        <location filename="../src/nmmodel.cpp" line="1137"/>
+        <location filename="../src/nmmodel.cpp" line="1158"/>
         <source>Speed</source>
         <comment>Active connection information</comment>
         <translation>Übertragungsrate</translation>
     </message>
     <message>
-        <location filename="../src/nmmodel.cpp" line="1139"/>
+        <location filename="../src/nmmodel.cpp" line="1160"/>
         <source> Kb/s</source>
         <translation> Kb/s</translation>
     </message>
     <message>
-        <location filename="../src/nmmodel.cpp" line="1141"/>
+        <location filename="../src/nmmodel.cpp" line="1162"/>
         <source>unknown</source>
         <comment>Speed</comment>
         <translation>unbekannt</translation>
     </message>
     <message>
-        <location filename="../src/nmmodel.cpp" line="1145"/>
+        <location filename="../src/nmmodel.cpp" line="1166"/>
         <source>Security</source>
         <comment>Active connection information</comment>
         <translation>Sicherheit</translation>
     </message>
     <message>
-        <location filename="../src/nmmodel.cpp" line="1149"/>
+        <location filename="../src/nmmodel.cpp" line="1170"/>
         <source>IPv4</source>
         <comment>Active connection information</comment>
         <translation>IPv4</translation>
     </message>
     <message>
-        <location filename="../src/nmmodel.cpp" line="1150"/>
+        <location filename="../src/nmmodel.cpp" line="1171"/>
         <source>IPv6</source>
         <comment>Active connection information</comment>
         <translation>IPv6</translation>
     </message>
     <message>
-        <location filename="../src/nmmodel.cpp" line="1161"/>
+        <location filename="../src/nmmodel.cpp" line="1182"/>
         <source>IP Address</source>
         <comment>Active connection information</comment>
         <translation>IP-Adresse</translation>
     </message>
     <message>
-        <location filename="../src/nmmodel.cpp" line="1163"/>
+        <location filename="../src/nmmodel.cpp" line="1184"/>
         <source>Subnet Mask</source>
         <comment>Active connection information</comment>
         <translation>Subnetzmaske</translation>
     </message>
     <message>
-        <location filename="../src/nmmodel.cpp" line="1172"/>
+        <location filename="../src/nmmodel.cpp" line="1193"/>
         <source>Default route</source>
         <comment>Active connection information</comment>
         <translation>Standardroute</translation>
     </message>
     <message>
-        <location filename="../src/nmmodel.cpp" line="1178"/>
+        <location filename="../src/nmmodel.cpp" line="1199"/>
         <source>DNS(%1)</source>
         <comment>Active connection information</comment>
         <translation>DNS(%1)</translation>
@@ -229,26 +229,31 @@
     </message>
     <message>
         <location filename="../src/tray.cpp" line="260"/>
+        <source>Wifi - request scan</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/tray.cpp" line="261"/>
         <source>Edit connections...</source>
         <translation>Verbindungen bearbeiten....</translation>
     </message>
     <message>
-        <location filename="../src/tray.cpp" line="263"/>
+        <location filename="../src/tray.cpp" line="264"/>
         <source>About</source>
         <translation>Über</translation>
     </message>
     <message>
-        <location filename="../src/tray.cpp" line="265"/>
+        <location filename="../src/tray.cpp" line="266"/>
         <source>Quit</source>
         <translation>Beenden</translation>
     </message>
     <message>
-        <location filename="../src/tray.cpp" line="382"/>
+        <location filename="../src/tray.cpp" line="384"/>
         <source>%1 about</source>
         <translation>%1 über</translation>
     </message>
     <message>
-        <location filename="../src/tray.cpp" line="383"/>
+        <location filename="../src/tray.cpp" line="385"/>
         <source>&lt;strong&gt;&lt;a href=&quot;https://github.com/palinek/nm-tray&quot;&gt;nm-tray&lt;/a&gt;&lt;/strong&gt; is a simple Qt based frontend for &lt;a href=&quot;https://wiki.gnome.org/Projects/NetworkManager&quot;&gt;NetworkManager&lt;/a&gt;.&lt;br/&gt;&lt;br/&gt;Version: %1</source>
         <translation>&lt;strong&gt;&lt;a href=&quot;https://github.com/palinek/nm-tray&quot;&gt;nm-tray&lt;/a&gt;&lt;&gt;&lt;/strong&gt; ist ein einfaches Qt-basiertes Frontend für den &lt;a href=&quot;https://wiki.gnome.org/Projects/NetworkManager&quot;&gt;NetworkManager&lt;/a&gt;.&lt;br/&gt;&lt;br/&gt;Version: %1</translation>
     </message>
@@ -258,7 +263,7 @@
         <translation type="obsolete">nm-tray ist eine auf Qt basierende Nutzeroberfläche für den NetworkManager zur Ausführung in der Leiste von Desktop-Umgebungen.</translation>
     </message>
     <message>
-        <location filename="../src/tray.cpp" line="290"/>
+        <location filename="../src/tray.cpp" line="291"/>
         <source>nm-tray info</source>
         <translation>nm-tray Informationen</translation>
     </message>
