@@ -3,7 +3,7 @@ project(nm-tray)
 cmake_minimum_required(VERSION 3.1.0 FATAL_ERROR)
 cmake_policy(SET CMP0071 NEW)
 
-set(NM_TRAY_VERSION "0.4.1")
+set(NM_TRAY_VERSION "0.4.2")
 
 set(QT_MIN_VERSION "5.4.0")
 set(KF5_MIN_VERSION "5.36.0")
