@@ -6,7 +6,7 @@
     <message>
         <location filename="../src/connectioninfo.ui" line="14"/>
         <source>Connection information</source>
-        <translation type="unfinished"></translation>
+        <translation>Информация о соединении</translation>
     </message>
 </context>
 <context>
@@ -19,17 +19,17 @@
     <message>
         <location filename="../src/nmlist.ui" line="20"/>
         <source>All information</source>
-        <translation type="unfinished"></translation>
+        <translation>Вся информация</translation>
     </message>
     <message>
         <location filename="../src/nmlist.ui" line="30"/>
         <source>Active connections</source>
-        <translation type="unfinished"></translation>
+        <translation>Активные соединения</translation>
     </message>
     <message>
         <location filename="../src/nmlist.ui" line="40"/>
         <source>Available wireless</source>
-        <translation type="unfinished"></translation>
+        <translation>Доступные беспроводные сети</translation>
     </message>
 </context>
 <context>
@@ -37,12 +37,12 @@
     <message>
         <location filename="../src/nmmodel.cpp" line="55"/>
         <source>nm-tray - wireless password</source>
-        <translation type="unfinished"></translation>
+        <translation>nm-tray - пароль беспроводного соединения</translation>
     </message>
     <message>
         <location filename="../src/nmmodel.cpp" line="56"/>
         <source>Password is needed for connection to &apos;%1&apos;:</source>
-        <translation type="unfinished"></translation>
+        <translation>Для соединения с &apos;%1&apos; требуется пароль:</translation>
     </message>
     <message>
         <location filename="../src/nmmodel.cpp" line="728"/>
@@ -52,28 +52,28 @@
     <message>
         <location filename="../src/nmmodel.cpp" line="730"/>
         <source>active connection(s)</source>
-        <translation type="unfinished"></translation>
+        <translation>активные соединения</translation>
     </message>
     <message>
         <location filename="../src/nmmodel.cpp" line="732"/>
         <source>connection(s)</source>
-        <translation type="unfinished"></translation>
+        <translation>соединения</translation>
     </message>
     <message>
         <location filename="../src/nmmodel.cpp" line="734"/>
         <source>device(s)</source>
-        <translation type="unfinished"></translation>
+        <translation>устройства</translation>
     </message>
     <message>
         <location filename="../src/nmmodel.cpp" line="736"/>
         <source>wifi network(s)</source>
-        <translation type="unfinished"></translation>
+        <translation>сети wifi</translation>
     </message>
     <message>
         <location filename="../src/nmmodel.cpp" line="1027"/>
         <source>unknown</source>
         <comment>hardware address</comment>
-        <translation type="unfinished"></translation>
+        <translation>неизвестно</translation>
     </message>
     <message>
         <location filename="../src/nmmodel.cpp" line="1130"/>
