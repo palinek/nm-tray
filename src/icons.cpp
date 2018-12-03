@@ -104,11 +104,11 @@ namespace icons
     {
         if (0 >= signal)
             return icons::NETWORK_WIFI_NONE;
-        else if (25 >= signal)
+        if (25 >= signal)
             return icons::NETWORK_WIFI_WEAK;
-        else if (50 >= signal)
+        if (50 >= signal)
             return icons::NETWORK_WIFI_OK;
-        else if (75 >= signal)
+        if (75 >= signal)
             return icons::NETWORK_WIFI_GOOD;
         else
             return icons::NETWORK_WIFI_EXCELENT;
