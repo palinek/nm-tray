@@ -48,7 +48,7 @@ COPYRIGHT_HEADER*/
 
 namespace
 {
-    NetworkManager::ConnectionSettings::Ptr assembleWpaXPskSettings(const NetworkManager::AccessPoint::Ptr accessPoint)
+    NetworkManager::ConnectionSettings::Ptr assembleWpaXPskSettings(const NetworkManager::AccessPoint::Ptr &accessPoint)
     {
         //TODO: enhance getting the password from user
         bool ok;
@@ -126,7 +126,7 @@ void NmModelPrivate::clearActiveConnections()
         removeActiveConnection(0);
 }
 
-void NmModelPrivate::addActiveConnection(NetworkManager::ActiveConnection::Ptr conn)
+void NmModelPrivate::addActiveConnection(NetworkManager::ActiveConnection::Ptr &conn)
 {
     mActiveConns.push_back(conn);
     connect(conn.data(), &NetworkManager::ActiveConnection::connectionChanged, this, &NmModelPrivate::onActiveConnectionUpdated);
@@ -153,7 +153,7 @@ void NmModelPrivate::addActiveConnection(NetworkManager::ActiveConnection::Ptr c
 
 void NmModelPrivate::insertActiveConnections()
 {
-    for (auto const & conn : NetworkManager::activeConnections())
+    for (auto & conn : NetworkManager::activeConnections())
         addActiveConnection(conn);
 }
 
@@ -170,7 +170,7 @@ void NmModelPrivate::clearConnections()
         removeConnection(0);
 }
 
-void NmModelPrivate::addConnection(NetworkManager::Connection::Ptr conn)
+void NmModelPrivate::addConnection(NetworkManager::Connection::Ptr &conn)
 {
     mConnections.push_back(conn);
     //connections signals
@@ -180,7 +180,7 @@ void NmModelPrivate::addConnection(NetworkManager::Connection::Ptr conn)
 
 void NmModelPrivate::insertConnections()
 {
-    for (auto const & conn : NetworkManager::listConnections())
+    for (auto & conn : NetworkManager::listConnections())
         addConnection(conn);
 }
 
@@ -193,11 +193,11 @@ void NmModelPrivate::removeDevice(int pos)
 
 void NmModelPrivate::clearDevices()
 {
-    while (0 < mDevices.size())
+    while (!mDevices.empty())
         removeDevice(0);
 }
 
-void NmModelPrivate::addDevice(NetworkManager::Device::Ptr device)
+void NmModelPrivate::addDevice(const NetworkManager::Device::Ptr &device)
 {
     mDevices.push_back(device);
     //device signals
@@ -270,11 +270,11 @@ void NmModelPrivate::removeWifiNetwork(int pos)
 
 void NmModelPrivate::clearWifiNetworks()
 {
-    while (0 < mWifiNets.size())
+    while (!mWifiNets.empty())
         removeWifiNetwork(0);
 }
 
-void NmModelPrivate::addWifiNetwork(NetworkManager::WirelessNetwork::Ptr net)
+void NmModelPrivate::addWifiNetwork(const NetworkManager::WirelessNetwork::Ptr &net)
 {
     mWifiNets.push_back(net);
     //device signals
@@ -343,8 +343,8 @@ qCDebug(NM_TRAY) << __FUNCTION__ << dev->interfaceName();
         if (watcher->isError() || !watcher->isValid())
         {
             //TODO: in what form should we output the warning messages
-            qCWarning(NM_TRAY).noquote() << QStringLiteral("requestScan on device '%1' failed: %3").arg(dev->interfaceName())
-                    .arg(watcher->error().message());
+            qCWarning(NM_TRAY).noquote() << QStringLiteral("requestScan on device '%1' failed: %3").arg(dev->interfaceName(),
+                                                                                                        watcher->error().message());
          }
          watcher->deleteLater();
     });
@@ -1170,7 +1170,7 @@ QVariant NmModel::dataRole<NmModel::ActiveConnectionInfoRole>(const QModelIndex 
         QString const ip6 = NmModel::tr("IPv6", "Active connection information");
         for (auto const & ip : { std::make_tuple(ip4, dev->ipV4Config()) , std::make_tuple(ip6, dev->ipV6Config()) })
         {
-            NetworkManager::IpConfig ip_config = std::get<1>(ip);
+            const NetworkManager::IpConfig & ip_config = std::get<1>(ip);
             if (ip_config.isValid())
             {
                 str << QStringLiteral("<tr/><tr><td colspan='2'><big><strong>") << std::get<0>(ip) << QStringLiteral("</strong></big></td></tr>");
@@ -1326,7 +1326,7 @@ QModelIndex NmModel::index(int row, int column, const QModelIndex &parent/* = QM
 //qCDebug(NM_TRAY) << __FUNCTION__ << row << column << parent;
     if (!hasIndex(row, column, parent))
         return QModelIndex{};
-    const int id = parent.internalId();
+    const auto id = parent.internalId();
     ItemId int_id;
     if (!parent.isValid())
     {
@@ -1487,7 +1487,7 @@ void NmModel::activateConnection(QModelIndex const & index)
                 if (dev_uni.isEmpty())
                 {
                     //TODO: in what form should we output the warning messages
-                    qCWarning(NM_TRAY).noquote() << QStringLiteral("can't find device '%1' to activate connection '%2' on").arg(dev_name).arg(conn->name());
+                    qCWarning(NM_TRAY).noquote() << QStringLiteral("can't find device '%1' to activate connection '%2' on").arg(dev_name, conn->name());
                     return;
                 }
             }
@@ -1515,7 +1515,7 @@ void NmModel::activateConnection(QModelIndex const & index)
                 if (conn.isNull())
                 {
                     //TODO: in what form should we output the warning messages
-                    qCWarning(NM_TRAY).noquote() << QStringLiteral("can't find connection for '%1' on device '%2', will create new...").arg(conn_name).arg(dev_name);
+                    qCWarning(NM_TRAY).noquote() << QStringLiteral("can't find connection for '%1' on device '%2', will create new...").arg(conn_name, dev_name);
                     add_connection = true;
                     spec_object = conn_uni;
                     NetworkManager::WirelessSecurityType sec_type = NetworkManager::findBestWirelessSecurity(spec_dev->wirelessCapabilities()
@@ -1562,8 +1562,8 @@ qCDebug(NM_TRAY) << __FUNCTION__ << conn_uni << dev_uni << conn_name << dev_name
         if (watcher->isError() || !watcher->isValid())
         {
             //TODO: in what form should we output the warning messages
-            qCWarning(NM_TRAY).noquote() << QStringLiteral("activation of connection '%1' on interface '%2' failed: %3").arg(conn_name)
-                    .arg(dev_name).arg(watcher->error().message());
+            qCWarning(NM_TRAY).noquote() << QStringLiteral("activation of connection '%1' on interface '%2' failed: %3")
+                                            .arg(conn_name, dev_name, watcher->error().message());
          }
          watcher->deleteLater();
     });
@@ -1587,8 +1587,8 @@ qCDebug(NM_TRAY) << __FUNCTION__ << active->path();
         if (watcher->isError() || !watcher->isValid())
         {
             //TODO: in what form should we output the warning messages
-            qCWarning(NM_TRAY).noquote() << QStringLiteral("deactivation of connection '%1' failed: %3").arg(active->connection()->name())
-                    .arg(watcher->error().message());
+            qCWarning(NM_TRAY).noquote() << QStringLiteral("deactivation of connection '%1' failed: %3")
+                                            .arg(active->connection()->name(), watcher->error().message());
          }
          watcher->deleteLater();
     });

@@ -121,8 +121,8 @@ void TrayPrivate::updateState(QModelIndex const & index, bool removing)
     if (mPrimaryConnection.isValid())
     {
         mTrayIcon.setToolTip(Tray::tr("<pre>Connection <strong>%1</strong>(%2) active</pre>")
-                .arg(mPrimaryConnection.data(NmModel::NameRole).toString())
-                .arg(mPrimaryConnection.data(NmModel::ActiveConnectionTypeStringRole).toString())
+                .arg(mPrimaryConnection.data(NmModel::NameRole).toString(),
+                     mPrimaryConnection.data(NmModel::ActiveConnectionTypeStringRole).toString())
                 );
     } else
     {
@@ -145,7 +145,7 @@ void TrayPrivate::primaryConnectionUpdate()
     QModelIndexList l = mActiveConnections.match(mActiveConnections.index(0, 0, QModelIndex{}), NmModel::ActiveConnectionUuidRole, prim_conn->uuid(), -1, Qt::MatchExactly);
 //qCDebug(NM_TRAY) << __FUNCTION__ << l.size();
     //nothing to do if the connection not populated in model yet
-    if (0 >= l.size())
+    if (l.empty())
         return;
     Q_ASSERT(1 == l.size());
     mPrimaryConnection = l.first();
@@ -221,7 +221,7 @@ void TrayPrivate::notify(QModelIndex const & index, bool removing)
             , 0
             , icons::getIcon(static_cast<icons::Icon>(mActiveConnections.data(index, NmModel::IconTypeRole).toInt())).name()
             , summary
-            , body.arg(mActiveConnections.data(index, NmModel::ConnectionTypeStringRole).toString()).arg(mActiveConnections.data(index, NmModel::NameRole).toString())
+            , body.arg(mActiveConnections.data(index, NmModel::ConnectionTypeStringRole).toString(), mActiveConnections.data(index, NmModel::NameRole).toString())
             , {}
             , {}
             , -1);
@@ -372,7 +372,7 @@ void Tray::onEditConnectionsTriggered()
 
     qCInfo(NM_TRAY) << "starting connection editor " << connections_editor;
 
-    QString program = connections_editor.front();
+    const QString &program = connections_editor.front();
     QStringList args;
     std::copy(connections_editor.cbegin() + 1, connections_editor.cend(), std::back_inserter(args));
     editor->start(program, args);

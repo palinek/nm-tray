@@ -37,22 +37,22 @@ public:
     void removeActiveConnection(int pos);
     void clearActiveConnections();
     void insertActiveConnections();
-    void addActiveConnection(NetworkManager::ActiveConnection::Ptr conn);
+    void addActiveConnection(NetworkManager::ActiveConnection::Ptr &conn);
 
     void removeConnection(int pos);
     void clearConnections();
     void insertConnections();
-    void addConnection(NetworkManager::Connection::Ptr conn);
+    void addConnection(NetworkManager::Connection::Ptr &conn);
 
     void removeDevice(int pos);
     void clearDevices();
     void insertDevices();
-    void addDevice(NetworkManager::Device::Ptr conn);
+    void addDevice(const NetworkManager::Device::Ptr &conn);
 
     void removeWifiNetwork(int pos);
     void clearWifiNetworks();
     void insertWifiNetworks();
-    void addWifiNetwork(NetworkManager::WirelessNetwork::Ptr net);
+    void addWifiNetwork(const NetworkManager::WirelessNetwork::Ptr &net);
 
     NetworkManager::ActiveConnection::Ptr findActiveConnection(QString const & path);
     template <typename Predicate>
