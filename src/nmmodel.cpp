@@ -1018,7 +1018,6 @@ QVariant NmModel::dataRole<NmModel::ActiveConnectionInfoRole>(const QModelIndex 
         case ITEM_WIFINET_LEAF:
         case ITEM_CONNECTION_LEAF:
             return QVariant{};
-            break;
         case ITEM_ACTIVE_LEAF:
             {
                 auto const a_conn = d->mActiveConns[index.row()];
