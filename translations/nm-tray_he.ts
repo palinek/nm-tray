@@ -224,7 +224,7 @@
     <message>
         <location filename="../src/tray.cpp" line="260"/>
         <source>Wifi - request scan</source>
-        <translation type="unfinished"></translation>
+        <translation>רשת אלחוטית - בקשת סריקה</translation>
     </message>
     <message>
         <location filename="../src/tray.cpp" line="261"/>
