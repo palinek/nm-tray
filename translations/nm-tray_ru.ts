@@ -79,13 +79,13 @@
         <location filename="../src/nmmodel.cpp" line="1130"/>
         <source>General</source>
         <comment>Active connection information</comment>
-        <translation type="unfinished"></translation>
+        <translation>Общие</translation>
     </message>
     <message>
         <location filename="../src/nmmodel.cpp" line="1131"/>
         <source>Interface</source>
         <comment>Active connection information</comment>
-        <translation type="unfinished"></translation>
+        <translation>Интерфейс</translation>
     </message>
     <message>
         <location filename="../src/nmmodel.cpp" line="1133"/>
@@ -97,54 +97,54 @@
         <location filename="../src/nmmodel.cpp" line="1135"/>
         <source>Driver</source>
         <comment>Active connection information</comment>
-        <translation type="unfinished"></translation>
+        <translation>Драйвер</translation>
     </message>
     <message>
         <location filename="../src/nmmodel.cpp" line="1137"/>
         <source>Speed</source>
         <comment>Active connection information</comment>
-        <translation type="unfinished"></translation>
+        <translation>Скорость</translation>
     </message>
     <message>
         <location filename="../src/nmmodel.cpp" line="1139"/>
         <source> Kb/s</source>
-        <translation type="unfinished"></translation>
+        <translation> Кб/с</translation>
     </message>
     <message>
         <location filename="../src/nmmodel.cpp" line="1141"/>
         <source>unknown</source>
         <comment>Speed</comment>
-        <translation type="unfinished"></translation>
+        <translation>неизвестна</translation>
     </message>
     <message>
         <location filename="../src/nmmodel.cpp" line="1145"/>
         <source>Security</source>
         <comment>Active connection information</comment>
-        <translation type="unfinished"></translation>
+        <translation>Защита</translation>
     </message>
     <message>
         <location filename="../src/nmmodel.cpp" line="1149"/>
         <source>IPv4</source>
         <comment>Active connection information</comment>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">IPv4</translation>
     </message>
     <message>
         <location filename="../src/nmmodel.cpp" line="1150"/>
         <source>IPv6</source>
         <comment>Active connection information</comment>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">IPv6</translation>
     </message>
     <message>
         <location filename="../src/nmmodel.cpp" line="1161"/>
         <source>IP Address</source>
         <comment>Active connection information</comment>
-        <translation type="unfinished"></translation>
+        <translation>IP адрес</translation>
     </message>
     <message>
         <location filename="../src/nmmodel.cpp" line="1163"/>
         <source>Subnet Mask</source>
         <comment>Active connection information</comment>
-        <translation type="unfinished"></translation>
+        <translation>Маска подсети</translation>
     </message>
     <message>
         <location filename="../src/nmmodel.cpp" line="1172"/>
@@ -164,17 +164,17 @@
     <message>
         <location filename="../src/tray.cpp" line="123"/>
         <source>&lt;pre&gt;Connection &lt;strong&gt;%1&lt;/strong&gt;(%2) active&lt;/pre&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;pre&gt;Соединение &lt;strong&gt;%1&lt;/strong&gt;(%2) активно&lt;/pre&gt;</translation>
     </message>
     <message>
         <location filename="../src/tray.cpp" line="129"/>
         <source>&lt;pre&gt;No active connection&lt;/pre&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;pre&gt;Нет активных соединений&lt;/pre&gt;</translation>
     </message>
     <message>
         <location filename="../src/tray.cpp" line="202"/>
         <source>Connection lost</source>
-        <translation type="unfinished"></translation>
+        <translation>Соединение потеряно</translation>
     </message>
     <message>
         <location filename="../src/tray.cpp" line="203"/>
@@ -184,12 +184,12 @@
     <message>
         <location filename="../src/tray.cpp" line="215"/>
         <source>Connection established</source>
-        <translation type="unfinished"></translation>
+        <translation>Соединение установлено</translation>
     </message>
     <message>
         <location filename="../src/tray.cpp" line="216"/>
         <source>Now connected to %1 &apos;%2&apos;.</source>
-        <translation type="unfinished"></translation>
+        <translation>Соединён с %1 &apos;%2&apos;.</translation>
     </message>
     <message>
         <location filename="../src/tray.cpp" line="220"/>
@@ -204,37 +204,37 @@
     <message>
         <location filename="../src/tray.cpp" line="254"/>
         <source>Enable Wi-Fi</source>
-        <translation type="unfinished"></translation>
+        <translation>Включить Wi-Fi</translation>
     </message>
     <message>
         <location filename="../src/tray.cpp" line="256"/>
         <source>Enable notifications</source>
-        <translation type="unfinished"></translation>
+        <translation>Включить уведомления</translation>
     </message>
     <message>
         <location filename="../src/tray.cpp" line="258"/>
         <source>Connection information</source>
-        <translation type="unfinished"></translation>
+        <translation>Информация о соединении</translation>
     </message>
     <message>
         <location filename="../src/tray.cpp" line="259"/>
         <source>Debug information</source>
-        <translation type="unfinished"></translation>
+        <translation>Отладочная информация</translation>
     </message>
     <message>
         <location filename="../src/tray.cpp" line="260"/>
         <source>Edit connections...</source>
-        <translation type="unfinished"></translation>
+        <translation>Редактировать соединения...</translation>
     </message>
     <message>
         <location filename="../src/tray.cpp" line="263"/>
         <source>About</source>
-        <translation type="unfinished"></translation>
+        <translation>О программе</translation>
     </message>
     <message>
         <location filename="../src/tray.cpp" line="265"/>
         <source>Quit</source>
-        <translation type="unfinished"></translation>
+        <translation>Выход</translation>
     </message>
     <message>
         <location filename="../src/tray.cpp" line="290"/>
@@ -249,7 +249,7 @@
     <message>
         <location filename="../src/tray.cpp" line="383"/>
         <source>&lt;strong&gt;&lt;a href=&quot;https://github.com/palinek/nm-tray&quot;&gt;nm-tray&lt;/a&gt;&lt;/strong&gt; is a simple Qt based frontend for &lt;a href=&quot;https://wiki.gnome.org/Projects/NetworkManager&quot;&gt;NetworkManager&lt;/a&gt;.&lt;br/&gt;&lt;br/&gt;Version: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;strong&gt;&lt;a href=&quot;https://github.com/palinek/nm-tray&quot;&gt;nm-tray&lt;/a&gt;&lt;/strong&gt; простой Qt клиент &lt;a href=&quot;https://wiki.gnome.org/Projects/NetworkManager&quot;&gt;NetworkManager&lt;/a&gt;.&lt;br/&gt;&lt;br/&gt;Версия: %1</translation>
     </message>
 </context>
 <context>
@@ -257,17 +257,17 @@
     <message>
         <location filename="../src/windowmenu.cpp" line="163"/>
         <source>Active connection(s)</source>
-        <translation type="unfinished"></translation>
+        <translation>Активные соединения</translation>
     </message>
     <message>
         <location filename="../src/windowmenu.cpp" line="165"/>
         <source>Wi-Fi network(s)</source>
-        <translation type="unfinished"></translation>
+        <translation>Сети Wi-Fi</translation>
     </message>
     <message>
         <location filename="../src/windowmenu.cpp" line="167"/>
         <source>Known connection(s)</source>
-        <translation type="unfinished"></translation>
+        <translation>Сохраненные соединения</translation>
     </message>
 </context>
 </TS>
