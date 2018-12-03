@@ -666,7 +666,7 @@ int NmModel::rowCount(const QModelIndex &parent/* = QModelIndex()*/) const
         cnt = 1;
     else
     {
-        const int id = parent.internalId();
+        const auto id = parent.internalId();
         if (ITEM_ROOT  == id)
             cnt = 4;
         else if (ITEM_ACTIVE == id)
