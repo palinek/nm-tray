@@ -12,22 +12,21 @@
 <context>
     <name>NmList</name>
     <message>
-        <location filename="../src/nmlist.ui" line="14"/>
         <source>Dialog</source>
-        <translation>Dialogue</translation>
+        <translation type="vanished">Dialogue</translation>
     </message>
     <message>
-        <location filename="../src/nmlist.ui" line="20"/>
+        <location filename="../src/nmlist.ui" line="17"/>
         <source>All information</source>
         <translation>Toutes les informations</translation>
     </message>
     <message>
-        <location filename="../src/nmlist.ui" line="30"/>
+        <location filename="../src/nmlist.ui" line="27"/>
         <source>Active connections</source>
         <translation>Connexions actives</translation>
     </message>
     <message>
-        <location filename="../src/nmlist.ui" line="40"/>
+        <location filename="../src/nmlist.ui" line="37"/>
         <source>Available wireless</source>
         <translation>Sans-fil disponible</translation>
     </message>

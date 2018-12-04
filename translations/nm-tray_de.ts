@@ -12,23 +12,22 @@
 <context>
     <name>NmList</name>
     <message>
-        <location filename="../src/nmlist.ui" line="14"/>
         <source>Dialog</source>
         <translatorcomment>Did not translate as &quot;Dialog&quot; seems to get replaced with string &quot;nm-tray info&quot; from context &quot;Tray&quot;.</translatorcomment>
-        <translation>Dialog</translation>
+        <translation type="vanished">Dialog</translation>
     </message>
     <message>
-        <location filename="../src/nmlist.ui" line="20"/>
+        <location filename="../src/nmlist.ui" line="17"/>
         <source>All information</source>
         <translation>Verfügbare Informationen</translation>
     </message>
     <message>
-        <location filename="../src/nmlist.ui" line="30"/>
+        <location filename="../src/nmlist.ui" line="27"/>
         <source>Active connections</source>
         <translation>Aktive Verbindungen</translation>
     </message>
     <message>
-        <location filename="../src/nmlist.ui" line="40"/>
+        <location filename="../src/nmlist.ui" line="37"/>
         <source>Available wireless</source>
         <translation>Verfügbare drahtlose Verbindungen</translation>
     </message>
