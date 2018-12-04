@@ -1227,6 +1227,8 @@ QVariant NmModel::dataRole<NmModel::IconTypeRole>(const QModelIndex & index) con
                 {
                     case NetworkManager::ConnectionSettings::Wireless:
                     case NetworkManager::ConnectionSettings::Wimax:
+                        if (0 > state)
+                            return icons::NETWORK_WIFI_DISCONNECTED;
                         switch (state)
                         {
                             case NetworkManager::ActiveConnection::Activating:
