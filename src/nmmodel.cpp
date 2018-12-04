@@ -818,7 +818,7 @@ QVariant NmModel::dataRole<NmModel::ActiveConnectionStateRole>(const QModelIndex
         case ITEM_DEVICE_LEAF:
         case ITEM_WIFINET:
         case ITEM_WIFINET_LEAF:
-            return -1;
+            return QVariant{};
         case ITEM_ACTIVE_LEAF:
             return d->mActiveConns[index.row()]->state();
     }
@@ -1221,16 +1221,16 @@ QVariant NmModel::dataRole<NmModel::IconTypeRole>(const QModelIndex & index) con
         case ITEM_CONNECTION_LEAF:
         case ITEM_DEVICE_LEAF:
             {
-                auto type = static_cast<NetworkManager::ConnectionSettings::ConnectionType>(dataRole<ConnectionTypeRole>(index).toInt());
-                auto state = static_cast<NetworkManager::ActiveConnection::State>(dataRole<ActiveConnectionStateRole>(index).toInt());
+                const int type = static_cast<NetworkManager::ConnectionSettings::ConnectionType>(dataRole<ConnectionTypeRole>(index).toInt());
+                const QVariant state = dataRole<ActiveConnectionStateRole>(index);
                 //TODO other types?
                 switch (type)
                 {
                     case NetworkManager::ConnectionSettings::Wireless:
                     case NetworkManager::ConnectionSettings::Wimax:
-                        if (0 > state)
+                        if (!state.isValid())
                             return icons::NETWORK_WIFI_DISCONNECTED;
-                        switch (state)
+                        switch (static_cast<NetworkManager::ActiveConnection::State>(state.toInt()))
                         {
                             case NetworkManager::ActiveConnection::Activating:
                                 return icons::NETWORK_WIFI_ACQUIRING;
