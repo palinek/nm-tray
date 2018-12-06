@@ -223,7 +223,7 @@
     <message>
         <location filename="../src/tray.cpp" line="260"/>
         <source>Wifi - request scan</source>
-        <translation type="unfinished"></translation>
+        <translation>Belaidis - skenuoti tinklus</translation>
     </message>
     <message>
         <location filename="../src/tray.cpp" line="261"/>
