@@ -32,7 +32,7 @@
     <message>
         <location filename="../src/nmmodel.cpp" line="55"/>
         <source>nm-tray - wireless password</source>
-        <translation></translation>
+        <translation>nm-tray - contraseña del wireless</translation>
     </message>
     <message>
         <location filename="../src/nmmodel.cpp" line="56"/>
@@ -219,7 +219,7 @@
     <message>
         <location filename="../src/tray.cpp" line="260"/>
         <source>Wifi - request scan</source>
-        <translation type="unfinished"></translation>
+        <translation>Wifi - requiere escaneo</translation>
     </message>
     <message>
         <location filename="../src/tray.cpp" line="261"/>
