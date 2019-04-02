@@ -6,7 +6,7 @@
     <message>
         <location filename="../src/connectioninfo.ui" line="14"/>
         <source>Connection information</source>
-        <translation type="unfinished"></translation>
+        <translation>Bağlantı bilgileri</translation>
     </message>
 </context>
 <context>
@@ -14,17 +14,17 @@
     <message>
         <location filename="../src/nmlist.ui" line="17"/>
         <source>All information</source>
-        <translation type="unfinished"></translation>
+        <translation>Tüm bilgiler</translation>
     </message>
     <message>
         <location filename="../src/nmlist.ui" line="27"/>
         <source>Active connections</source>
-        <translation type="unfinished"></translation>
+        <translation>Etkin bağlantılar</translation>
     </message>
     <message>
         <location filename="../src/nmlist.ui" line="37"/>
         <source>Available wireless</source>
-        <translation type="unfinished"></translation>
+        <translation>Mevcut kablosuz ağlar</translation>
     </message>
 </context>
 <context>
@@ -37,121 +37,121 @@
     <message>
         <location filename="../src/nmmodel.cpp" line="56"/>
         <source>Password is needed for connection to &apos;%1&apos;:</source>
-        <translation type="unfinished"></translation>
+        <translation>Bağlantı &apos;%1&apos; için parola gerekiyor:</translation>
     </message>
     <message>
         <location filename="../src/nmmodel.cpp" line="744"/>
         <source>root</source>
-        <translation type="unfinished"></translation>
+        <translation>yönetici</translation>
     </message>
     <message>
         <location filename="../src/nmmodel.cpp" line="746"/>
         <source>active connection(s)</source>
-        <translation type="unfinished"></translation>
+        <translation>etkin bağlantı(lar)</translation>
     </message>
     <message>
         <location filename="../src/nmmodel.cpp" line="748"/>
         <source>connection(s)</source>
-        <translation type="unfinished"></translation>
+        <translation>bağlantı(lar)</translation>
     </message>
     <message>
         <location filename="../src/nmmodel.cpp" line="750"/>
         <source>device(s)</source>
-        <translation type="unfinished"></translation>
+        <translation>aygıt(lar)</translation>
     </message>
     <message>
         <location filename="../src/nmmodel.cpp" line="752"/>
         <source>wifi network(s)</source>
-        <translation type="unfinished"></translation>
+        <translation>kablosuz ağ(lar)</translation>
     </message>
     <message>
         <location filename="../src/nmmodel.cpp" line="1043"/>
         <source>unknown</source>
         <comment>hardware address</comment>
-        <translation type="unfinished"></translation>
+        <translation>bilinmeyen</translation>
     </message>
     <message>
         <location filename="../src/nmmodel.cpp" line="1151"/>
         <source>General</source>
         <comment>Active connection information</comment>
-        <translation type="unfinished"></translation>
+        <translation>Genel</translation>
     </message>
     <message>
         <location filename="../src/nmmodel.cpp" line="1152"/>
         <source>Interface</source>
         <comment>Active connection information</comment>
-        <translation type="unfinished"></translation>
+        <translation>Arayüz</translation>
     </message>
     <message>
         <location filename="../src/nmmodel.cpp" line="1154"/>
         <source>Hardware Address</source>
         <comment>Active connection information</comment>
-        <translation type="unfinished"></translation>
+        <translation>Donanım Adresi</translation>
     </message>
     <message>
         <location filename="../src/nmmodel.cpp" line="1156"/>
         <source>Driver</source>
         <comment>Active connection information</comment>
-        <translation type="unfinished"></translation>
+        <translation>Sürücü</translation>
     </message>
     <message>
         <location filename="../src/nmmodel.cpp" line="1158"/>
         <source>Speed</source>
         <comment>Active connection information</comment>
-        <translation type="unfinished"></translation>
+        <translation>Hız</translation>
     </message>
     <message>
         <location filename="../src/nmmodel.cpp" line="1160"/>
         <source> Kb/s</source>
-        <translation type="unfinished"></translation>
+        <translation> Kb/sn</translation>
     </message>
     <message>
         <location filename="../src/nmmodel.cpp" line="1162"/>
         <source>unknown</source>
         <comment>Speed</comment>
-        <translation type="unfinished"></translation>
+        <translation>bilinmeyen</translation>
     </message>
     <message>
         <location filename="../src/nmmodel.cpp" line="1166"/>
         <source>Security</source>
         <comment>Active connection information</comment>
-        <translation type="unfinished"></translation>
+        <translation>Güvenlik</translation>
     </message>
     <message>
         <location filename="../src/nmmodel.cpp" line="1170"/>
         <source>IPv4</source>
         <comment>Active connection information</comment>
-        <translation type="unfinished"></translation>
+        <translation>IPv4</translation>
     </message>
     <message>
         <location filename="../src/nmmodel.cpp" line="1171"/>
         <source>IPv6</source>
         <comment>Active connection information</comment>
-        <translation type="unfinished"></translation>
+        <translation>IPv6</translation>
     </message>
     <message>
         <location filename="../src/nmmodel.cpp" line="1182"/>
         <source>IP Address</source>
         <comment>Active connection information</comment>
-        <translation type="unfinished"></translation>
+        <translation>IP Adresi</translation>
     </message>
     <message>
         <location filename="../src/nmmodel.cpp" line="1184"/>
         <source>Subnet Mask</source>
         <comment>Active connection information</comment>
-        <translation type="unfinished"></translation>
+        <translation>Alt Ağ Maskesi</translation>
     </message>
     <message>
         <location filename="../src/nmmodel.cpp" line="1193"/>
         <source>Default route</source>
         <comment>Active connection information</comment>
-        <translation type="unfinished"></translation>
+        <translation>Öntanımlı rota</translation>
     </message>
     <message>
         <location filename="../src/nmmodel.cpp" line="1199"/>
         <source>DNS(%1)</source>
         <comment>Active connection information</comment>
-        <translation type="unfinished"></translation>
+        <translation>DNS(%1)</translation>
     </message>
 </context>
 <context>
@@ -159,17 +159,17 @@
     <message>
         <location filename="../src/tray.cpp" line="123"/>
         <source>&lt;pre&gt;Connection &lt;strong&gt;%1&lt;/strong&gt;(%2) active&lt;/pre&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;pre&gt;Bağlantı &lt;strong&gt;%1&lt;/strong&gt;(%2) etkin&lt;/pre&gt;</translation>
     </message>
     <message>
         <location filename="../src/tray.cpp" line="129"/>
         <source>&lt;pre&gt;No active connection&lt;/pre&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;pre&gt;Etkin bağlantı yok&lt;/pre&gt;</translation>
     </message>
     <message>
         <location filename="../src/tray.cpp" line="202"/>
         <source>Connection lost</source>
-        <translation type="unfinished"></translation>
+        <translation>Bağlantı kaybedildi</translation>
     </message>
     <message>
         <location filename="../src/tray.cpp" line="203"/>
@@ -179,7 +179,7 @@
     <message>
         <location filename="../src/tray.cpp" line="215"/>
         <source>Connection established</source>
-        <translation type="unfinished"></translation>
+        <translation>Bağlantı kuruldu</translation>
     </message>
     <message>
         <location filename="../src/tray.cpp" line="216"/>
@@ -194,27 +194,27 @@
     <message>
         <location filename="../src/tray.cpp" line="253"/>
         <source>Enable Networking</source>
-        <translation type="unfinished"></translation>
+        <translation>Eğ Etkin</translation>
     </message>
     <message>
         <location filename="../src/tray.cpp" line="254"/>
         <source>Enable Wi-Fi</source>
-        <translation type="unfinished"></translation>
+        <translation>Kablosuz Ağ Etkin</translation>
     </message>
     <message>
         <location filename="../src/tray.cpp" line="256"/>
         <source>Enable notifications</source>
-        <translation type="unfinished"></translation>
+        <translation>Bildirimler etkin</translation>
     </message>
     <message>
         <location filename="../src/tray.cpp" line="258"/>
         <source>Connection information</source>
-        <translation type="unfinished"></translation>
+        <translation>Bağlantı bilgileri</translation>
     </message>
     <message>
         <location filename="../src/tray.cpp" line="259"/>
         <source>Debug information</source>
-        <translation type="unfinished"></translation>
+        <translation>Hata ayıklama bilgileri</translation>
     </message>
     <message>
         <location filename="../src/tray.cpp" line="260"/>
@@ -224,32 +224,32 @@
     <message>
         <location filename="../src/tray.cpp" line="261"/>
         <source>Edit connections...</source>
-        <translation type="unfinished"></translation>
+        <translation>Bağlantıları düzenle...</translation>
     </message>
     <message>
         <location filename="../src/tray.cpp" line="264"/>
         <source>About</source>
-        <translation type="unfinished"></translation>
+        <translation>Hakkında</translation>
     </message>
     <message>
         <location filename="../src/tray.cpp" line="266"/>
         <source>Quit</source>
-        <translation type="unfinished"></translation>
+        <translation>Kapat</translation>
     </message>
     <message>
         <location filename="../src/tray.cpp" line="291"/>
         <source>nm-tray info</source>
-        <translation type="unfinished"></translation>
+        <translation>nm-tray bilgi</translation>
     </message>
     <message>
         <location filename="../src/tray.cpp" line="384"/>
         <source>%1 about</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 hakkında</translation>
     </message>
     <message>
         <location filename="../src/tray.cpp" line="385"/>
         <source>&lt;strong&gt;&lt;a href=&quot;https://github.com/palinek/nm-tray&quot;&gt;nm-tray&lt;/a&gt;&lt;/strong&gt; is a simple Qt based frontend for &lt;a href=&quot;https://wiki.gnome.org/Projects/NetworkManager&quot;&gt;NetworkManager&lt;/a&gt;.&lt;br/&gt;&lt;br/&gt;Version: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;strong&gt;&lt;a href=&quot;https://github.com/palinek/nm-tray&quot;&gt;&lt;/a&gt;&lt;/strong&gt; &lt;a href=&quot;https://wiki.gnome.org/Projects/NetworkManager&quot;&gt;&lt;/a&gt; için QT tabanlı basit bir arayüzdür. &lt;br/&gt;&lt;br/&gt;Sürüm: %1</translation>
     </message>
 </context>
 <context>
@@ -257,12 +257,12 @@
     <message>
         <location filename="../src/windowmenu.cpp" line="163"/>
         <source>Active connection(s)</source>
-        <translation type="unfinished"></translation>
+        <translation>Etkin bağlantı(lar)</translation>
     </message>
     <message>
         <location filename="../src/windowmenu.cpp" line="165"/>
         <source>Wi-Fi network(s)</source>
-        <translation type="unfinished"></translation>
+        <translation>Kablosuz ağ(lar)</translation>
     </message>
     <message>
         <location filename="../src/windowmenu.cpp" line="167"/>
