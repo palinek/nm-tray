@@ -42,7 +42,7 @@
     <message>
         <location filename="../src/nmmodel.cpp" line="744"/>
         <source>root</source>
-        <translation type="unfinished"></translation>
+        <translation>root</translation>
     </message>
     <message>
         <location filename="../src/nmmodel.cpp" line="746"/>
@@ -86,7 +86,7 @@
         <location filename="../src/nmmodel.cpp" line="1154"/>
         <source>Hardware Address</source>
         <comment>Active connection information</comment>
-        <translation type="unfinished"></translation>
+        <translation>MAC-адрес</translation>
     </message>
     <message>
         <location filename="../src/nmmodel.cpp" line="1156"/>
@@ -121,13 +121,13 @@
         <location filename="../src/nmmodel.cpp" line="1170"/>
         <source>IPv4</source>
         <comment>Active connection information</comment>
-        <translation type="unfinished">IPv4</translation>
+        <translation>IPv4</translation>
     </message>
     <message>
         <location filename="../src/nmmodel.cpp" line="1171"/>
         <source>IPv6</source>
         <comment>Active connection information</comment>
-        <translation type="unfinished">IPv6</translation>
+        <translation>IPv6</translation>
     </message>
     <message>
         <location filename="../src/nmmodel.cpp" line="1182"/>
@@ -145,13 +145,13 @@
         <location filename="../src/nmmodel.cpp" line="1193"/>
         <source>Default route</source>
         <comment>Active connection information</comment>
-        <translation type="unfinished"></translation>
+        <translation>Путь по умолчанию</translation>
     </message>
     <message>
         <location filename="../src/nmmodel.cpp" line="1199"/>
         <source>DNS(%1)</source>
         <comment>Active connection information</comment>
-        <translation type="unfinished"></translation>
+        <translation>DNS(%1)</translation>
     </message>
 </context>
 <context>
@@ -174,7 +174,7 @@
     <message>
         <location filename="../src/tray.cpp" line="203"/>
         <source>No longer connected to %1 &apos;%2&apos;.</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Больше не присоединено к %1 &apos;%2&apos;.</translation>
     </message>
     <message>
         <location filename="../src/tray.cpp" line="215"/>
@@ -189,12 +189,12 @@
     <message>
         <location filename="../src/tray.cpp" line="220"/>
         <source>NetworkManager(nm-tray)</source>
-        <translation type="unfinished"></translation>
+        <translation>NetworkManager (nm-tray)</translation>
     </message>
     <message>
         <location filename="../src/tray.cpp" line="253"/>
         <source>Enable Networking</source>
-        <translation type="unfinished"></translation>
+        <translation>Включить сеть</translation>
     </message>
     <message>
         <location filename="../src/tray.cpp" line="254"/>
@@ -219,7 +219,7 @@
     <message>
         <location filename="../src/tray.cpp" line="260"/>
         <source>Wifi - request scan</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Wi-Fi - запрос сканирования</translation>
     </message>
     <message>
         <location filename="../src/tray.cpp" line="261"/>
@@ -239,12 +239,12 @@
     <message>
         <location filename="../src/tray.cpp" line="291"/>
         <source>nm-tray info</source>
-        <translation type="unfinished"></translation>
+        <translation>Информация о nm-tray</translation>
     </message>
     <message>
         <location filename="../src/tray.cpp" line="384"/>
         <source>%1 about</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">О %1</translation>
     </message>
     <message>
         <location filename="../src/tray.cpp" line="385"/>
