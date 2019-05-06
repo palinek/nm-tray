@@ -74,7 +74,7 @@
     <message>
         <location filename="../src/nmmodel.cpp" line="56"/>
         <source>Password is needed for connection to &apos;%1&apos;:</source>
-        <translation>Passwort wird für die Verbindung zu &apos;%1&apos; benötigt:</translation>
+        <translation>Passwort wird für die Verbindung zu „%1“ benötigt:</translation>
     </message>
     <message>
         <location filename="../src/nmmodel.cpp" line="1151"/>
@@ -175,7 +175,7 @@
     <message>
         <location filename="../src/tray.cpp" line="220"/>
         <source>NetworkManager(nm-tray)</source>
-        <translation>NetzwerkManager(nm-Tray)</translation>
+        <translation>NetworkManager (nm-Tray)</translation>
     </message>
     <message>
         <location filename="../src/tray.cpp" line="253"/>
@@ -199,12 +199,12 @@
     <message>
         <location filename="../src/tray.cpp" line="203"/>
         <source>No longer connected to %1 &apos;%2&apos;.</source>
-        <translation>Nicht mehr verbunden mit %1 &apos;%2&apos;.</translation>
+        <translation>Nicht mehr verbunden mit %1 „%2“.</translation>
     </message>
     <message>
         <location filename="../src/tray.cpp" line="216"/>
         <source>Now connected to %1 &apos;%2&apos;.</source>
-        <translation>Jetzt verbunden mit %1 &apos;%2&apos;.</translation>
+        <translation>Jetzt verbunden mit %1 „%2“.</translation>
     </message>
     <message>
         <location filename="../src/tray.cpp" line="254"/>
@@ -234,7 +234,7 @@
     <message>
         <location filename="../src/tray.cpp" line="261"/>
         <source>Edit connections...</source>
-        <translation>Verbindungen bearbeiten....</translation>
+        <translation>Verbindungen bearbeiten …</translation>
     </message>
     <message>
         <location filename="../src/tray.cpp" line="264"/>
