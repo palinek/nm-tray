@@ -37,7 +37,7 @@
     <message>
         <location filename="../src/nmmodel.cpp" line="56"/>
         <source>Password is needed for connection to &apos;%1&apos;:</source>
-        <translation>Bağlantı &apos;%1&apos; için parola gerekiyor:</translation>
+        <translation>&apos;%1&apos; bağlantısı için parola gerekiyor:</translation>
     </message>
     <message>
         <location filename="../src/nmmodel.cpp" line="744"/>
@@ -174,7 +174,7 @@
     <message>
         <location filename="../src/tray.cpp" line="203"/>
         <source>No longer connected to %1 &apos;%2&apos;.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 bağlantısına artık bağlı değil &apos;%2&apos;.</translation>
     </message>
     <message>
         <location filename="../src/tray.cpp" line="215"/>
@@ -184,12 +184,12 @@
     <message>
         <location filename="../src/tray.cpp" line="216"/>
         <source>Now connected to %1 &apos;%2&apos;.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 bağlantısına yeni bağlantı &apos;%2&apos;.</translation>
     </message>
     <message>
         <location filename="../src/tray.cpp" line="220"/>
         <source>NetworkManager(nm-tray)</source>
-        <translation type="unfinished"></translation>
+        <translation>NetworkManager(nm-tray)</translation>
     </message>
     <message>
         <location filename="../src/tray.cpp" line="253"/>
@@ -267,7 +267,7 @@
     <message>
         <location filename="../src/windowmenu.cpp" line="167"/>
         <source>Known connection(s)</source>
-        <translation type="unfinished"></translation>
+        <translation>Bilinen bağlantı(lar)</translation>
     </message>
 </context>
 </TS>
