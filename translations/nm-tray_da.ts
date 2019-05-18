@@ -204,7 +204,7 @@
     <message>
         <location filename="../src/tray.cpp" line="256"/>
         <source>Enable notifications</source>
-        <translation>Aktivér notifikationer</translation>
+        <translation>Aktivér underretninger</translation>
     </message>
     <message>
         <location filename="../src/tray.cpp" line="258"/>
