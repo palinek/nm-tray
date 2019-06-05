@@ -174,7 +174,7 @@ void TrayPrivate::refreshIcon()
 {
     //Note: the icons::getIcon chooses the right icon from list of possible candidates
     // -> we need to refresh the icon in case of icon theme change
-    mTrayIcon.setIcon(icons::getIcon(mIconCurrent));
+    mTrayIcon.setIcon(icons::getIcon(mIconCurrent, false));
 }
 
 void TrayPrivate::openCloseDialog(QDialog * dialog)
@@ -219,7 +219,7 @@ void TrayPrivate::notify(QModelIndex const & index, bool removing)
     // TODO: do somehow check the result?
     mNotification.Notify(Tray::tr("NetworkManager(nm-tray)")
             , 0
-            , icons::getIcon(static_cast<icons::Icon>(mActiveConnections.data(index, NmModel::IconTypeRole).toInt())).name()
+            , icons::getIcon(static_cast<icons::Icon>(mActiveConnections.data(index, NmModel::IconTypeRole).toInt()), false).name()
             , summary
             , body.arg(mActiveConnections.data(index, NmModel::ConnectionTypeStringRole).toString()).arg(mActiveConnections.data(index, NmModel::NameRole).toString())
             , {}

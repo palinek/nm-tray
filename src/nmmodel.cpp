@@ -909,7 +909,7 @@ QVariant NmModel::dataRole<NmModel::IconSecurityRole>(const QModelIndex & index)
 {
     const auto type = dataRole<IconSecurityTypeRole>(index).toInt();
     if (0 <= type)
-        return icons::getIcon(static_cast<icons::Icon>(type));
+        return icons::getIcon(static_cast<icons::Icon>(type), true);
     else
         return QVariant{};
 }
@@ -1258,7 +1258,7 @@ QVariant NmModel::dataRole<NmModel::IconTypeRole>(const QModelIndex & index) con
 template <>
 QVariant NmModel::dataRole<NmModel::IconRole>(const QModelIndex & index) const
 {
-    return icons::getIcon(static_cast<icons::Icon>(dataRole<IconTypeRole>(index).toInt()));
+    return icons::getIcon(static_cast<icons::Icon>(dataRole<IconTypeRole>(index).toInt()), true);
 }
 
 QVariant NmModel::data(const QModelIndex &index, int role) const

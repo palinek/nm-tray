@@ -46,7 +46,7 @@ namespace icons
             , PREFERENCES_NETWORK
     };
 
-    QIcon getIcon(Icon ico);
+    QIcon getIcon(Icon ico, bool useSymbolic);
     Icon wifiSignalIcon(const int signal);
 }
 
