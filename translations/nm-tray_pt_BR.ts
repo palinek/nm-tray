@@ -32,7 +32,7 @@
     <message>
         <location filename="../src/nmmodel.cpp" line="55"/>
         <source>nm-tray - wireless password</source>
-        <translation type="unfinished"></translation>
+        <translation>nm-tray - senha do wifi</translation>
     </message>
     <message>
         <location filename="../src/nmmodel.cpp" line="56"/>
@@ -42,7 +42,7 @@
     <message>
         <location filename="../src/nmmodel.cpp" line="744"/>
         <source>root</source>
-        <translation type="unfinished"></translation>
+        <translation>root</translation>
     </message>
     <message>
         <location filename="../src/nmmodel.cpp" line="746"/>
@@ -86,7 +86,7 @@
         <location filename="../src/nmmodel.cpp" line="1154"/>
         <source>Hardware Address</source>
         <comment>Active connection information</comment>
-        <translation type="unfinished"></translation>
+        <translation>Endereço de hardware</translation>
     </message>
     <message>
         <location filename="../src/nmmodel.cpp" line="1156"/>
@@ -109,7 +109,7 @@
         <location filename="../src/nmmodel.cpp" line="1162"/>
         <source>unknown</source>
         <comment>Speed</comment>
-        <translation type="unfinished"></translation>
+        <translation>desconhecido</translation>
     </message>
     <message>
         <location filename="../src/nmmodel.cpp" line="1166"/>
@@ -189,7 +189,7 @@
     <message>
         <location filename="../src/tray.cpp" line="220"/>
         <source>NetworkManager(nm-tray)</source>
-        <translation type="unfinished"></translation>
+        <translation>NetworkManager(nm-tray)</translation>
     </message>
     <message>
         <location filename="../src/tray.cpp" line="253"/>
@@ -209,17 +209,17 @@
     <message>
         <location filename="../src/tray.cpp" line="258"/>
         <source>Connection information</source>
-        <translation type="unfinished"></translation>
+        <translation>Informações da conexão</translation>
     </message>
     <message>
         <location filename="../src/tray.cpp" line="259"/>
         <source>Debug information</source>
-        <translation type="unfinished"></translation>
+        <translation>Informações de depuração</translation>
     </message>
     <message>
         <location filename="../src/tray.cpp" line="260"/>
         <source>Wifi - request scan</source>
-        <translation type="unfinished"></translation>
+        <translation>Wifi - solicitar busca</translation>
     </message>
     <message>
         <location filename="../src/tray.cpp" line="261"/>
@@ -239,7 +239,7 @@
     <message>
         <location filename="../src/tray.cpp" line="291"/>
         <source>nm-tray info</source>
-        <translation type="unfinished"></translation>
+        <translation>Informações sobre o nm-tray</translation>
     </message>
     <message>
         <location filename="../src/tray.cpp" line="384"/>
@@ -249,7 +249,7 @@
     <message>
         <location filename="../src/tray.cpp" line="385"/>
         <source>&lt;strong&gt;&lt;a href=&quot;https://github.com/palinek/nm-tray&quot;&gt;nm-tray&lt;/a&gt;&lt;/strong&gt; is a simple Qt based frontend for &lt;a href=&quot;https://wiki.gnome.org/Projects/NetworkManager&quot;&gt;NetworkManager&lt;/a&gt;.&lt;br/&gt;&lt;br/&gt;Version: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;strong&gt;&lt;a href=&quot;https://github.com/palinek/nm-tray&quot;&gt;nm-tray&lt;/a&gt;&lt;/strong&gt; é um frontend simples baseado em Qt para &lt;a href=&quot;https://wiki.gnome.org/Projects/NetworkManager&quot;&gt;NetworkManager&lt;/a&gt;.&lt;br/&gt;&lt;br/&gt;Versão: %1</translation>
     </message>
 </context>
 <context>
@@ -267,7 +267,7 @@
     <message>
         <location filename="../src/windowmenu.cpp" line="167"/>
         <source>Known connection(s)</source>
-        <translation type="unfinished"></translation>
+        <translation>Conexões conhecidas</translation>
     </message>
 </context>
 </TS>
