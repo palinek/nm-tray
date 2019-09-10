@@ -41,7 +41,7 @@
     <message>
         <location filename="../src/nmmodel.cpp" line="56"/>
         <source>Password is needed for connection to &apos;%1&apos;:</source>
-        <translation>Het wachtwoord is benodigd om te verbinden met &apos;%1&apos;:</translation>
+        <translation>Wachtwoord vereist om te verbinden met &apos;%1&apos;:</translation>
     </message>
     <message>
         <location filename="../src/nmmodel.cpp" line="744"/>
@@ -223,7 +223,7 @@
     <message>
         <location filename="../src/tray.cpp" line="260"/>
         <source>Wifi - request scan</source>
-        <translation>Wi-Fi - verzoekscan</translation>
+        <translation>Zoeken naar Wi-Fi-netwerken</translation>
     </message>
     <message>
         <location filename="../src/tray.cpp" line="261"/>
@@ -243,17 +243,17 @@
     <message>
         <location filename="../src/tray.cpp" line="291"/>
         <source>nm-tray info</source>
-        <translation>nm-tray informatie</translation>
+        <translation>nm-tray-informatie</translation>
     </message>
     <message>
         <location filename="../src/tray.cpp" line="384"/>
         <source>%1 about</source>
-        <translation>%1 over</translation>
+        <translation>Over %1</translation>
     </message>
     <message>
         <location filename="../src/tray.cpp" line="385"/>
         <source>&lt;strong&gt;&lt;a href=&quot;https://github.com/palinek/nm-tray&quot;&gt;nm-tray&lt;/a&gt;&lt;/strong&gt; is a simple Qt based frontend for &lt;a href=&quot;https://wiki.gnome.org/Projects/NetworkManager&quot;&gt;NetworkManager&lt;/a&gt;.&lt;br/&gt;&lt;br/&gt;Version: %1</source>
-        <translation>&lt;strong&gt;&lt;a href=&quot;https://github.com/palinek/nm-tray&quot;&gt;nm-tray&lt;/a&gt;&lt;/strong&gt; is eenvoudig, op Qt-gebaseerd frontend voor &lt;a href=&quot;https://wiki.gnome.org/Projects/NetworkManager&quot;&gt;NetworkManager&lt;/a&gt;.&lt;br/&gt;&lt;br/&gt;Versie: %1</translation>
+        <translation>&lt;strong&gt;&lt;a href=&quot;https://github.com/palinek/nm-tray&quot;&gt;nm-tray&lt;/a&gt;&lt;/strong&gt; is een eenvoudig op Qt gebaseerd front-end voor &lt;a href=&quot;https://wiki.gnome.org/Projects/NetworkManager&quot;&gt;NetworkManager&lt;/a&gt;.&lt;br/&gt;&lt;br/&gt;Versie: %1</translation>
     </message>
 </context>
 <context>
