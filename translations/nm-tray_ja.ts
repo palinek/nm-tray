@@ -42,7 +42,7 @@
     <message>
         <location filename="../src/nmmodel.cpp" line="744"/>
         <source>root</source>
-        <translation type="unfinished">Root</translation>
+        <translation>ルート</translation>
     </message>
     <message>
         <location filename="../src/nmmodel.cpp" line="746"/>
@@ -62,7 +62,7 @@
     <message>
         <location filename="../src/nmmodel.cpp" line="752"/>
         <source>wifi network(s)</source>
-        <translation>Wifi ネットワーク</translation>
+        <translation>Wi-Fi ネットワーク</translation>
     </message>
     <message>
         <location filename="../src/nmmodel.cpp" line="1043"/>
@@ -145,7 +145,7 @@
         <location filename="../src/nmmodel.cpp" line="1193"/>
         <source>Default route</source>
         <comment>Active connection information</comment>
-        <translation>既定のルート</translation>
+        <translation>デフォルトルート</translation>
     </message>
     <message>
         <location filename="../src/nmmodel.cpp" line="1199"/>
@@ -159,7 +159,7 @@
     <message>
         <location filename="../src/tray.cpp" line="123"/>
         <source>&lt;pre&gt;Connection &lt;strong&gt;%1&lt;/strong&gt;(%2) active&lt;/pre&gt;</source>
-        <translation>&lt;pre&gt;接続 &lt;strong&gt;%1&lt;/strong&gt;(%2) アクティブ&lt;/pre&gt;</translation>
+        <translation>&lt;pre&gt;&lt;strong&gt;%1&lt;/strong&gt; (%2) へ接続中です&lt;/pre&gt;</translation>
     </message>
     <message>
         <location filename="../src/tray.cpp" line="129"/>
@@ -169,22 +169,22 @@
     <message>
         <location filename="../src/tray.cpp" line="202"/>
         <source>Connection lost</source>
-        <translation type="unfinished"></translation>
+        <translation>接続切断</translation>
     </message>
     <message>
         <location filename="../src/tray.cpp" line="203"/>
         <source>No longer connected to %1 &apos;%2&apos;.</source>
-        <translation>%1 &apos;%2&apos; に接続されなくなりました。</translation>
+        <translation>%2 (%1) への接続が切れました。</translation>
     </message>
     <message>
         <location filename="../src/tray.cpp" line="215"/>
         <source>Connection established</source>
-        <translation>接続の確立</translation>
+        <translation>接続確立</translation>
     </message>
     <message>
         <location filename="../src/tray.cpp" line="216"/>
         <source>Now connected to %1 &apos;%2&apos;.</source>
-        <translation>%1 &apos;%2&apos; に接続されました。</translation>
+        <translation>%2 (%1) へ接続しました。</translation>
     </message>
     <message>
         <location filename="../src/tray.cpp" line="220"/>
@@ -219,7 +219,7 @@
     <message>
         <location filename="../src/tray.cpp" line="260"/>
         <source>Wifi - request scan</source>
-        <translation>Wifi - スキャンする</translation>
+        <translation>Wi-Fi - スキャンする</translation>
     </message>
     <message>
         <location filename="../src/tray.cpp" line="261"/>
@@ -229,7 +229,7 @@
     <message>
         <location filename="../src/tray.cpp" line="264"/>
         <source>About</source>
-        <translation type="unfinished">このアプリケーションについて</translation>
+        <translation>nm-tray について</translation>
     </message>
     <message>
         <location filename="../src/tray.cpp" line="266"/>
@@ -267,7 +267,7 @@
     <message>
         <location filename="../src/windowmenu.cpp" line="167"/>
         <source>Known connection(s)</source>
-        <translation type="unfinished">既知の接続</translation>
+        <translation>既知の接続</translation>
     </message>
 </context>
 </TS>
