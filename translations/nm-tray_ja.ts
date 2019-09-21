@@ -103,7 +103,7 @@
     <message>
         <location filename="../src/nmmodel.cpp" line="1160"/>
         <source> Kb/s</source>
-        <translation type="unfinished"></translation>
+        <translation> Kb/s</translation>
     </message>
     <message>
         <location filename="../src/nmmodel.cpp" line="1162"/>
@@ -189,7 +189,7 @@
     <message>
         <location filename="../src/tray.cpp" line="220"/>
         <source>NetworkManager(nm-tray)</source>
-        <translation type="unfinished"></translation>
+        <translation>NetworkManager (nm-tray)</translation>
     </message>
     <message>
         <location filename="../src/tray.cpp" line="253"/>
