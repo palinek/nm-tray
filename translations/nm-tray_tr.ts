@@ -32,7 +32,7 @@
     <message>
         <location filename="../src/nmmodel.cpp" line="55"/>
         <source>nm-tray - wireless password</source>
-        <translation type="unfinished"></translation>
+        <translation>nm-tray - kablosuz şifresi</translation>
     </message>
     <message>
         <location filename="../src/nmmodel.cpp" line="56"/>
@@ -219,7 +219,7 @@
     <message>
         <location filename="../src/tray.cpp" line="260"/>
         <source>Wifi - request scan</source>
-        <translation type="unfinished"></translation>
+        <translation>Wifi - tarama talep et</translation>
     </message>
     <message>
         <location filename="../src/tray.cpp" line="261"/>
