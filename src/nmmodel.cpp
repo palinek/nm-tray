@@ -45,6 +45,7 @@ COPYRIGHT_HEADER*/
 #include <NetworkManagerQt/ConnectionSettings>
 #include <QDBusPendingCallWatcher>
 #include <QInputDialog>
+#include <QMetaEnum>
 
 namespace
 {
