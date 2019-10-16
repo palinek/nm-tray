@@ -42,7 +42,7 @@
     <message>
         <location filename="../src/nmmodel.cpp" line="744"/>
         <source>root</source>
-        <translation></translation>
+        <translation>rod</translation>
     </message>
     <message>
         <location filename="../src/nmmodel.cpp" line="746"/>
@@ -139,7 +139,7 @@
         <location filename="../src/nmmodel.cpp" line="1184"/>
         <source>Subnet Mask</source>
         <comment>Active connection information</comment>
-        <translation>Subnet-maske</translation>
+        <translation>Subnetmaske</translation>
     </message>
     <message>
         <location filename="../src/nmmodel.cpp" line="1193"/>
@@ -214,7 +214,7 @@
     <message>
         <location filename="../src/tray.cpp" line="259"/>
         <source>Debug information</source>
-        <translation>Fejlretinformation</translation>
+        <translation>Fejlretningsinformation</translation>
     </message>
     <message>
         <location filename="../src/tray.cpp" line="260"/>
@@ -224,7 +224,7 @@
     <message>
         <location filename="../src/tray.cpp" line="261"/>
         <source>Edit connections...</source>
-        <translation>Rediger forbindelser...</translation>
+        <translation>Rediger forbindelser ...</translation>
     </message>
     <message>
         <location filename="../src/tray.cpp" line="264"/>
