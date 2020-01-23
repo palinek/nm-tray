@@ -6,7 +6,7 @@
     <message>
         <location filename="../src/connectioninfo.ui" line="14"/>
         <source>Connection information</source>
-        <translation>Csatlakozási információ</translation>
+        <translation type="unfinished">Kapcsolatinformációk</translation>
     </message>
 </context>
 <context>
@@ -37,7 +37,7 @@
     <message>
         <location filename="../src/nmmodel.cpp" line="56"/>
         <source>Password is needed for connection to &apos;%1&apos;:</source>
-        <translation>Jelszóra van szükség a (z) &apos; %1 &apos; kapcsolathoz:</translation>
+        <translation type="unfinished">Jelszóra van szükség a(z) &apos;%1&apos; kapcsolathoz:</translation>
     </message>
     <message>
         <location filename="../src/nmmodel.cpp" line="744"/>
@@ -151,7 +151,7 @@
         <location filename="../src/nmmodel.cpp" line="1199"/>
         <source>DNS(%1)</source>
         <comment>Active connection information</comment>
-        <translation type="unfinished">DNS (%1)</translation>
+        <translation>DNS(%1)</translation>
     </message>
 </context>
 <context>
@@ -164,7 +164,7 @@
     <message>
         <location filename="../src/tray.cpp" line="129"/>
         <source>&lt;pre&gt;No active connection&lt;/pre&gt;</source>
-        <translation type="unfinished">&lt;pre&gt; Nincs aktív kapcsolat &lt;/pre&gt;</translation>
+        <translation>&lt;pre&gt;Nincs aktív kapcsolat&lt;/pre&gt;</translation>
     </message>
     <message>
         <location filename="../src/tray.cpp" line="202"/>
@@ -209,7 +209,7 @@
     <message>
         <location filename="../src/tray.cpp" line="258"/>
         <source>Connection information</source>
-        <translation>Kapcsolódási információk</translation>
+        <translation>Kapcsolatinformációk</translation>
     </message>
     <message>
         <location filename="../src/tray.cpp" line="259"/>
@@ -219,7 +219,7 @@
     <message>
         <location filename="../src/tray.cpp" line="260"/>
         <source>Wifi - request scan</source>
-        <translation>Wifi - keresés</translation>
+        <translation type="unfinished">Wifi - Frissítés</translation>
     </message>
     <message>
         <location filename="../src/tray.cpp" line="261"/>
