@@ -6,7 +6,7 @@
     <message>
         <location filename="../src/connectioninfo.ui" line="14"/>
         <source>Connection information</source>
-        <translation type="unfinished">Kapcsolatinformációk</translation>
+        <translation>Kapcsolatinformációk</translation>
     </message>
 </context>
 <context>
@@ -14,7 +14,7 @@
     <message>
         <location filename="../src/nmlist.ui" line="17"/>
         <source>All information</source>
-        <translation type="unfinished">Minden információ</translation>
+        <translation>Minden információ</translation>
     </message>
     <message>
         <location filename="../src/nmlist.ui" line="27"/>
@@ -68,13 +68,13 @@
         <location filename="../src/nmmodel.cpp" line="1043"/>
         <source>unknown</source>
         <comment>hardware address</comment>
-        <translation type="unfinished">ismeretlen</translation>
+        <translation>ismeretlen</translation>
     </message>
     <message>
         <location filename="../src/nmmodel.cpp" line="1151"/>
         <source>General</source>
         <comment>Active connection information</comment>
-        <translation type="unfinished">Általános</translation>
+        <translation>Általános</translation>
     </message>
     <message>
         <location filename="../src/nmmodel.cpp" line="1152"/>
@@ -92,7 +92,7 @@
         <location filename="../src/nmmodel.cpp" line="1156"/>
         <source>Driver</source>
         <comment>Active connection information</comment>
-        <translation type="unfinished">Illesztőprogram</translation>
+        <translation>Illesztőprogram</translation>
     </message>
     <message>
         <location filename="../src/nmmodel.cpp" line="1158"/>
@@ -145,7 +145,7 @@
         <location filename="../src/nmmodel.cpp" line="1193"/>
         <source>Default route</source>
         <comment>Active connection information</comment>
-        <translation type="unfinished">Alapértelmezett útvonal</translation>
+        <translation>Alapértelmezett útvonal</translation>
     </message>
     <message>
         <location filename="../src/nmmodel.cpp" line="1199"/>
@@ -159,7 +159,7 @@
     <message>
         <location filename="../src/tray.cpp" line="123"/>
         <source>&lt;pre&gt;Connection &lt;strong&gt;%1&lt;/strong&gt;(%2) active&lt;/pre&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">&lt;pre&gt;A kapcsolat &lt;strong&gt; %1 &lt;/strong&gt;(%2) aktív</translation>
     </message>
     <message>
         <location filename="../src/tray.cpp" line="129"/>
@@ -169,7 +169,7 @@
     <message>
         <location filename="../src/tray.cpp" line="202"/>
         <source>Connection lost</source>
-        <translation type="unfinished">A kapcsolat megszakadt</translation>
+        <translation>A kapcsolat megszakadt</translation>
     </message>
     <message>
         <location filename="../src/tray.cpp" line="203"/>
@@ -189,7 +189,7 @@
     <message>
         <location filename="../src/tray.cpp" line="220"/>
         <source>NetworkManager(nm-tray)</source>
-        <translation type="unfinished">Hálózatkezelő</translation>
+        <translation>Hálózatkezelő</translation>
     </message>
     <message>
         <location filename="../src/tray.cpp" line="253"/>
@@ -214,12 +214,12 @@
     <message>
         <location filename="../src/tray.cpp" line="259"/>
         <source>Debug information</source>
-        <translation type="unfinished">Hibakeresési információk</translation>
+        <translation>Hibakeresési információ</translation>
     </message>
     <message>
         <location filename="../src/tray.cpp" line="260"/>
         <source>Wifi - request scan</source>
-        <translation type="unfinished">Wifi - Frissítés</translation>
+        <translation>Wifi - Frissítés</translation>
     </message>
     <message>
         <location filename="../src/tray.cpp" line="261"/>
