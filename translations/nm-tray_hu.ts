@@ -244,7 +244,7 @@
     <message>
         <location filename="../src/tray.cpp" line="384"/>
         <source>%1 about</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">%1 névjegye</translation>
     </message>
     <message>
         <location filename="../src/tray.cpp" line="385"/>
