@@ -32,7 +32,7 @@
     <message>
         <location filename="../src/nmmodel.cpp" line="55"/>
         <source>nm-tray - wireless password</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">nm-tray - wifi jelszó</translation>
     </message>
     <message>
         <location filename="../src/nmmodel.cpp" line="56"/>
@@ -184,7 +184,7 @@
     <message>
         <location filename="../src/tray.cpp" line="216"/>
         <source>Now connected to %1 &apos;%2&apos;.</source>
-        <translation>Most kapcsolódott a (z) %1 &apos;%2&apos; hálózathoz.</translation>
+        <translation>Kapcsolódott a(z) %1 &apos;%2&apos; hálózathoz.</translation>
     </message>
     <message>
         <location filename="../src/tray.cpp" line="220"/>
