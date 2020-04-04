@@ -37,7 +37,7 @@
     <message>
         <location filename="../src/nmmodel.cpp" line="56"/>
         <source>Password is needed for connection to &apos;%1&apos;:</source>
-        <translation type="unfinished">Jelszóra van szükség a(z) &apos;%1&apos; kapcsolathoz:</translation>
+        <translation>Jelszóra van szükség a(z) &apos;%1&apos; kapcsolathoz:</translation>
     </message>
     <message>
         <location filename="../src/nmmodel.cpp" line="744"/>
@@ -159,7 +159,7 @@
     <message>
         <location filename="../src/tray.cpp" line="123"/>
         <source>&lt;pre&gt;Connection &lt;strong&gt;%1&lt;/strong&gt;(%2) active&lt;/pre&gt;</source>
-        <translation type="unfinished">&lt;pre&gt;A kapcsolat &lt;strong&gt; %1 &lt;/strong&gt;(%2) aktív</translation>
+        <translation>&lt;pre&gt;A kapcsolat &lt;strong&gt; %1 &lt;/strong&gt;(%2) aktív</translation>
     </message>
     <message>
         <location filename="../src/tray.cpp" line="129"/>
@@ -249,7 +249,7 @@
     <message>
         <location filename="../src/tray.cpp" line="385"/>
         <source>&lt;strong&gt;&lt;a href=&quot;https://github.com/palinek/nm-tray&quot;&gt;nm-tray&lt;/a&gt;&lt;/strong&gt; is a simple Qt based frontend for &lt;a href=&quot;https://wiki.gnome.org/Projects/NetworkManager&quot;&gt;NetworkManager&lt;/a&gt;.&lt;br/&gt;&lt;br/&gt;Version: %1</source>
-        <translation type="unfinished">&lt;strong&gt;&lt;a href=&quot;https://github.com/palinek/nm-tray&quot;&gt;nm-tray&lt;/a&gt;&lt;/strong&gt; egy egyszerű Qt felület a  &lt;a href=&quot;https://wiki.gnome.org/Projects/NetworkManager&quot;&gt;NetworkManager-hez&lt;/a&gt;.&lt;br/&gt;&lt;br/&gt;Version: %1</translation>
+        <translation>&lt;strong&gt;&lt;a href=&quot;https://github.com/palinek/nm-tray&quot;&gt;nm-tray&lt;/a&gt;&lt;/strong&gt; egy egyszerű Qt felület a  &lt;a href=&quot;https://wiki.gnome.org/Projects/NetworkManager&quot;&gt;NetworkManager&lt;/a&gt;-hez.&lt;br/&gt;&lt;br/&gt;Version: %1</translation>
     </message>
 </context>
 <context>
