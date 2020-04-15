@@ -24,7 +24,7 @@
     <message>
         <location filename="../src/nmlist.ui" line="37"/>
         <source>Available wireless</source>
-        <translation>Mevcut kablosuz ağlar</translation>
+        <translation>Kullanılabilir kablosuz ağlar</translation>
     </message>
 </context>
 <context>
@@ -32,7 +32,7 @@
     <message>
         <location filename="../src/nmmodel.cpp" line="55"/>
         <source>nm-tray - wireless password</source>
-        <translation>nm-tray - kablosuz şifresi</translation>
+        <translation>nm-tray - kablosuz ağ parolası</translation>
     </message>
     <message>
         <location filename="../src/nmmodel.cpp" line="56"/>
