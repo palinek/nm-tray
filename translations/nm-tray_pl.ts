@@ -181,7 +181,7 @@
     <message>
         <location filename="../src/tray.cpp" line="220"/>
         <source>NetworkManager(nm-tray)</source>
-        <translation>NetworkManager(nm-tray)</translation>
+        <translation>Menedżer komunikacji(nm-tray)</translation>
     </message>
     <message>
         <location filename="../src/tray.cpp" line="253"/>
@@ -235,7 +235,7 @@
     <message>
         <location filename="../src/tray.cpp" line="260"/>
         <source>Wifi - request scan</source>
-        <translation type="unfinished"></translation>
+        <translation>Wifi - żądanie skanowania</translation>
     </message>
     <message>
         <location filename="../src/tray.cpp" line="261"/>
