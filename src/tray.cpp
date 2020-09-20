@@ -348,7 +348,7 @@ bool Tray::eventFilter(QObject * object, QEvent * event)
 
 void Tray::onEditConnectionsTriggered()
 {
-    const QStringList connections_editor = QSettings{}.value(CONNECTIONS_EDITOR, QStringList{{"xterm", "-e", "nmtui-edit"}}).toStringList();
+    const QStringList connections_editor = QSettings{}.value(CONNECTIONS_EDITOR, QStringList{{"nm-connection-editor"}}).toStringList();
     if (connections_editor.empty() || connections_editor.front().isEmpty())
     {
         qCCritical(NM_TRAY) << "Can't start connection editor, because of misconfiguration. Value of"
