@@ -32,7 +32,7 @@
     <message>
         <location filename="../src/nmmodel.cpp" line="55"/>
         <source>nm-tray - wireless password</source>
-        <translation>nm-tray - lykilorð þráðlausa nets</translation>
+        <translation>nm-tray - lykilorð þráðlauss nets</translation>
     </message>
     <message>
         <location filename="../src/nmmodel.cpp" line="56"/>
