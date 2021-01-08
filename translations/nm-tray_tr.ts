@@ -169,12 +169,12 @@
     <message>
         <location filename="../src/tray.cpp" line="202"/>
         <source>Connection lost</source>
-        <translation>Bağlantı kaybedildi</translation>
+        <translation>Bağlantı kesildi</translation>
     </message>
     <message>
         <location filename="../src/tray.cpp" line="203"/>
         <source>No longer connected to %1 &apos;%2&apos;.</source>
-        <translation>%1 &apos;%2&apos; bağlantısına artık bağlı değil.</translation>
+        <translation>%1 &apos;%2&apos; artık bağlı değil.</translation>
     </message>
     <message>
         <location filename="../src/tray.cpp" line="215"/>
@@ -184,7 +184,7 @@
     <message>
         <location filename="../src/tray.cpp" line="216"/>
         <source>Now connected to %1 &apos;%2&apos;.</source>
-        <translation>%1 &apos;%2&apos; bağlantısına bağlandı.</translation>
+        <translation>%1 &apos;%2&apos; bağlandı.</translation>
     </message>
     <message>
         <location filename="../src/tray.cpp" line="220"/>
@@ -194,17 +194,17 @@
     <message>
         <location filename="../src/tray.cpp" line="253"/>
         <source>Enable Networking</source>
-        <translation>Ağ Etkin</translation>
+        <translation>Ağı Etkinleştir</translation>
     </message>
     <message>
         <location filename="../src/tray.cpp" line="254"/>
         <source>Enable Wi-Fi</source>
-        <translation>Kablosuz Ağ Etkin</translation>
+        <translation>Kablosuz Ağı Etkinleştir</translation>
     </message>
     <message>
         <location filename="../src/tray.cpp" line="256"/>
         <source>Enable notifications</source>
-        <translation>Bildirimler etkin</translation>
+        <translation>Bildirimleri etkinleştir</translation>
     </message>
     <message>
         <location filename="../src/tray.cpp" line="258"/>
@@ -219,7 +219,7 @@
     <message>
         <location filename="../src/tray.cpp" line="260"/>
         <source>Wifi - request scan</source>
-        <translation>Wifi - tarama talep et</translation>
+        <translation>Kablosuz ağ - tarama iste</translation>
     </message>
     <message>
         <location filename="../src/tray.cpp" line="261"/>
@@ -234,12 +234,12 @@
     <message>
         <location filename="../src/tray.cpp" line="266"/>
         <source>Quit</source>
-        <translation>Kapat</translation>
+        <translation>Çıkış</translation>
     </message>
     <message>
         <location filename="../src/tray.cpp" line="291"/>
         <source>nm-tray info</source>
-        <translation>nm-tray bilgi</translation>
+        <translation>nm-tray bilgileri</translation>
     </message>
     <message>
         <location filename="../src/tray.cpp" line="384"/>
