@@ -174,7 +174,7 @@
     <message>
         <location filename="../src/tray.cpp" line="203"/>
         <source>No longer connected to %1 &apos;%2&apos;.</source>
-        <translation>%1 bağlantısına artık bağlı değil &apos;%2&apos;.</translation>
+        <translation>%1 &apos;%2&apos; bağlantısına artık bağlı değil.</translation>
     </message>
     <message>
         <location filename="../src/tray.cpp" line="215"/>
@@ -184,7 +184,7 @@
     <message>
         <location filename="../src/tray.cpp" line="216"/>
         <source>Now connected to %1 &apos;%2&apos;.</source>
-        <translation>%1 bağlantısına yeni bağlantı &apos;%2&apos;.</translation>
+        <translation>%1 &apos;%2&apos; bağlantısına bağlandı.</translation>
     </message>
     <message>
         <location filename="../src/tray.cpp" line="220"/>
@@ -249,7 +249,7 @@
     <message>
         <location filename="../src/tray.cpp" line="385"/>
         <source>&lt;strong&gt;&lt;a href=&quot;https://github.com/palinek/nm-tray&quot;&gt;nm-tray&lt;/a&gt;&lt;/strong&gt; is a simple Qt based frontend for &lt;a href=&quot;https://wiki.gnome.org/Projects/NetworkManager&quot;&gt;NetworkManager&lt;/a&gt;.&lt;br/&gt;&lt;br/&gt;Version: %1</source>
-        <translation>&lt;strong&gt;&lt;a href=&quot;https://github.com/palinek/nm-tray&quot;&gt;&lt;/a&gt;&lt;/strong&gt; &lt;a href=&quot;https://wiki.gnome.org/Projects/NetworkManager&quot;&gt;&lt;/a&gt; için QT tabanlı basit bir arayüzdür. &lt;br/&gt;&lt;br/&gt;Sürüm: %1</translation>
+        <translation>&lt;strong&gt;&lt;a href=&quot;https://github.com/palinek/nm-tray&quot;&gt;nm-tray&lt;/a&gt;&lt;/strong&gt;, &lt;a href=&quot;https://wiki.gnome.org/Projects/NetworkManager&quot;&gt;NetworkManager&lt;/a&gt; için Qt tabanlı basit bir arayüzdür.&lt;br/&gt;&lt;br/&gt;Sürüm: %1</translation>
     </message>
 </context>
 <context>
