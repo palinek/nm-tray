@@ -194,7 +194,7 @@
     <message>
         <location filename="../src/tray.cpp" line="253"/>
         <source>Enable Networking</source>
-        <translation>Eğ Etkin</translation>
+        <translation>Ağ Etkin</translation>
     </message>
     <message>
         <location filename="../src/tray.cpp" line="254"/>
