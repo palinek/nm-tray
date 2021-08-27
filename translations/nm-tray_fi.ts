@@ -6,7 +6,7 @@
     <message>
         <location filename="../src/connectioninfo.ui" line="14"/>
         <source>Connection information</source>
-        <translation type="unfinished"></translation>
+        <translation>Yhteystiedot</translation>
     </message>
 </context>
 <context>
@@ -14,17 +14,17 @@
     <message>
         <location filename="../src/nmlist.ui" line="17"/>
         <source>All information</source>
-        <translation type="unfinished"></translation>
+        <translation>Kaikki tiedot</translation>
     </message>
     <message>
         <location filename="../src/nmlist.ui" line="27"/>
         <source>Active connections</source>
-        <translation type="unfinished"></translation>
+        <translation>Aktiiviset yhteydet</translation>
     </message>
     <message>
         <location filename="../src/nmlist.ui" line="37"/>
         <source>Available wireless</source>
-        <translation type="unfinished"></translation>
+        <translation>Saatavilla olevat langattomat verkot</translation>
     </message>
 </context>
 <context>
@@ -32,12 +32,12 @@
     <message>
         <location filename="../src/nmmodel.cpp" line="55"/>
         <source>nm-tray - wireless password</source>
-        <translation type="unfinished"></translation>
+        <translation>nm-tray – WLAN-salasana</translation>
     </message>
     <message>
         <location filename="../src/nmmodel.cpp" line="56"/>
         <source>Password is needed for connection to &apos;%1&apos;:</source>
-        <translation type="unfinished"></translation>
+        <translation>Yhteys ”%1” vaatii salasanan:</translation>
     </message>
     <message>
         <location filename="../src/nmmodel.cpp" line="744"/>
@@ -47,111 +47,111 @@
     <message>
         <location filename="../src/nmmodel.cpp" line="746"/>
         <source>active connection(s)</source>
-        <translation type="unfinished"></translation>
+        <translation>aktiiviset yhteydet</translation>
     </message>
     <message>
         <location filename="../src/nmmodel.cpp" line="748"/>
         <source>connection(s)</source>
-        <translation type="unfinished"></translation>
+        <translation>yhteydet</translation>
     </message>
     <message>
         <location filename="../src/nmmodel.cpp" line="750"/>
         <source>device(s)</source>
-        <translation type="unfinished"></translation>
+        <translation>laitteet</translation>
     </message>
     <message>
         <location filename="../src/nmmodel.cpp" line="752"/>
         <source>wifi network(s)</source>
-        <translation type="unfinished"></translation>
+        <translation>WLAN-verkot</translation>
     </message>
     <message>
         <location filename="../src/nmmodel.cpp" line="1043"/>
         <source>unknown</source>
         <comment>hardware address</comment>
-        <translation type="unfinished"></translation>
+        <translation>tuntematon</translation>
     </message>
     <message>
         <location filename="../src/nmmodel.cpp" line="1151"/>
         <source>General</source>
         <comment>Active connection information</comment>
-        <translation type="unfinished"></translation>
+        <translation>Yleistä</translation>
     </message>
     <message>
         <location filename="../src/nmmodel.cpp" line="1152"/>
         <source>Interface</source>
         <comment>Active connection information</comment>
-        <translation type="unfinished"></translation>
+        <translation>Liitäntä</translation>
     </message>
     <message>
         <location filename="../src/nmmodel.cpp" line="1154"/>
         <source>Hardware Address</source>
         <comment>Active connection information</comment>
-        <translation type="unfinished"></translation>
+        <translation>Laiteosoite</translation>
     </message>
     <message>
         <location filename="../src/nmmodel.cpp" line="1156"/>
         <source>Driver</source>
         <comment>Active connection information</comment>
-        <translation type="unfinished"></translation>
+        <translation>Ajuri</translation>
     </message>
     <message>
         <location filename="../src/nmmodel.cpp" line="1158"/>
         <source>Speed</source>
         <comment>Active connection information</comment>
-        <translation type="unfinished"></translation>
+        <translation>Nopeus</translation>
     </message>
     <message>
         <location filename="../src/nmmodel.cpp" line="1160"/>
         <source> Kb/s</source>
-        <translation type="unfinished"></translation>
+        <translation> kt/s</translation>
     </message>
     <message>
         <location filename="../src/nmmodel.cpp" line="1162"/>
         <source>unknown</source>
         <comment>Speed</comment>
-        <translation type="unfinished"></translation>
+        <translation>tuntematon</translation>
     </message>
     <message>
         <location filename="../src/nmmodel.cpp" line="1166"/>
         <source>Security</source>
         <comment>Active connection information</comment>
-        <translation type="unfinished"></translation>
+        <translation>Tietoturva</translation>
     </message>
     <message>
         <location filename="../src/nmmodel.cpp" line="1170"/>
         <source>IPv4</source>
         <comment>Active connection information</comment>
-        <translation type="unfinished"></translation>
+        <translation>IPv4</translation>
     </message>
     <message>
         <location filename="../src/nmmodel.cpp" line="1171"/>
         <source>IPv6</source>
         <comment>Active connection information</comment>
-        <translation type="unfinished"></translation>
+        <translation>IPv6</translation>
     </message>
     <message>
         <location filename="../src/nmmodel.cpp" line="1182"/>
         <source>IP Address</source>
         <comment>Active connection information</comment>
-        <translation type="unfinished"></translation>
+        <translation>IP-osoite</translation>
     </message>
     <message>
         <location filename="../src/nmmodel.cpp" line="1184"/>
         <source>Subnet Mask</source>
         <comment>Active connection information</comment>
-        <translation type="unfinished"></translation>
+        <translation>Aliverkon peite</translation>
     </message>
     <message>
         <location filename="../src/nmmodel.cpp" line="1193"/>
         <source>Default route</source>
         <comment>Active connection information</comment>
-        <translation type="unfinished"></translation>
+        <translation>Oletusreitti</translation>
     </message>
     <message>
         <location filename="../src/nmmodel.cpp" line="1199"/>
         <source>DNS(%1)</source>
         <comment>Active connection information</comment>
-        <translation type="unfinished"></translation>
+        <translation>DNS (%1)</translation>
     </message>
 </context>
 <context>
@@ -159,97 +159,98 @@
     <message>
         <location filename="../src/tray.cpp" line="123"/>
         <source>&lt;pre&gt;Connection &lt;strong&gt;%1&lt;/strong&gt;(%2) active&lt;/pre&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;pre&gt;Yhteys &lt;strong&gt;%1&lt;/strong&gt; (%2) aktiivinen&lt;/pre&gt;</translation>
     </message>
     <message>
         <location filename="../src/tray.cpp" line="129"/>
         <source>&lt;pre&gt;No active connection&lt;/pre&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;pre&gt;Ei aktiivista yhteyttä&lt;/pre&gt;</translation>
     </message>
     <message>
         <location filename="../src/tray.cpp" line="202"/>
         <source>Connection lost</source>
-        <translation type="unfinished"></translation>
+        <translation>Yhteys menetetty</translation>
     </message>
     <message>
         <location filename="../src/tray.cpp" line="203"/>
         <source>No longer connected to %1 &apos;%2&apos;.</source>
-        <translation type="unfinished"></translation>
+        <translation>Ei enää yhteyttä: %1 ”%2”.</translation>
     </message>
     <message>
         <location filename="../src/tray.cpp" line="215"/>
         <source>Connection established</source>
-        <translation type="unfinished"></translation>
+        <translation>Yhteys muodostettu</translation>
     </message>
     <message>
         <location filename="../src/tray.cpp" line="216"/>
         <source>Now connected to %1 &apos;%2&apos;.</source>
-        <translation type="unfinished"></translation>
+        <translation>Nyt yhdistetty: %1 ”%2”.</translation>
     </message>
     <message>
         <location filename="../src/tray.cpp" line="220"/>
         <source>NetworkManager(nm-tray)</source>
-        <translation type="unfinished"></translation>
+        <translation>NetworkManager (nm-tray)</translation>
     </message>
     <message>
         <location filename="../src/tray.cpp" line="253"/>
         <source>Enable Networking</source>
-        <translation type="unfinished"></translation>
+        <translation>Ota verkko käyttöön</translation>
     </message>
     <message>
         <location filename="../src/tray.cpp" line="254"/>
         <source>Enable Wi-Fi</source>
-        <translation type="unfinished"></translation>
+        <translation>Ota langaton verkko käyttöön</translation>
     </message>
     <message>
         <location filename="../src/tray.cpp" line="256"/>
         <source>Enable notifications</source>
-        <translation type="unfinished"></translation>
+        <translation>Ota ilmoitukset käyttöön</translation>
     </message>
     <message>
         <location filename="../src/tray.cpp" line="258"/>
         <source>Connection information</source>
-        <translation type="unfinished"></translation>
+        <translation>Yhteystiedot</translation>
     </message>
     <message>
         <location filename="../src/tray.cpp" line="259"/>
         <source>Debug information</source>
-        <translation type="unfinished"></translation>
+        <translation>Vianjäljitystiedot</translation>
     </message>
     <message>
         <location filename="../src/tray.cpp" line="260"/>
         <source>Wifi - request scan</source>
-        <translation type="unfinished"></translation>
+        <translation>Langaton verkko – etsi</translation>
     </message>
     <message>
         <location filename="../src/tray.cpp" line="261"/>
         <source>Edit connections...</source>
-        <translation type="unfinished"></translation>
+        <translation>Muokkaa yhteyksiä…</translation>
     </message>
     <message>
         <location filename="../src/tray.cpp" line="264"/>
         <source>About</source>
-        <translation type="unfinished"></translation>
+        <translation>Tietoa</translation>
     </message>
     <message>
         <location filename="../src/tray.cpp" line="266"/>
         <source>Quit</source>
-        <translation type="unfinished"></translation>
+        <translation>Lopeta</translation>
     </message>
     <message>
         <location filename="../src/tray.cpp" line="291"/>
         <source>nm-tray info</source>
-        <translation type="unfinished"></translation>
+        <translation>Tietoa nm-traystä</translation>
     </message>
     <message>
         <location filename="../src/tray.cpp" line="384"/>
         <source>%1 about</source>
-        <translation type="unfinished"></translation>
+        <translation>Tietoa – %1</translation>
     </message>
     <message>
         <location filename="../src/tray.cpp" line="385"/>
         <source>&lt;strong&gt;&lt;a href=&quot;https://github.com/palinek/nm-tray&quot;&gt;nm-tray&lt;/a&gt;&lt;/strong&gt; is a simple Qt based frontend for &lt;a href=&quot;https://wiki.gnome.org/Projects/NetworkManager&quot;&gt;NetworkManager&lt;/a&gt;.&lt;br/&gt;&lt;br/&gt;Version: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;strong&gt;&lt;a href=&quot;https://github.com/palinek/nm-tray&quot;&gt;nm-tray&lt;/a&gt;&lt;/strong&gt; on yksinkertainen Qt-pohjainen
+käyttöliittymä &lt;a href=&quot;https://wiki.gnome.org/Projects/NetworkManager&quot;&gt;NetworkManageriin&lt;/a&gt;.&lt;br/&gt;&lt;br/&gt;Versio: %1</translation>
     </message>
 </context>
 <context>
@@ -257,17 +258,17 @@
     <message>
         <location filename="../src/windowmenu.cpp" line="163"/>
         <source>Active connection(s)</source>
-        <translation type="unfinished"></translation>
+        <translation>Aktiiviset yhteydet</translation>
     </message>
     <message>
         <location filename="../src/windowmenu.cpp" line="165"/>
         <source>Wi-Fi network(s)</source>
-        <translation type="unfinished"></translation>
+        <translation>Langattomat verkot</translation>
     </message>
     <message>
         <location filename="../src/windowmenu.cpp" line="167"/>
         <source>Known connection(s)</source>
-        <translation type="unfinished"></translation>
+        <translation>Tunnetut yhteydet</translation>
     </message>
 </context>
 </TS>
