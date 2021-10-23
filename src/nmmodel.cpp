@@ -1157,8 +1157,17 @@ QVariant NmModel::dataRole<NmModel::ActiveConnectionInfoRole>(const QModelIndex 
             << QStringLiteral("<tr><td><strong>") << NmModel::tr("Driver", "Active connection information") << QStringLiteral("</strong>: </td><td>")
                 << dev->driver() << QStringLiteral("</td></tr>")
             << QStringLiteral("<tr><td><strong>") << NmModel::tr("Speed", "Active connection information") << QStringLiteral("</strong>: </td><td>");
-        if (0 <= bit_rate)
-            str << bit_rate << NmModel::tr(" Kb/s");
+        if (0 <= bit_rate) 
+        {
+            if (bit_rate <= 1000)
+                str << bit_rate << NmModel::tr(" Kb/s");
+            else if (bit_rate <= 1000000)
+                str << bit_rate/1000 << NmModel::tr(" Mb/s");
+            else if (bit_rate <= 1000000000)
+        	str << bit_rate/1000000 << NmModel::tr(" Gb/s");
+            else
+                str << bit_rate/1000000000 << NmModel::tr(" Tb/s");
+        }
         else
             str << NmModel::tr("unknown", "Speed");
         str << QStringLiteral("</td></tr>");
