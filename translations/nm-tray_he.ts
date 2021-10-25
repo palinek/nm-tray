@@ -111,22 +111,22 @@
     <message>
         <location filename="../src/nmmodel.cpp" line="1163"/>
         <source>Kb/s</source>
-        <translation type="unfinished"></translation>
+        <translation>קסל״ש</translation>
     </message>
     <message>
         <location filename="../src/nmmodel.cpp" line="1165"/>
         <source>Mb/s</source>
-        <translation type="unfinished"></translation>
+        <translation>מסל״ש</translation>
     </message>
     <message>
         <location filename="../src/nmmodel.cpp" line="1167"/>
         <source>Gb/s</source>
-        <translation type="unfinished"></translation>
+        <translation>גסל״ש</translation>
     </message>
     <message>
         <location filename="../src/nmmodel.cpp" line="1169"/>
         <source>Tb/s</source>
-        <translation type="unfinished"></translation>
+        <translation>טסל״ש</translation>
     </message>
     <message>
         <location filename="../src/nmmodel.cpp" line="1172"/>
