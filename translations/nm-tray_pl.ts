@@ -96,7 +96,7 @@
         <location filename="../src/nmmodel.cpp" line="1157"/>
         <source>Driver</source>
         <comment>Active connection information</comment>
-        <translation>Informacje o aktywnym połączeniu</translation>
+        <translation>Sterownik</translation>
     </message>
     <message>
         <location filename="../src/nmmodel.cpp" line="1159"/>
@@ -111,22 +111,22 @@
     <message>
         <location filename="../src/nmmodel.cpp" line="1163"/>
         <source>Kb/s</source>
-        <translation type="unfinished"></translation>
+        <translation>Kb/s</translation>
     </message>
     <message>
         <location filename="../src/nmmodel.cpp" line="1165"/>
         <source>Mb/s</source>
-        <translation type="unfinished"></translation>
+        <translation>Mb/s</translation>
     </message>
     <message>
         <location filename="../src/nmmodel.cpp" line="1167"/>
         <source>Gb/s</source>
-        <translation type="unfinished"></translation>
+        <translation>Gb/s</translation>
     </message>
     <message>
         <location filename="../src/nmmodel.cpp" line="1169"/>
         <source>Tb/s</source>
-        <translation type="unfinished"></translation>
+        <translation>Tb/s</translation>
     </message>
     <message>
         <location filename="../src/nmmodel.cpp" line="1172"/>
@@ -274,7 +274,7 @@
     <message>
         <location filename="../src/tray.cpp" line="384"/>
         <source>%1 about</source>
-        <translation>o %1</translation>
+        <translation>O %1</translation>
     </message>
     <message>
         <location filename="../src/tray.cpp" line="385"/>
