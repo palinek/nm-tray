@@ -1160,13 +1160,13 @@ QVariant NmModel::dataRole<NmModel::ActiveConnectionInfoRole>(const QModelIndex 
         if (0 <= bit_rate) 
         {
             if (bit_rate <= 1000)
-                str << bit_rate << NmModel::tr(" Kb/s");
+                str << bit_rate << "&nbsp;" << NmModel::tr("Kb/s");
             else if (bit_rate <= 1000000)
-                str << QLocale::system().toString(static_cast<double>(bit_rate) / 1000, 'g', 5) << NmModel::tr(" Mb/s");
+                str << QLocale::system().toString(static_cast<double>(bit_rate) / 1000, 'g', 5) << "&nbsp;" << NmModel::tr("Mb/s");
             else if (bit_rate <= 1000000000)
-                str << QLocale::system().toString(static_cast<double>(bit_rate)/1000000, 'g', 5) << NmModel::tr(" Gb/s");
+                str << QLocale::system().toString(static_cast<double>(bit_rate)/1000000, 'g', 5) << "&nbsp;" << NmModel::tr("Gb/s");
             else
-                str << QLocale::system().toString(static_cast<double>(bit_rate)/1000000000, 'g', 5) << NmModel::tr(" Tb/s");
+                str << QLocale::system().toString(static_cast<double>(bit_rate)/1000000000, 'g', 5) << "&nbsp;" << NmModel::tr("Tb/s");
         }
         else
             str << NmModel::tr("unknown", "Speed");
