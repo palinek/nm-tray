@@ -30,125 +30,144 @@
 <context>
     <name>NmModel</name>
     <message>
-        <location filename="../src/nmmodel.cpp" line="55"/>
+        <location filename="../src/nmmodel.cpp" line="56"/>
         <source>nm-tray - wireless password</source>
         <translation>nm-tray - 无线密码</translation>
     </message>
     <message>
-        <location filename="../src/nmmodel.cpp" line="56"/>
+        <location filename="../src/nmmodel.cpp" line="57"/>
         <source>Password is needed for connection to &apos;%1&apos;:</source>
         <translation>需要密码以连接 &apos;%1&apos;:</translation>
     </message>
     <message>
-        <location filename="../src/nmmodel.cpp" line="744"/>
+        <location filename="../src/nmmodel.cpp" line="745"/>
         <source>root</source>
         <translation>根</translation>
     </message>
     <message>
-        <location filename="../src/nmmodel.cpp" line="746"/>
+        <location filename="../src/nmmodel.cpp" line="747"/>
         <source>active connection(s)</source>
         <translation>活动连接</translation>
     </message>
     <message>
-        <location filename="../src/nmmodel.cpp" line="748"/>
+        <location filename="../src/nmmodel.cpp" line="749"/>
         <source>connection(s)</source>
         <translation>连接</translation>
     </message>
     <message>
-        <location filename="../src/nmmodel.cpp" line="750"/>
+        <location filename="../src/nmmodel.cpp" line="751"/>
         <source>device(s)</source>
         <translation>设备</translation>
     </message>
     <message>
-        <location filename="../src/nmmodel.cpp" line="752"/>
+        <location filename="../src/nmmodel.cpp" line="753"/>
         <source>wifi network(s)</source>
         <translation>wifi 网络</translation>
     </message>
     <message>
-        <location filename="../src/nmmodel.cpp" line="1043"/>
+        <location filename="../src/nmmodel.cpp" line="1044"/>
         <source>unknown</source>
         <comment>hardware address</comment>
         <translation>未知</translation>
     </message>
     <message>
-        <location filename="../src/nmmodel.cpp" line="1151"/>
+        <location filename="../src/nmmodel.cpp" line="1152"/>
         <source>General</source>
         <comment>Active connection information</comment>
         <translation>通用</translation>
     </message>
     <message>
-        <location filename="../src/nmmodel.cpp" line="1152"/>
+        <location filename="../src/nmmodel.cpp" line="1153"/>
         <source>Interface</source>
         <comment>Active connection information</comment>
         <translation>接口</translation>
     </message>
     <message>
-        <location filename="../src/nmmodel.cpp" line="1154"/>
+        <location filename="../src/nmmodel.cpp" line="1155"/>
         <source>Hardware Address</source>
         <comment>Active connection information</comment>
         <translation>硬件地址</translation>
     </message>
     <message>
-        <location filename="../src/nmmodel.cpp" line="1156"/>
+        <location filename="../src/nmmodel.cpp" line="1157"/>
         <source>Driver</source>
         <comment>Active connection information</comment>
         <translation>驱动</translation>
     </message>
     <message>
-        <location filename="../src/nmmodel.cpp" line="1158"/>
+        <location filename="../src/nmmodel.cpp" line="1159"/>
         <source>Speed</source>
         <comment>Active connection information</comment>
         <translation>速度</translation>
     </message>
     <message>
-        <location filename="../src/nmmodel.cpp" line="1160"/>
-        <source> Kb/s</source>
-        <translation> Kb/s</translation>
+        <location filename="../src/nmmodel.cpp" line="1163"/>
+        <source>Kb/s</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/nmmodel.cpp" line="1162"/>
+        <location filename="../src/nmmodel.cpp" line="1165"/>
+        <source>Mb/s</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/nmmodel.cpp" line="1167"/>
+        <source>Gb/s</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/nmmodel.cpp" line="1169"/>
+        <source>Tb/s</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source> Kb/s</source>
+        <translation type="vanished"> Kb/s</translation>
+    </message>
+    <message>
+        <location filename="../src/nmmodel.cpp" line="1172"/>
         <source>unknown</source>
         <comment>Speed</comment>
         <translation>未知</translation>
     </message>
     <message>
-        <location filename="../src/nmmodel.cpp" line="1166"/>
+        <location filename="../src/nmmodel.cpp" line="1176"/>
         <source>Security</source>
         <comment>Active connection information</comment>
         <translation>安全</translation>
     </message>
     <message>
-        <location filename="../src/nmmodel.cpp" line="1170"/>
+        <location filename="../src/nmmodel.cpp" line="1180"/>
         <source>IPv4</source>
         <comment>Active connection information</comment>
         <translation>IPv4</translation>
     </message>
     <message>
-        <location filename="../src/nmmodel.cpp" line="1171"/>
+        <location filename="../src/nmmodel.cpp" line="1181"/>
         <source>IPv6</source>
         <comment>Active connection information</comment>
         <translation>IPv6</translation>
     </message>
     <message>
-        <location filename="../src/nmmodel.cpp" line="1182"/>
+        <location filename="../src/nmmodel.cpp" line="1192"/>
         <source>IP Address</source>
         <comment>Active connection information</comment>
         <translation>IP 地址</translation>
     </message>
     <message>
-        <location filename="../src/nmmodel.cpp" line="1184"/>
+        <location filename="../src/nmmodel.cpp" line="1194"/>
         <source>Subnet Mask</source>
         <comment>Active connection information</comment>
         <translation>子网掩码</translation>
     </message>
     <message>
-        <location filename="../src/nmmodel.cpp" line="1193"/>
+        <location filename="../src/nmmodel.cpp" line="1203"/>
         <source>Default route</source>
         <comment>Active connection information</comment>
         <translation>默认路由</translation>
     </message>
     <message>
-        <location filename="../src/nmmodel.cpp" line="1199"/>
+        <location filename="../src/nmmodel.cpp" line="1209"/>
         <source>DNS(%1)</source>
         <comment>Active connection information</comment>
         <translation>DNS (%1)</translation>
