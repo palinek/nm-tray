@@ -107,22 +107,22 @@
     <message>
         <location filename="../src/nmmodel.cpp" line="1163"/>
         <source>Kb/s</source>
-        <translation type="unfinished"></translation>
+        <translation>Kb/s</translation>
     </message>
     <message>
         <location filename="../src/nmmodel.cpp" line="1165"/>
         <source>Mb/s</source>
-        <translation type="unfinished"></translation>
+        <translation>Mb/s</translation>
     </message>
     <message>
         <location filename="../src/nmmodel.cpp" line="1167"/>
         <source>Gb/s</source>
-        <translation type="unfinished"></translation>
+        <translation>Gb/s</translation>
     </message>
     <message>
         <location filename="../src/nmmodel.cpp" line="1169"/>
         <source>Tb/s</source>
-        <translation type="unfinished"></translation>
+        <translation>Tb/s</translation>
     </message>
     <message>
         <location filename="../src/nmmodel.cpp" line="1172"/>
@@ -208,7 +208,7 @@
     <message>
         <location filename="../src/tray.cpp" line="220"/>
         <source>NetworkManager(nm-tray)</source>
-        <translation></translation>
+        <translation>NetworkManager (nm-tray)</translation>
     </message>
     <message>
         <location filename="../src/tray.cpp" line="253"/>
