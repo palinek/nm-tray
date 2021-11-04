@@ -10,6 +10,7 @@ set(KF5_MIN_VERSION "5.36.0")
 
 set(CMAKE_AUTOMOC on)
 set(CMAKE_AUTOUIC on)
+set(CMAKE_AUTORCC on)
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wextra")
 
@@ -48,6 +49,9 @@ set(SRCS
     src/main.cpp
 )
 
+set(RESOURCES
+    resources/icons.qrc
+)
 
 file(GLOB TSS "translations/${PROJECT_NAME}_*.ts")
 if (UPDATE_TRANSLATIONS)
@@ -65,6 +69,7 @@ qt5_add_dbus_interface(SRCS
 add_executable(nm-tray
     ${SRCS}
     ${QMS}
+    ${RESOURCES}
 )
 
 set_property(TARGET nm-tray PROPERTY CXX_STANDARD 11)

@@ -27,8 +27,29 @@ COPYRIGHT_HEADER*/
 
 namespace icons
 {
+    namespace
+    {
+        class FallbackIcon : public QIcon
+        {
+        public:
+            FallbackIcon()
+            {
+                static const QIcon fallback{QStringLiteral(":/images/default.svg")};
+                // Note: using pixmap icon as the vector/svg one is not correctly transferred via the
+                // D-Bus StatusNotifierItem interface
+                addPixmap(fallback.pixmap({16, 16}));
+                addPixmap(fallback.pixmap({32, 32}));
+                addPixmap(fallback.pixmap({64, 64}));
+                addPixmap(fallback.pixmap({128, 128}));
+                addPixmap(fallback.pixmap({256, 256}));
+            }
+        };
+    }
+
     QIcon getIcon(Icon ico, bool useSymbolic)
     {
+        // final, bundled fallback
+        static const FallbackIcon fallback;
         static const QStringList i_empty;
         QStringList const * icon_names = &i_empty;
         switch (ico)
@@ -96,8 +117,7 @@ namespace icons
             if (!icon.isNull())
                 return icon;
         }
-        //TODO: fallback!?!
-        return QIcon::fromTheme(QStringLiteral("network-transmit"));
+        return QIcon::fromTheme(QStringLiteral("network-transmit"), fallback);
     }
 
     Icon wifiSignalIcon(const int signal)
