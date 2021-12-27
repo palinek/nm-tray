@@ -1253,6 +1253,7 @@ QVariant NmModel::dataRole<NmModel::IconTypeRole>(const QModelIndex & index) con
                         }
                         break;
                     case NetworkManager::ConnectionSettings::Vpn:
+                    case NetworkManager::ConnectionSettings::WireGuard:
                         return icons::NETWORK_VPN;
                     default:
                         return NetworkManager::ActiveConnection::Activated == state ? icons::NETWORK_WIRED : icons::NETWORK_WIRED_DISCONNECTED;
@@ -1464,7 +1465,7 @@ void NmModel::activateConnection(QModelIndex const & index)
                 auto const & conn = d->mConnections[index.row()];
                 conn_uni = conn->path();
                 conn_name = conn->name();
-                if (NetworkManager::ConnectionSettings::Vpn == conn->settings()->connectionType())
+                if (NetworkManager::ConnectionSettings::Vpn == conn->settings()->connectionType() || NetworkManager::ConnectionSettings::WireGuard == conn->settings()->connectionType())
                 {
                     spec_object = dev_uni = QStringLiteral("/");
                     /*
