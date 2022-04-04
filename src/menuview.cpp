@@ -30,7 +30,7 @@ COPYRIGHT_HEADER*/
 #include <QStyledItemDelegate>
 #include <QApplication>
 #include <QPainter>
-#include <QDebug>
+#include <QMouseEvent>
 
 namespace
 {
@@ -84,6 +84,7 @@ MenuView::MenuView(QAbstractItemModel * model, QWidget * parent /*= nullptr*/)
     : QListView(parent)
     , mProxy{new QSortFilterProxyModel{this}}
     , mMaxItemsToShow(10)
+    , mCurrentReleaseButton{Qt::NoButton}
 {
     setEditTriggers(NoEditTriggers);
     setSizeAdjustPolicy(AdjustToContents);
@@ -109,6 +110,10 @@ MenuView::MenuView(QAbstractItemModel * model, QWidget * parent /*= nullptr*/)
         QScopedPointer<QAbstractItemDelegate> guard{itemDelegate()};
         setItemDelegate(new MultiIconDelegate{this});
     }
+    connect(this, &QAbstractItemView::activated, this, [this](const QModelIndex & index) {
+            if (mCurrentReleaseButton == Qt::NoButton || mCurrentReleaseButton == Qt::LeftButton)
+                emit activatedNoMiddleRight(index);
+    });
 }
 
 void MenuView::setFilter(QString const & filter)
@@ -156,4 +161,11 @@ QSize MenuView::viewportSizeHint() const
 QSize MenuView::minimumSizeHint() const
 {
     return QSize{0, 0};
+}
+
+void MenuView::mouseReleaseEvent(QMouseEvent *e)
+{
+    mCurrentReleaseButton = e->button();
+    QListView::mouseReleaseEvent(e);
+    mCurrentReleaseButton = Qt::NoButton;
 }

@@ -50,13 +50,21 @@ public Q_SLOTS:
      */
     void activateCurrent();
 
+Q_SIGNALS:
+    /*! \brief Signal emitted on the same conditions as parent's activated()
+     * signal except for middle & right click.
+     */
+    void activatedNoMiddleRight(const QModelIndex & index);
+
 protected:
     virtual QSize viewportSizeHint() const override;
     virtual QSize minimumSizeHint() const override;
+    virtual void mouseReleaseEvent(QMouseEvent *e) override;
 
 private:
     QSortFilterProxyModel * mProxy;
     int mMaxItemsToShow;
+    Qt::MouseButton mCurrentReleaseButton;
 };
 
 #endif //MENU_VIEW_H
