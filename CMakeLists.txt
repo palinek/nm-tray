@@ -14,14 +14,25 @@ set(CMAKE_AUTORCC on)
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wextra")
 
-find_package(Qt5 ${QT_MIN_VERSION} REQUIRED COMPONENTS
-    Widgets
-    Gui
-    Network
-    DBus
+if (BUILD_WITH_QT6)
+    find_package(Qt6 ${QT_MIN_VERSION} REQUIRED COMPONENTS
+        Widgets
+        Gui
+        Network
+        DBus
 
-    LinguistTools
-)
+        LinguistTools
+    )
+else ()
+    find_package(Qt5 ${QT_MIN_VERSION} REQUIRED COMPONENTS
+        Widgets
+        Gui
+        Network
+        DBus
+
+        LinguistTools
+    )
+endif ()
 find_package(KF5NetworkManagerQt ${KF5_MIN_VERSION} REQUIRED)
 include(GNUInstallDirs)
 
@@ -56,12 +67,20 @@ set(RESOURCES
 file(GLOB TSS "translations/${PROJECT_NAME}_*.ts")
 if (UPDATE_TRANSLATIONS)
     message(WARNING "!! Disable updating translation after make (-DUPDATE_TRANSLATIONS=no) to avoid 'make clean' delete them !!")
-    qt5_create_translation(QMS "translations/${PROJECT_NAME}.ts" ${TSS} "src")
+    if (BUILD_WITH_QT6)
+        qt6_create_translation(QMS "translations/${PROJECT_NAME}.ts" ${TSS} "src")
+    else ()
+        qt5_create_translation(QMS "translations/${PROJECT_NAME}.ts" ${TSS} "src")
+    endif()
 else ()
-    qt5_add_translation(QMS ${TSS})
+    if (BUILD_WITH_QT6)
+        qt6_add_translation(QMS ${TSS})
+    else ()
+        qt5_add_translation(QMS ${TSS})
+    endif()
 endif()
 
-qt5_add_dbus_interface(SRCS
+qt6_add_dbus_interface(SRCS
     dbus/org.freedesktop.Notifications.xml
     dbus/org.freedesktop.Notifications
 )
@@ -75,14 +94,26 @@ add_executable(nm-tray
 set_property(TARGET nm-tray PROPERTY CXX_STANDARD 11)
 set_property(TARGET nm-tray PROPERTY CXX_STANDARD_REQUIRED on)
 
-target_link_libraries(nm-tray
-    Qt5::Widgets
-    Qt5::Gui
-    KF5::NetworkManagerQt
-)
+if (BUILD_WITH_QT6)
+    target_link_libraries(nm-tray
+        Qt6::Widgets
+        Qt6::Gui
+        KF5::NetworkManagerQt
+    )
+else ()
+    target_link_libraries(nm-tray
+        Qt5::Widgets
+        Qt5::Gui
+        KF5::NetworkManagerQt
+    )
+endif()
 
 if (WITH_MODEMMANAGER_SUPPORT)
-    find_package(Qt5 ${QT_MIN_VERSION} REQUIRED COMPONENTS Xml)
+    if (BUILD_WITH_QT6)
+        find_package(Qt6 ${QT_MIN_VERSION} REQUIRED COMPONENTS Xml)
+    else ()
+        find_package(Qt5 ${QT_MIN_VERSION} REQUIRED COMPONENTS Xml)
+    endif()
     find_package(KF5ModemManagerQt ${KF5_MIN_VERSION} REQUIRED)
     target_link_libraries(nm-tray KF5::ModemManagerQt)
 endif()
