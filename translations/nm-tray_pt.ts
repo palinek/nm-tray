@@ -6,7 +6,7 @@
     <message>
         <location filename="../src/connectioninfo.ui" line="14"/>
         <source>Connection information</source>
-        <translation>Informações da conexão</translation>
+        <translation>Informação da ligação</translation>
     </message>
 </context>
 <context>
@@ -14,12 +14,12 @@
     <message>
         <location filename="../src/nmlist.ui" line="17"/>
         <source>All information</source>
-        <translation>Todas as informações</translation>
+        <translation>Toda a informação</translation>
     </message>
     <message>
         <location filename="../src/nmlist.ui" line="27"/>
         <source>Active connections</source>
-        <translation>Conexões ativas</translation>
+        <translation>Ligações ativas</translation>
     </message>
     <message>
         <location filename="../src/nmlist.ui" line="37"/>
@@ -37,7 +37,7 @@
     <message>
         <location filename="../src/nmmodel.cpp" line="57"/>
         <source>Password is needed for connection to &apos;%1&apos;:</source>
-        <translation>A palavra-passe é necessária para a conexão com &apos;%1&apos;:</translation>
+        <translation>A palavra-passe é necessária para a ligação com &apos;%1&apos;:</translation>
     </message>
     <message>
         <location filename="../src/nmmodel.cpp" line="745"/>
@@ -47,17 +47,17 @@
     <message>
         <location filename="../src/nmmodel.cpp" line="747"/>
         <source>active connection(s)</source>
-        <translation>conexão(ões) ativa(s)</translation>
+        <translation>ligação(ões) ativa(s)</translation>
     </message>
     <message>
         <location filename="../src/nmmodel.cpp" line="749"/>
         <source>connection(s)</source>
-        <translation>conexão(ões)</translation>
+        <translation>ligação(ões)</translation>
     </message>
     <message>
         <location filename="../src/nmmodel.cpp" line="751"/>
         <source>device(s)</source>
-        <translation>aparelho(s)</translation>
+        <translation>dispositivo(s)</translation>
     </message>
     <message>
         <location filename="../src/nmmodel.cpp" line="753"/>
@@ -92,7 +92,7 @@
         <location filename="../src/nmmodel.cpp" line="1157"/>
         <source>Driver</source>
         <comment>Active connection information</comment>
-        <translation>Driver</translation>
+        <translation>Controlador</translation>
     </message>
     <message>
         <location filename="../src/nmmodel.cpp" line="1159"/>
@@ -178,32 +178,32 @@
     <message>
         <location filename="../src/tray.cpp" line="123"/>
         <source>&lt;pre&gt;Connection &lt;strong&gt;%1&lt;/strong&gt;(%2) active&lt;/pre&gt;</source>
-        <translation>&lt;pre&gt;Conexão &lt;strong&gt;%1&lt;/strong&gt;(%2) ativa&lt;/pre&gt;</translation>
+        <translation>&lt;pre&gt;Ligação &lt;strong&gt;%1&lt;/strong&gt;(%2) ativa&lt;/pre&gt;</translation>
     </message>
     <message>
         <location filename="../src/tray.cpp" line="129"/>
         <source>&lt;pre&gt;No active connection&lt;/pre&gt;</source>
-        <translation>&lt;pre&gt;Nenhuma conexão ativa&lt;/pre&gt;</translation>
+        <translation>&lt;pre&gt;Nenhuma ligação ativa&lt;/pre&gt;</translation>
     </message>
     <message>
         <location filename="../src/tray.cpp" line="202"/>
         <source>Connection lost</source>
-        <translation>Conexão perdida</translation>
+        <translation>Ligação perdida</translation>
     </message>
     <message>
         <location filename="../src/tray.cpp" line="203"/>
         <source>No longer connected to %1 &apos;%2&apos;.</source>
-        <translation>Não está mais conectado a %1 &apos;%2&apos;.</translation>
+        <translation>Não está mais ligado a %1 &apos;%2&apos;.</translation>
     </message>
     <message>
         <location filename="../src/tray.cpp" line="215"/>
         <source>Connection established</source>
-        <translation>Conexão estabelecida</translation>
+        <translation>Ligação estabelecida</translation>
     </message>
     <message>
         <location filename="../src/tray.cpp" line="216"/>
         <source>Now connected to %1 &apos;%2&apos;.</source>
-        <translation>Conectado a %1 &apos;%2&apos;.</translation>
+        <translation>Ligado a %1 &apos;%2&apos;.</translation>
     </message>
     <message>
         <location filename="../src/tray.cpp" line="220"/>
@@ -228,12 +228,12 @@
     <message>
         <location filename="../src/tray.cpp" line="258"/>
         <source>Connection information</source>
-        <translation>Informações da conexão</translation>
+        <translation>Informação da ligação</translation>
     </message>
     <message>
         <location filename="../src/tray.cpp" line="259"/>
         <source>Debug information</source>
-        <translation>Informações de depuração</translation>
+        <translation>Informação de depuração</translation>
     </message>
     <message>
         <location filename="../src/tray.cpp" line="260"/>
@@ -243,12 +243,12 @@
     <message>
         <location filename="../src/tray.cpp" line="261"/>
         <source>Edit connections...</source>
-        <translation>Editar conexões...</translation>
+        <translation>Editar ligações...</translation>
     </message>
     <message>
         <location filename="../src/tray.cpp" line="264"/>
         <source>About</source>
-        <translation>Sobre</translation>
+        <translation>Acerca</translation>
     </message>
     <message>
         <location filename="../src/tray.cpp" line="266"/>
@@ -258,17 +258,17 @@
     <message>
         <location filename="../src/tray.cpp" line="291"/>
         <source>nm-tray info</source>
-        <translation>Informações sobre o nm-tray</translation>
+        <translation>Informação acerca do nm-tray</translation>
     </message>
     <message>
         <location filename="../src/tray.cpp" line="384"/>
         <source>%1 about</source>
-        <translation>%1 sobre</translation>
+        <translation>%1 acerca</translation>
     </message>
     <message>
         <location filename="../src/tray.cpp" line="385"/>
         <source>&lt;strong&gt;&lt;a href=&quot;https://github.com/palinek/nm-tray&quot;&gt;nm-tray&lt;/a&gt;&lt;/strong&gt; is a simple Qt based frontend for &lt;a href=&quot;https://wiki.gnome.org/Projects/NetworkManager&quot;&gt;NetworkManager&lt;/a&gt;.&lt;br/&gt;&lt;br/&gt;Version: %1</source>
-        <translation>&lt;strong&gt;&lt;a href=&quot;https://github.com/palinek/nm-tray&quot;&gt;nm-tray&lt;/a&gt;&lt;/strong&gt; é um frontend simples baseado em Qt para &lt;a href=&quot;https://wiki.gnome.org/Projects/NetworkManager&quot;&gt;NetworkManager&lt;/a&gt;.&lt;br/&gt;&lt;br/&gt;Versão: %1</translation>
+        <translation>&lt;strong&gt;&lt;a href=&quot;https://github.com/palinek/nm-tray&quot;&gt;nm-tray&lt;/a&gt;&lt;/strong&gt; é uma interface simples baseada em Qt para o &lt;a href=&quot;https://wiki.gnome.org/Projects/NetworkManager&quot;&gt;NetworkManager&lt;/a&gt;.&lt;br/&gt;&lt;br/&gt;Versão: %1</translation>
     </message>
 </context>
 <context>
@@ -276,7 +276,7 @@
     <message>
         <location filename="../src/windowmenu.cpp" line="163"/>
         <source>Active connection(s)</source>
-        <translation>Conexão(ões) ativa</translation>
+        <translation>Ligação(ões) ativa</translation>
     </message>
     <message>
         <location filename="../src/windowmenu.cpp" line="165"/>
@@ -286,7 +286,7 @@
     <message>
         <location filename="../src/windowmenu.cpp" line="167"/>
         <source>Known connection(s)</source>
-        <translation>Conexões conhecidas</translation>
+        <translation>Ligação(ões) conhecida(s)</translation>
     </message>
 </context>
 </TS>
