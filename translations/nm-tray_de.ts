@@ -291,7 +291,7 @@
     <message>
         <location filename="../src/windowmenu.cpp" line="163"/>
         <source>Active connection(s)</source>
-        <translation>Aktive Verbindungen</translation>
+        <translation>Aktive Verbindung(en)</translation>
     </message>
     <message>
         <location filename="../src/windowmenu.cpp" line="165"/>
