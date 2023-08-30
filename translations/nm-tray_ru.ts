@@ -103,22 +103,22 @@
     <message>
         <location filename="../src/nmmodel.cpp" line="1163"/>
         <source>Kb/s</source>
-        <translation type="unfinished"></translation>
+        <translation>Кбит/с</translation>
     </message>
     <message>
         <location filename="../src/nmmodel.cpp" line="1165"/>
         <source>Mb/s</source>
-        <translation type="unfinished"></translation>
+        <translation>Мб/с</translation>
     </message>
     <message>
         <location filename="../src/nmmodel.cpp" line="1167"/>
         <source>Gb/s</source>
-        <translation type="unfinished"></translation>
+        <translation>Гб/с</translation>
     </message>
     <message>
         <location filename="../src/nmmodel.cpp" line="1169"/>
         <source>Tb/s</source>
-        <translation type="unfinished"></translation>
+        <translation>Тб/с</translation>
     </message>
     <message>
         <source> Kb/s</source>
@@ -193,7 +193,7 @@
     <message>
         <location filename="../src/tray.cpp" line="203"/>
         <source>No longer connected to %1 &apos;%2&apos;.</source>
-        <translation type="unfinished">Больше не присоединено к %1 &apos;%2&apos;.</translation>
+        <translation>Больше не подключен к% 1 &apos;% 2&apos;.</translation>
     </message>
     <message>
         <location filename="../src/tray.cpp" line="215"/>
@@ -238,7 +238,7 @@
     <message>
         <location filename="../src/tray.cpp" line="260"/>
         <source>Wifi - request scan</source>
-        <translation type="unfinished">Wi-Fi - запрос сканирования</translation>
+        <translation>Wi-Fi - запрос сканирования</translation>
     </message>
     <message>
         <location filename="../src/tray.cpp" line="261"/>
@@ -263,7 +263,7 @@
     <message>
         <location filename="../src/tray.cpp" line="384"/>
         <source>%1 about</source>
-        <translation type="unfinished">О %1</translation>
+        <translation>% 1 о</translation>
     </message>
     <message>
         <location filename="../src/tray.cpp" line="385"/>
