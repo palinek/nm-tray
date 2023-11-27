@@ -24,7 +24,7 @@
     <message>
         <location filename="../src/nmlist.ui" line="37"/>
         <source>Available wireless</source>
-        <translation>Conexiuni wireless disponibile</translation>
+        <translation>Rețele fără fir disponibile</translation>
     </message>
 </context>
 <context>
@@ -32,12 +32,12 @@
     <message>
         <location filename="../src/nmmodel.cpp" line="56"/>
         <source>nm-tray - wireless password</source>
-        <translation>nm-tray - parolă wireless</translation>
+        <translation>nm-tray - parolă rețea fără fir</translation>
     </message>
     <message>
         <location filename="../src/nmmodel.cpp" line="57"/>
         <source>Password is needed for connection to &apos;%1&apos;:</source>
-        <translation>Parola este necesară pentru conectarea la &apos;%1&apos;:</translation>
+        <translation>Parola este necesară pentru conectarea la „%1”:</translation>
     </message>
     <message>
         <location filename="../src/nmmodel.cpp" line="745"/>
@@ -47,12 +47,12 @@
     <message>
         <location filename="../src/nmmodel.cpp" line="747"/>
         <source>active connection(s)</source>
-        <translation>conexiune (conexiuni) activă(e)</translation>
+        <translation>conexiuni active</translation>
     </message>
     <message>
         <location filename="../src/nmmodel.cpp" line="749"/>
         <source>connection(s)</source>
-        <translation>conexiune (conexiuni)</translation>
+        <translation>conexiuni</translation>
     </message>
     <message>
         <location filename="../src/nmmodel.cpp" line="751"/>
@@ -62,13 +62,13 @@
     <message>
         <location filename="../src/nmmodel.cpp" line="753"/>
         <source>wifi network(s)</source>
-        <translation>rețea (rețele) wifi</translation>
+        <translation>rețele wifi</translation>
     </message>
     <message>
         <location filename="../src/nmmodel.cpp" line="1044"/>
         <source>unknown</source>
         <comment>hardware address</comment>
-        <translation>Necunoscut</translation>
+        <translation>necunoscută</translation>
     </message>
     <message>
         <location filename="../src/nmmodel.cpp" line="1152"/>
@@ -92,7 +92,7 @@
         <location filename="../src/nmmodel.cpp" line="1157"/>
         <source>Driver</source>
         <comment>Active connection information</comment>
-        <translation>Driver</translation>
+        <translation>Controlor</translation>
     </message>
     <message>
         <location filename="../src/nmmodel.cpp" line="1159"/>
@@ -103,22 +103,22 @@
     <message>
         <location filename="../src/nmmodel.cpp" line="1163"/>
         <source>Kb/s</source>
-        <translation type="unfinished"></translation>
+        <translation>Kb/s</translation>
     </message>
     <message>
         <location filename="../src/nmmodel.cpp" line="1165"/>
         <source>Mb/s</source>
-        <translation type="unfinished"></translation>
+        <translation>Mb/s</translation>
     </message>
     <message>
         <location filename="../src/nmmodel.cpp" line="1167"/>
         <source>Gb/s</source>
-        <translation type="unfinished"></translation>
+        <translation>Gb/s</translation>
     </message>
     <message>
         <location filename="../src/nmmodel.cpp" line="1169"/>
         <source>Tb/s</source>
-        <translation type="unfinished"></translation>
+        <translation>Tb/s</translation>
     </message>
     <message>
         <source> Kb/s</source>
@@ -128,7 +128,7 @@
         <location filename="../src/nmmodel.cpp" line="1172"/>
         <source>unknown</source>
         <comment>Speed</comment>
-        <translation>necunoscut</translation>
+        <translation>necunoscută</translation>
     </message>
     <message>
         <location filename="../src/nmmodel.cpp" line="1176"/>
@@ -193,7 +193,7 @@
     <message>
         <location filename="../src/tray.cpp" line="203"/>
         <source>No longer connected to %1 &apos;%2&apos;.</source>
-        <translation>Nu mai este conectat la% 1 &apos;% 2&apos;.</translation>
+        <translation>Nu mai este conectat la% 1 „% 2”.</translation>
     </message>
     <message>
         <location filename="../src/tray.cpp" line="215"/>
@@ -203,7 +203,7 @@
     <message>
         <location filename="../src/tray.cpp" line="216"/>
         <source>Now connected to %1 &apos;%2&apos;.</source>
-        <translation>Acum conectat la %1 &apos;%2&apos;.</translation>
+        <translation>Conectat la %1 „%2”.</translation>
     </message>
     <message>
         <location filename="../src/tray.cpp" line="220"/>
@@ -263,12 +263,12 @@
     <message>
         <location filename="../src/tray.cpp" line="384"/>
         <source>%1 about</source>
-        <translation>%1 despre</translation>
+        <translation>Despre %1</translation>
     </message>
     <message>
         <location filename="../src/tray.cpp" line="385"/>
         <source>&lt;strong&gt;&lt;a href=&quot;https://github.com/palinek/nm-tray&quot;&gt;nm-tray&lt;/a&gt;&lt;/strong&gt; is a simple Qt based frontend for &lt;a href=&quot;https://wiki.gnome.org/Projects/NetworkManager&quot;&gt;NetworkManager&lt;/a&gt;.&lt;br/&gt;&lt;br/&gt;Version: %1</source>
-        <translation>&lt;strong&gt; &lt;a href=&quot;https://github.com/palinek/nm-tray&quot;&gt;nm-tray&lt;/a&gt;&lt;/strong&gt; este un simplu frontend bazat pe Qt pentru &lt;a href=&quot;https://wiki.gnome.org/Projects/NetworkManager&quot;&gt;NetworkManager&lt;/a&gt;. &lt;br/&gt; &lt;br/&gt; Versiune: %1</translation>
+        <translation>&lt;strong&gt; &lt;a href=&quot;https://github.com/palinek/nm-tray&quot;&gt;nm-tray&lt;/a&gt;&lt;/strong&gt; este o simplă interfață bazată pe Qt pentru &lt;a href=&quot;https://wiki.gnome.org/Projects/NetworkManager&quot;&gt;NetworkManager&lt;/a&gt;. &lt;br/&gt; &lt;br/&gt; Versiune: %1</translation>
     </message>
 </context>
 <context>
@@ -281,7 +281,7 @@
     <message>
         <location filename="../src/windowmenu.cpp" line="165"/>
         <source>Wi-Fi network(s)</source>
-        <translation>Rețea (rețele) Wi-Fi</translation>
+        <translation>Rețele Wi-Fi</translation>
     </message>
     <message>
         <location filename="../src/windowmenu.cpp" line="167"/>
