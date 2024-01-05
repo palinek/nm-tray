@@ -750,7 +750,7 @@ QVariant NmModel::dataRole<NmModel::NameRole>(const QModelIndex & index) const
         case ITEM_DEVICE:
             return NmModel::tr("device(s)");
         case ITEM_WIFINET:
-            return NmModel::tr("wifi network(s)");
+            return NmModel::tr("Wi-Fi network(s)");
         case ITEM_ACTIVE_LEAF:
             return d->mActiveConns[index.row()]->connection()->name();
         case ITEM_CONNECTION_LEAF:
@@ -1622,7 +1622,7 @@ void NmModel::requestScan(QModelIndex const & index) const
     if (nullptr == spec_dev)
     {
         //TODO: in what form should we output the warning messages
-        qCWarning(NM_TRAY).noquote() << "dropping request for scan on non wireles device " << dev->interfaceName();
+        qCWarning(NM_TRAY).noquote() << "dropping request for scan on non-wireles device " << dev->interfaceName();
         return;
     }
 
