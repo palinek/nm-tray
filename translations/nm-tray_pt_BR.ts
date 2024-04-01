@@ -47,7 +47,7 @@
     <message>
         <location filename="../src/nmmodel.cpp" line="747"/>
         <source>active connection(s)</source>
-        <translation>conexão(ões) ativa</translation>
+        <translation>conexão(ões) ativa(s)</translation>
     </message>
     <message>
         <location filename="../src/nmmodel.cpp" line="749"/>
@@ -268,7 +268,7 @@
     <message>
         <location filename="../src/tray.cpp" line="385"/>
         <source>&lt;strong&gt;&lt;a href=&quot;https://github.com/palinek/nm-tray&quot;&gt;nm-tray&lt;/a&gt;&lt;/strong&gt; is a simple Qt based frontend for &lt;a href=&quot;https://wiki.gnome.org/Projects/NetworkManager&quot;&gt;NetworkManager&lt;/a&gt;.&lt;br/&gt;&lt;br/&gt;Version: %1</source>
-        <translation>&lt;strong&gt;&lt;a href=&quot;https://github.com/palinek/nm-tray&quot;&gt;nm-tray&lt;/a&gt;&lt;/strong&gt; é um frontend simples baseado em Qt para &lt;a href=&quot;https://wiki.gnome.org/Projects/NetworkManager&quot;&gt;NetworkManager&lt;/a&gt;.&lt;br/&gt;&lt;br/&gt;Versão: %1</translation>
+        <translation>&lt;strong&gt;&lt;a href=&quot;https://github.com/palinek/nm-tray&quot;&gt;nm-tray&lt;/a&gt;&lt;/strong&gt; é uma interface simples baseada em Qt para o &lt;a href=&quot;https://wiki.gnome.org/Projects/NetworkManager&quot;&gt;NetworkManager&lt;/a&gt;.&lt;br/&gt;&lt;br/&gt;Versão: %1</translation>
     </message>
 </context>
 <context>
@@ -276,7 +276,7 @@
     <message>
         <location filename="../src/windowmenu.cpp" line="163"/>
         <source>Active connection(s)</source>
-        <translation>Conexão(ões) ativa</translation>
+        <translation>Conexão(ões) ativa(s)</translation>
     </message>
     <message>
         <location filename="../src/windowmenu.cpp" line="165"/>
@@ -286,7 +286,7 @@
     <message>
         <location filename="../src/windowmenu.cpp" line="167"/>
         <source>Known connection(s)</source>
-        <translation>Conexões conhecidas</translation>
+        <translation>Conexão(ões) conhecida(s)</translation>
     </message>
 </context>
 </TS>
