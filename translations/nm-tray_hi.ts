@@ -239,7 +239,7 @@
     <message>
         <location filename="../src/tray.cpp" line="261"/>
         <source>Edit connections...</source>
-        <translation>कनेक्शन संपादित करें..।</translation>
+        <translation>कनेक्शन संपादित करें…</translation>
     </message>
     <message>
         <location filename="../src/tray.cpp" line="264"/>
