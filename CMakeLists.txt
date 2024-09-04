@@ -1,12 +1,13 @@
+cmake_minimum_required(VERSION 3.6.0 FATAL_ERROR)
+
 project(nm-tray)
 
-cmake_minimum_required(VERSION 3.1.0 FATAL_ERROR)
 cmake_policy(SET CMP0071 NEW)
 
-set(NM_TRAY_VERSION "0.4.2")
+set(NM_TRAY_VERSION "0.5.1")
 
-set(QT_MIN_VERSION "5.4.0")
-set(KF5_MIN_VERSION "5.36.0")
+set(QT_MIN_VERSION "6.6.2")
+set(KF6_MIN_VERSION "6.5.0")
 
 set(CMAKE_AUTOMOC on)
 set(CMAKE_AUTOUIC on)
@@ -14,7 +15,7 @@ set(CMAKE_AUTORCC on)
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wextra")
 
-find_package(Qt5 ${QT_MIN_VERSION} REQUIRED COMPONENTS
+find_package(Qt6 ${QT_MIN_VERSION} REQUIRED COMPONENTS
     Widgets
     Gui
     Network
@@ -22,7 +23,7 @@ find_package(Qt5 ${QT_MIN_VERSION} REQUIRED COMPONENTS
 
     LinguistTools
 )
-find_package(KF5NetworkManagerQt ${KF5_MIN_VERSION} REQUIRED)
+find_package(KF6NetworkManagerQt ${KF6_MIN_VERSION} REQUIRED)
 include(GNUInstallDirs)
 
 set(TRANSLATION_DIR "${CMAKE_INSTALL_FULL_DATADIR}/${PROJECT_NAME}")
@@ -56,12 +57,12 @@ set(RESOURCES
 file(GLOB TSS "translations/${PROJECT_NAME}_*.ts")
 if (UPDATE_TRANSLATIONS)
     message(WARNING "!! Disable updating translation after make (-DUPDATE_TRANSLATIONS=no) to avoid 'make clean' delete them !!")
-    qt5_create_translation(QMS "translations/${PROJECT_NAME}.ts" ${TSS} "src")
+    qt6_create_translation(QMS "translations/${PROJECT_NAME}.ts" ${TSS} "src")
 else ()
-    qt5_add_translation(QMS ${TSS})
+    qt6_add_translation(QMS ${TSS})
 endif()
 
-qt5_add_dbus_interface(SRCS
+qt6_add_dbus_interface(SRCS
     dbus/org.freedesktop.Notifications.xml
     dbus/org.freedesktop.Notifications
 )
@@ -72,19 +73,19 @@ add_executable(nm-tray
     ${RESOURCES}
 )
 
-set_property(TARGET nm-tray PROPERTY CXX_STANDARD 11)
+set_property(TARGET nm-tray PROPERTY CXX_STANDARD 17)
 set_property(TARGET nm-tray PROPERTY CXX_STANDARD_REQUIRED on)
 
 target_link_libraries(nm-tray
-    Qt5::Widgets
-    Qt5::Gui
-    KF5::NetworkManagerQt
+    Qt6::Widgets
+    Qt6::Gui
+    KF6::NetworkManagerQt
 )
 
 if (WITH_MODEMMANAGER_SUPPORT)
-    find_package(Qt5 ${QT_MIN_VERSION} REQUIRED COMPONENTS Xml)
-    find_package(KF5ModemManagerQt ${KF5_MIN_VERSION} REQUIRED)
-    target_link_libraries(nm-tray KF5::ModemManagerQt)
+    find_package(Qt6 ${QT_MIN_VERSION} REQUIRED COMPONENTS Xml)
+    find_package(KF6ModemManagerQt ${KF6_MIN_VERSION} REQUIRED)
+    target_link_libraries(nm-tray KF6::ModemManagerQt)
 endif()
 
 install(TARGETS nm-tray RUNTIME DESTINATION "${CMAKE_INSTALL_FULL_BINDIR}" COMPONENT runtime)

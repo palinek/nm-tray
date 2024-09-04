@@ -33,7 +33,7 @@ void translate()
 {
     const QString locale = QLocale::system().name();
     QTranslator * qt_trans = new QTranslator{qApp};
-    if (qt_trans->load(QLatin1String("qt_") + locale, QLibraryInfo::location(QLibraryInfo::TranslationsPath)))
+    if (qt_trans->load(QLatin1String("qt_") + locale, QLibraryInfo::path(QLibraryInfo::TranslationsPath)))
         qApp->installTranslator(qt_trans);
     else
         delete qt_trans;
