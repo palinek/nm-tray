@@ -23,6 +23,7 @@ COPYRIGHT_HEADER*/
 #ifndef NMLIST_H
 #define NMLIST_H
 
+#include <memory>
 #include <QDialog>
 
 namespace Ui {
@@ -40,7 +41,7 @@ public:
     ~NmList();
 
 private:
-    Ui::NmList *ui;
+    std::unique_ptr<Ui::NmList> ui;
 };
 
 #endif // NMLIST_H

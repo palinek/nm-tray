@@ -55,7 +55,7 @@ void installDblClick(QAbstractItemView * view, QAbstractItemModel * m)
 
 NmList::NmList(QString const & title, QAbstractItemModel * m, QWidget *parent)
     : QDialog(parent)
-    , ui(new Ui::NmList)
+    , ui{new Ui::NmList}
 {
     ui->setupUi(this);
     setWindowTitle(title);
@@ -89,5 +89,4 @@ NmList::NmList(QString const & title, QAbstractItemModel * m, QWidget *parent)
 
 NmList::~NmList()
 {
-    delete ui;
 }

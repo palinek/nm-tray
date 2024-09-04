@@ -20,6 +20,7 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 COPYRIGHT_HEADER*/
+#include <memory>
 #include <QCoreApplication>
 #include <QLocale>
 #include <QTranslator>
@@ -32,18 +33,14 @@ COPYRIGHT_HEADER*/
 void translate()
 {
     const QString locale = QLocale::system().name();
-    QTranslator * qt_trans = new QTranslator{qApp};
+    auto qt_trans = std::make_unique<QTranslator>(qApp);
     if (qt_trans->load(QLatin1String("qt_") + locale, QLibraryInfo::path(QLibraryInfo::TranslationsPath)))
-        qApp->installTranslator(qt_trans);
-    else
-        delete qt_trans;
+        qApp->installTranslator(qt_trans.release());
 
     QString trans_dir = qgetenv("NM_TRAY_TRANSLATION_DIR").constData();
-    QTranslator * my_trans = new QTranslator{qApp};
+    auto my_trans = std::make_unique<QTranslator>(qApp);
     if (my_trans->load(QLatin1String("nm-tray_") + locale, trans_dir.isEmpty() ? TRANSLATION_DIR : trans_dir))
-        qApp->installTranslator(my_trans);
-    else
-        delete my_trans;
+        qApp->installTranslator(my_trans.release());
 }
 
 Q_COREAPP_STARTUP_FUNCTION(translate)
