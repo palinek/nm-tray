@@ -6,7 +6,7 @@
     <message>
         <location filename="../src/connectioninfo.ui" line="14"/>
         <source>Connection information</source>
-        <translation type="unfinished"></translation>
+        <translation>Võrguühenduse teave</translation>
     </message>
 </context>
 <context>
@@ -14,12 +14,12 @@
     <message>
         <location filename="../src/nmlist.ui" line="17"/>
         <source>All information</source>
-        <translation type="unfinished"></translation>
+        <translation>Kõik teave</translation>
     </message>
     <message>
         <location filename="../src/nmlist.ui" line="27"/>
         <source>Active connections</source>
-        <translation type="unfinished"></translation>
+        <translation>Aktiivsed võrguühendused</translation>
     </message>
     <message>
         <location filename="../src/nmlist.ui" line="37"/>
