@@ -6,7 +6,7 @@
     <message>
         <location filename="../src/connectioninfo.ui" line="14"/>
         <source>Connection information</source>
-        <translation>Informacje o połączeniu</translation>
+        <translation>Informacje o&#xa0;połączeniu</translation>
     </message>
 </context>
 <context>
@@ -67,12 +67,12 @@
     <message>
         <location filename="../src/nmmodel.cpp" line="56"/>
         <source>nm-tray - wireless password</source>
-        <translation>nm-tray - hasło połączenia bezprzewodowego</translation>
+        <translation>nm-tray – hasło połączenia bezprzewodowego</translation>
     </message>
     <message>
         <location filename="../src/nmmodel.cpp" line="57"/>
         <source>Password is needed for connection to &apos;%1&apos;:</source>
-        <translation>Potrzebne jest hasło, aby połączyć się z &apos;%1&apos;:</translation>
+        <translation>Do połączenia z&#xa0;„%1” wymagane jest hasło:</translation>
     </message>
     <message>
         <location filename="../src/nmmodel.cpp" line="1152"/>
@@ -90,7 +90,7 @@
         <location filename="../src/nmmodel.cpp" line="1155"/>
         <source>Hardware Address</source>
         <comment>Active connection information</comment>
-        <translation>Adres urządzenia</translation>
+        <translation>Adres sprzętowy</translation>
     </message>
     <message>
         <location filename="../src/nmmodel.cpp" line="1157"/>
@@ -200,7 +200,7 @@
     <message>
         <location filename="../src/tray.cpp" line="220"/>
         <source>NetworkManager(nm-tray)</source>
-        <translation>Menedżer komunikacji(nm-tray)</translation>
+        <translation>NetworkManager (nm-tray)</translation>
     </message>
     <message>
         <location filename="../src/tray.cpp" line="253"/>
@@ -224,12 +224,12 @@
     <message>
         <location filename="../src/tray.cpp" line="203"/>
         <source>No longer connected to %1 &apos;%2&apos;.</source>
-        <translation>Rozłączono z %1 &apos;%2&apos;.</translation>
+        <translation>Rozłączono z&#xa0;%1 „%2”.</translation>
     </message>
     <message>
         <location filename="../src/tray.cpp" line="216"/>
         <source>Now connected to %1 &apos;%2&apos;.</source>
-        <translation>Jesteś teraz połączony z %1 &apos;%2&apos;.</translation>
+        <translation>Połączono z&#xa0;%1 „%2”.</translation>
     </message>
     <message>
         <location filename="../src/tray.cpp" line="254"/>
@@ -244,7 +244,7 @@
     <message>
         <location filename="../src/tray.cpp" line="258"/>
         <source>Connection information</source>
-        <translation>Informacje o połączeniu</translation>
+        <translation>Informacje o&#xa0;połączeniu</translation>
     </message>
     <message>
         <location filename="../src/tray.cpp" line="259"/>
@@ -254,7 +254,7 @@
     <message>
         <location filename="../src/tray.cpp" line="260"/>
         <source>Wifi - request scan</source>
-        <translation>Wifi - żądanie skanowania</translation>
+        <translation>Wi-Fi – żądanie skanowania</translation>
     </message>
     <message>
         <location filename="../src/tray.cpp" line="261"/>
@@ -274,17 +274,17 @@
     <message>
         <location filename="../src/tray.cpp" line="384"/>
         <source>%1 about</source>
-        <translation>O %1</translation>
+        <translation>O programie %1</translation>
     </message>
     <message>
         <location filename="../src/tray.cpp" line="385"/>
         <source>&lt;strong&gt;&lt;a href=&quot;https://github.com/palinek/nm-tray&quot;&gt;nm-tray&lt;/a&gt;&lt;/strong&gt; is a simple Qt based frontend for &lt;a href=&quot;https://wiki.gnome.org/Projects/NetworkManager&quot;&gt;NetworkManager&lt;/a&gt;.&lt;br/&gt;&lt;br/&gt;Version: %1</source>
-        <translation>&lt;strong&gt;&lt;a href=&quot;https://github.com/palinek/nm-tray&quot;&gt;nm-tray&lt;/a&gt;&lt;/strong&gt; jest prostą, napisaną w Qt nakładką dla &lt;a href=&quot;https://wiki.gnome.org/Projects/NetworkManager&quot;&gt;NetworkManagera&lt;/a&gt;.&lt;br/&gt;&lt;br/&gt;Wersja: %1</translation>
+        <translation>&lt;strong&gt;&lt;a href=&quot;https://github.com/palinek/nm-tray&quot;&gt;nm-tray&lt;/a&gt;&lt;/strong&gt; to prosta nakładka oparta na Qt dla &lt;a href=&quot;https://wiki.gnome.org/Projects/NetworkManager&quot;&gt;NetworkManagera&lt;/a&gt;.&lt;br/&gt;&lt;br/&gt;Wersja: %1</translation>
     </message>
     <message>
         <location filename="../src/tray.cpp" line="291"/>
         <source>nm-tray info</source>
-        <translation>Informacje o nm-tray</translation>
+        <translation>Informacje o&#xa0;nm-tray</translation>
     </message>
 </context>
 <context>
