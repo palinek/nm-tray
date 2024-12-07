@@ -205,7 +205,7 @@
     <message>
         <location filename="../src/tray.cpp" line="253"/>
         <source>Enable Networking</source>
-        <translation>Włącz sieci</translation>
+        <translation>Włącz sieć</translation>
     </message>
     <message>
         <source>Enable Wi-fi</source>
@@ -214,7 +214,7 @@
     <message>
         <location filename="../src/tray.cpp" line="123"/>
         <source>&lt;pre&gt;Connection &lt;strong&gt;%1&lt;/strong&gt;(%2) active&lt;/pre&gt;</source>
-        <translation>&lt;pre&gt;Połączenie &lt;strong&gt;%1&lt;/strong&gt;(%2) aktywne&lt;/pre&gt;</translation>
+        <translation>&lt;pre&gt;Połączenie aktywne: &lt;strong&gt;%1&lt;/strong&gt;(%2)&lt;/pre&gt;</translation>
     </message>
     <message>
         <location filename="../src/tray.cpp" line="129"/>
