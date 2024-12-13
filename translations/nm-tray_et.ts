@@ -24,7 +24,7 @@
     <message>
         <location filename="../src/nmlist.ui" line="37"/>
         <source>Available wireless</source>
-        <translation type="unfinished"></translation>
+        <translation>Saadavalolevad traadita võrguühendused</translation>
     </message>
 </context>
 <context>
@@ -32,129 +32,129 @@
     <message>
         <location filename="../src/nmmodel.cpp" line="56"/>
         <source>nm-tray - wireless password</source>
-        <translation type="unfinished"></translation>
+        <translation>nm-tray - traadita võrgu salasõna</translation>
     </message>
     <message>
         <location filename="../src/nmmodel.cpp" line="57"/>
         <source>Password is needed for connection to &apos;%1&apos;:</source>
-        <translation type="unfinished"></translation>
+        <translation>„%1“ ühendus eeldab ligipääsuks salasõna:</translation>
     </message>
     <message>
         <location filename="../src/nmmodel.cpp" line="745"/>
         <source>root</source>
-        <translation type="unfinished"></translation>
+        <translation>juur</translation>
     </message>
     <message>
         <location filename="../src/nmmodel.cpp" line="747"/>
         <source>active connection(s)</source>
-        <translation type="unfinished"></translation>
+        <translation>aktiivsed ühendused</translation>
     </message>
     <message>
         <location filename="../src/nmmodel.cpp" line="749"/>
         <source>connection(s)</source>
-        <translation type="unfinished"></translation>
+        <translation>ühendus(ed)</translation>
     </message>
     <message>
         <location filename="../src/nmmodel.cpp" line="751"/>
         <source>device(s)</source>
-        <translation type="unfinished"></translation>
+        <translation>seadmed</translation>
     </message>
     <message>
         <location filename="../src/nmmodel.cpp" line="753"/>
         <source>wifi network(s)</source>
-        <translation type="unfinished"></translation>
+        <translation>WiFi-võrgud</translation>
     </message>
     <message>
         <location filename="../src/nmmodel.cpp" line="1044"/>
         <source>unknown</source>
         <comment>hardware address</comment>
-        <translation type="unfinished"></translation>
+        <translation>teadmata</translation>
     </message>
     <message>
         <location filename="../src/nmmodel.cpp" line="1152"/>
         <source>General</source>
         <comment>Active connection information</comment>
-        <translation type="unfinished"></translation>
+        <translation>Üldist</translation>
     </message>
     <message>
         <location filename="../src/nmmodel.cpp" line="1153"/>
         <source>Interface</source>
         <comment>Active connection information</comment>
-        <translation type="unfinished"></translation>
+        <translation>Võrguliides</translation>
     </message>
     <message>
         <location filename="../src/nmmodel.cpp" line="1155"/>
         <source>Hardware Address</source>
         <comment>Active connection information</comment>
-        <translation type="unfinished"></translation>
+        <translation>Raudvara aadress</translation>
     </message>
     <message>
         <location filename="../src/nmmodel.cpp" line="1157"/>
         <source>Driver</source>
         <comment>Active connection information</comment>
-        <translation type="unfinished"></translation>
+        <translation>Draiver</translation>
     </message>
     <message>
         <location filename="../src/nmmodel.cpp" line="1159"/>
         <source>Speed</source>
         <comment>Active connection information</comment>
-        <translation type="unfinished"></translation>
+        <translation>Kiirus</translation>
     </message>
     <message>
         <location filename="../src/nmmodel.cpp" line="1163"/>
         <source>Kb/s</source>
-        <translation type="unfinished"></translation>
+        <translation>Kb/s</translation>
     </message>
     <message>
         <location filename="../src/nmmodel.cpp" line="1165"/>
         <source>Mb/s</source>
-        <translation type="unfinished"></translation>
+        <translation>Mb/s</translation>
     </message>
     <message>
         <location filename="../src/nmmodel.cpp" line="1167"/>
         <source>Gb/s</source>
-        <translation type="unfinished"></translation>
+        <translation>Gb/s</translation>
     </message>
     <message>
         <location filename="../src/nmmodel.cpp" line="1169"/>
         <source>Tb/s</source>
-        <translation type="unfinished"></translation>
+        <translation>Tb/s</translation>
     </message>
     <message>
         <location filename="../src/nmmodel.cpp" line="1172"/>
         <source>unknown</source>
         <comment>Speed</comment>
-        <translation type="unfinished"></translation>
+        <translation>teadmata</translation>
     </message>
     <message>
         <location filename="../src/nmmodel.cpp" line="1176"/>
         <source>Security</source>
         <comment>Active connection information</comment>
-        <translation type="unfinished"></translation>
+        <translation>Turvalisus</translation>
     </message>
     <message>
         <location filename="../src/nmmodel.cpp" line="1180"/>
         <source>IPv4</source>
         <comment>Active connection information</comment>
-        <translation type="unfinished"></translation>
+        <translation>IPv4</translation>
     </message>
     <message>
         <location filename="../src/nmmodel.cpp" line="1181"/>
         <source>IPv6</source>
         <comment>Active connection information</comment>
-        <translation type="unfinished"></translation>
+        <translation>IPv6</translation>
     </message>
     <message>
         <location filename="../src/nmmodel.cpp" line="1192"/>
         <source>IP Address</source>
         <comment>Active connection information</comment>
-        <translation type="unfinished"></translation>
+        <translation>IP-aaddress</translation>
     </message>
     <message>
         <location filename="../src/nmmodel.cpp" line="1194"/>
         <source>Subnet Mask</source>
         <comment>Active connection information</comment>
-        <translation type="unfinished"></translation>
+        <translation>Alamvõrgumask</translation>
     </message>
     <message>
         <location filename="../src/nmmodel.cpp" line="1203"/>
