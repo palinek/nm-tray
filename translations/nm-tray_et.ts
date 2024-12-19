@@ -160,13 +160,13 @@
         <location filename="../src/nmmodel.cpp" line="1203"/>
         <source>Default route</source>
         <comment>Active connection information</comment>
-        <translation type="unfinished"></translation>
+        <translation>Vaikimisi marsruut</translation>
     </message>
     <message>
         <location filename="../src/nmmodel.cpp" line="1209"/>
         <source>DNS(%1)</source>
         <comment>Active connection information</comment>
-        <translation type="unfinished"></translation>
+        <translation>Nimeserver(id) (%1)</translation>
     </message>
 </context>
 <context>
@@ -174,97 +174,97 @@
     <message>
         <location filename="../src/tray.cpp" line="123"/>
         <source>&lt;pre&gt;Connection &lt;strong&gt;%1&lt;/strong&gt;(%2) active&lt;/pre&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;pre&gt;Ühendus &lt;strong&gt;%1&lt;/strong&gt;(%2) aktiivne&lt;/pre&gt;</translation>
     </message>
     <message>
         <location filename="../src/tray.cpp" line="129"/>
         <source>&lt;pre&gt;No active connection&lt;/pre&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;pre&gt;Aktiivset ühendust pole&lt;/pre&gt;</translation>
     </message>
     <message>
         <location filename="../src/tray.cpp" line="202"/>
         <source>Connection lost</source>
-        <translation type="unfinished"></translation>
+        <translation>Ühendus on katkenud</translation>
     </message>
     <message>
         <location filename="../src/tray.cpp" line="203"/>
         <source>No longer connected to %1 &apos;%2&apos;.</source>
-        <translation type="unfinished"></translation>
+        <translation>Ühendus on hetkel katkenud: %1 „%2“.</translation>
     </message>
     <message>
         <location filename="../src/tray.cpp" line="215"/>
         <source>Connection established</source>
-        <translation type="unfinished"></translation>
+        <translation>Ühendus on loodud</translation>
     </message>
     <message>
         <location filename="../src/tray.cpp" line="216"/>
         <source>Now connected to %1 &apos;%2&apos;.</source>
-        <translation type="unfinished"></translation>
+        <translation>Ühendus on loodud: %1 „%2“.</translation>
     </message>
     <message>
         <location filename="../src/tray.cpp" line="220"/>
         <source>NetworkManager(nm-tray)</source>
-        <translation type="unfinished"></translation>
+        <translation>NetworkManager (nm-tray)</translation>
     </message>
     <message>
         <location filename="../src/tray.cpp" line="253"/>
         <source>Enable Networking</source>
-        <translation type="unfinished"></translation>
+        <translation>Lülita võrguteenused sisse</translation>
     </message>
     <message>
         <location filename="../src/tray.cpp" line="254"/>
         <source>Enable Wi-Fi</source>
-        <translation type="unfinished"></translation>
+        <translation>Lülita WiFi sisse</translation>
     </message>
     <message>
         <location filename="../src/tray.cpp" line="256"/>
         <source>Enable notifications</source>
-        <translation type="unfinished"></translation>
+        <translation>Võta teavitused kasutusele</translation>
     </message>
     <message>
         <location filename="../src/tray.cpp" line="258"/>
         <source>Connection information</source>
-        <translation type="unfinished"></translation>
+        <translation>Ühenduse teave</translation>
     </message>
     <message>
         <location filename="../src/tray.cpp" line="259"/>
         <source>Debug information</source>
-        <translation type="unfinished"></translation>
+        <translation>Silumisteave</translation>
     </message>
     <message>
         <location filename="../src/tray.cpp" line="260"/>
         <source>Wifi - request scan</source>
-        <translation type="unfinished"></translation>
+        <translation>Alusta WiFi võrgu otsingut</translation>
     </message>
     <message>
         <location filename="../src/tray.cpp" line="261"/>
         <source>Edit connections...</source>
-        <translation type="unfinished"></translation>
+        <translation>Muuda ühendusi...</translation>
     </message>
     <message>
         <location filename="../src/tray.cpp" line="264"/>
         <source>About</source>
-        <translation type="unfinished"></translation>
+        <translation>Rakenduse teave</translation>
     </message>
     <message>
         <location filename="../src/tray.cpp" line="266"/>
         <source>Quit</source>
-        <translation type="unfinished"></translation>
+        <translation>Välju</translation>
     </message>
     <message>
         <location filename="../src/tray.cpp" line="291"/>
         <source>nm-tray info</source>
-        <translation type="unfinished"></translation>
+        <translation>nm-tray teave</translation>
     </message>
     <message>
         <location filename="../src/tray.cpp" line="384"/>
         <source>%1 about</source>
-        <translation type="unfinished"></translation>
+        <translation>Rakenduse teave: %1</translation>
     </message>
     <message>
         <location filename="../src/tray.cpp" line="385"/>
         <source>&lt;strong&gt;&lt;a href=&quot;https://github.com/palinek/nm-tray&quot;&gt;nm-tray&lt;/a&gt;&lt;/strong&gt; is a simple Qt based frontend for &lt;a href=&quot;https://wiki.gnome.org/Projects/NetworkManager&quot;&gt;NetworkManager&lt;/a&gt;.&lt;br/&gt;&lt;br/&gt;Version: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;strong&gt;&lt;a href=&quot;https://github.com/palinek/nm-tray&quot;&gt;nm-tray&lt;/a&gt;&lt;/strong&gt; on lihtne Qt-põhine graafiline kasutajaliides &lt;a href=&quot;https://wiki.gnome.org/Projects/NetworkManager&quot;&gt;NetworkManager&lt;/a&gt;i jaoks.&lt;br/&gt;&lt;br/&gt;Versioon: %1</translation>
     </message>
 </context>
 <context>
@@ -272,17 +272,17 @@
     <message>
         <location filename="../src/windowmenu.cpp" line="163"/>
         <source>Active connection(s)</source>
-        <translation type="unfinished"></translation>
+        <translation>Aktiivsed ühendused</translation>
     </message>
     <message>
         <location filename="../src/windowmenu.cpp" line="165"/>
         <source>Wi-Fi network(s)</source>
-        <translation type="unfinished"></translation>
+        <translation>WiFi-võrgud</translation>
     </message>
     <message>
         <location filename="../src/windowmenu.cpp" line="167"/>
         <source>Known connection(s)</source>
-        <translation type="unfinished"></translation>
+        <translation>Teadaolevad ühendused</translation>
     </message>
 </context>
 </TS>
