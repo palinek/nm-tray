@@ -52,7 +52,7 @@
     <message>
         <location filename="../src/nmmodel.cpp" line="753"/>
         <source>wifi network(s)</source>
-        <translation></translation>
+        <translation>wifi-nettverk</translation>
     </message>
     <message>
         <location filename="../src/nmmodel.cpp" line="1044"/>
@@ -74,7 +74,7 @@
         <location filename="../src/nmmodel.cpp" line="1152"/>
         <source>General</source>
         <comment>Active connection information</comment>
-        <translation></translation>
+        <translation>Generelt</translation>
     </message>
     <message>
         <location filename="../src/nmmodel.cpp" line="1153"/>
@@ -86,7 +86,7 @@
         <location filename="../src/nmmodel.cpp" line="1155"/>
         <source>Hardware Address</source>
         <comment>Active connection information</comment>
-        <translation></translation>
+        <translation>Hardware-adresse</translation>
     </message>
     <message>
         <location filename="../src/nmmodel.cpp" line="1157"/>
@@ -148,19 +148,19 @@
         <location filename="../src/nmmodel.cpp" line="1192"/>
         <source>IP Address</source>
         <comment>Active connection information</comment>
-        <translation></translation>
+        <translation>IP-adresse</translation>
     </message>
     <message>
         <location filename="../src/nmmodel.cpp" line="1194"/>
         <source>Subnet Mask</source>
         <comment>Active connection information</comment>
-        <translation>Nettmaske</translation>
+        <translation>Subnettmaske</translation>
     </message>
     <message>
         <location filename="../src/nmmodel.cpp" line="1203"/>
         <source>Default route</source>
         <comment>Active connection information</comment>
-        <translation></translation>
+        <translation>Standardrute</translation>
     </message>
     <message>
         <location filename="../src/nmmodel.cpp" line="1209"/>
@@ -174,7 +174,7 @@
     <message>
         <location filename="../src/tray.cpp" line="202"/>
         <source>Connection lost</source>
-        <translation>Tilknytningen gitt tapt</translation>
+        <translation>Tilkobling mistet</translation>
     </message>
     <message>
         <source>We have just lost the connection to %1 &apos;%2&apos;.</source>
@@ -197,7 +197,7 @@
     <message>
         <location filename="../src/tray.cpp" line="253"/>
         <source>Enable Networking</source>
-        <translation>Skru på nettverk</translation>
+        <translation>Slå på nettverk</translation>
     </message>
     <message>
         <source>Enable Wi-fi</source>
@@ -211,7 +211,7 @@
     <message>
         <location filename="../src/tray.cpp" line="129"/>
         <source>&lt;pre&gt;No active connection&lt;/pre&gt;</source>
-        <translation>&lt;pre&gt;Ingen aktive tilkoblinger&lt;/pre&gt;</translation>
+        <translation>&lt;pre&gt;Ingen aktiv tilkobling&lt;/pre&gt;</translation>
     </message>
     <message>
         <location filename="../src/tray.cpp" line="203"/>
@@ -226,12 +226,12 @@
     <message>
         <location filename="../src/tray.cpp" line="254"/>
         <source>Enable Wi-Fi</source>
-        <translation>Skru på Wi-Fi</translation>
+        <translation>Slå på Wi-Fi</translation>
     </message>
     <message>
         <location filename="../src/tray.cpp" line="256"/>
         <source>Enable notifications</source>
-        <translation>Skru på merknader</translation>
+        <translation>Slå på varslinger</translation>
     </message>
     <message>
         <location filename="../src/tray.cpp" line="258"/>
@@ -241,7 +241,7 @@
     <message>
         <location filename="../src/tray.cpp" line="259"/>
         <source>Debug information</source>
-        <translation></translation>
+        <translation>Feilsøkingsinformasjon</translation>
     </message>
     <message>
         <location filename="../src/tray.cpp" line="260"/>
@@ -271,7 +271,7 @@
     <message>
         <location filename="../src/tray.cpp" line="385"/>
         <source>&lt;strong&gt;&lt;a href=&quot;https://github.com/palinek/nm-tray&quot;&gt;nm-tray&lt;/a&gt;&lt;/strong&gt; is a simple Qt based frontend for &lt;a href=&quot;https://wiki.gnome.org/Projects/NetworkManager&quot;&gt;NetworkManager&lt;/a&gt;.&lt;br/&gt;&lt;br/&gt;Version: %1</source>
-        <translation>&lt;strong&gt;&lt;a href=&quot;https://github.com/palinek/nm-tray&quot;&gt;nm-tray&lt;/a&gt;&lt;/strong&gt; er en enkel Qt-basert grenseflate for &lt;a href=&quot;https://wiki.gnome.org/Projects/NetworkManager&quot;&gt;NetworkManager&lt;/a&gt;.&lt;br/&gt;&lt;br/&gt;Version: %1</translation>
+        <translation>&lt;strong&gt;&lt;a href=&quot;https://github.com/palinek/nm-tray&quot;&gt;nm-tray&lt;/a&gt;&lt;/strong&gt; er en enkel Qt-basert grenseflate for &lt;a href=&quot;https://wiki.gnome.org/Projects/NetworkManager&quot;&gt;NetworkManager&lt;/a&gt;.&lt;br/&gt;&lt;br/&gt;Versjon: %1</translation>
     </message>
     <message>
         <location filename="../src/tray.cpp" line="291"/>
@@ -289,7 +289,7 @@
     <message>
         <location filename="../src/windowmenu.cpp" line="165"/>
         <source>Wi-Fi network(s)</source>
-        <translation></translation>
+        <translation>Wi-Fi-nettverk</translation>
     </message>
     <message>
         <location filename="../src/windowmenu.cpp" line="167"/>
