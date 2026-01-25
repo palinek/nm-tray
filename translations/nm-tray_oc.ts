@@ -6,7 +6,7 @@
     <message>
         <location filename="../src/connectioninfo.ui" line="14"/>
         <source>Connection information</source>
-        <translation type="unfinished"></translation>
+        <translation>Informacions de connexion</translation>
     </message>
 </context>
 <context>
@@ -14,17 +14,17 @@
     <message>
         <location filename="../src/nmlist.ui" line="17"/>
         <source>All information</source>
-        <translation type="unfinished"></translation>
+        <translation>Totas las informacions</translation>
     </message>
     <message>
         <location filename="../src/nmlist.ui" line="27"/>
         <source>Active connections</source>
-        <translation type="unfinished"></translation>
+        <translation>Connexions activas</translation>
     </message>
     <message>
         <location filename="../src/nmlist.ui" line="37"/>
         <source>Available wireless</source>
-        <translation type="unfinished"></translation>
+        <translation>Rets sens fil disponiblas</translation>
     </message>
 </context>
 <context>
@@ -32,141 +32,141 @@
     <message>
         <location filename="../src/nmmodel.cpp" line="56"/>
         <source>nm-tray - wireless password</source>
-        <translation type="unfinished"></translation>
+        <translation>nm-tray - senhal sens fil</translation>
     </message>
     <message>
         <location filename="../src/nmmodel.cpp" line="57"/>
         <source>Password is needed for connection to &apos;%1&apos;:</source>
-        <translation type="unfinished"></translation>
+        <translation>Cal un senhal per la connexion a « %1 » :</translation>
     </message>
     <message>
         <location filename="../src/nmmodel.cpp" line="745"/>
         <source>root</source>
-        <translation type="unfinished"></translation>
+        <translation>root</translation>
     </message>
     <message>
         <location filename="../src/nmmodel.cpp" line="747"/>
         <source>active connection(s)</source>
-        <translation type="unfinished"></translation>
+        <translation>connexions activas</translation>
     </message>
     <message>
         <location filename="../src/nmmodel.cpp" line="749"/>
         <source>connection(s)</source>
-        <translation type="unfinished"></translation>
+        <translation>connexions</translation>
     </message>
     <message>
         <location filename="../src/nmmodel.cpp" line="751"/>
         <source>device(s)</source>
-        <translation type="unfinished"></translation>
+        <translation>periferics</translation>
     </message>
     <message>
         <location filename="../src/nmmodel.cpp" line="753"/>
         <source>wifi network(s)</source>
-        <translation type="unfinished"></translation>
+        <translation>rets wifi</translation>
     </message>
     <message>
         <location filename="../src/nmmodel.cpp" line="1044"/>
         <source>unknown</source>
         <comment>hardware address</comment>
-        <translation type="unfinished"></translation>
+        <translation>desconeguda</translation>
     </message>
     <message>
         <location filename="../src/nmmodel.cpp" line="1152"/>
         <source>General</source>
         <comment>Active connection information</comment>
-        <translation type="unfinished"></translation>
+        <translation>General</translation>
     </message>
     <message>
         <location filename="../src/nmmodel.cpp" line="1153"/>
         <source>Interface</source>
         <comment>Active connection information</comment>
-        <translation type="unfinished"></translation>
+        <translation>Interfàcia</translation>
     </message>
     <message>
         <location filename="../src/nmmodel.cpp" line="1155"/>
         <source>Hardware Address</source>
         <comment>Active connection information</comment>
-        <translation type="unfinished"></translation>
+        <translation>Adreça materiala</translation>
     </message>
     <message>
         <location filename="../src/nmmodel.cpp" line="1157"/>
         <source>Driver</source>
         <comment>Active connection information</comment>
-        <translation type="unfinished"></translation>
+        <translation>Pilòt</translation>
     </message>
     <message>
         <location filename="../src/nmmodel.cpp" line="1159"/>
         <source>Speed</source>
         <comment>Active connection information</comment>
-        <translation type="unfinished"></translation>
+        <translation>Velocitat</translation>
     </message>
     <message>
         <location filename="../src/nmmodel.cpp" line="1163"/>
         <source>Kb/s</source>
-        <translation type="unfinished"></translation>
+        <translation>Kb/s</translation>
     </message>
     <message>
         <location filename="../src/nmmodel.cpp" line="1165"/>
         <source>Mb/s</source>
-        <translation type="unfinished"></translation>
+        <translation>Mb/s</translation>
     </message>
     <message>
         <location filename="../src/nmmodel.cpp" line="1167"/>
         <source>Gb/s</source>
-        <translation type="unfinished"></translation>
+        <translation>Gb/s</translation>
     </message>
     <message>
         <location filename="../src/nmmodel.cpp" line="1169"/>
         <source>Tb/s</source>
-        <translation type="unfinished"></translation>
+        <translation>Tb/s</translation>
     </message>
     <message>
         <location filename="../src/nmmodel.cpp" line="1172"/>
         <source>unknown</source>
         <comment>Speed</comment>
-        <translation type="unfinished"></translation>
+        <translation>desconeguda</translation>
     </message>
     <message>
         <location filename="../src/nmmodel.cpp" line="1176"/>
         <source>Security</source>
         <comment>Active connection information</comment>
-        <translation type="unfinished"></translation>
+        <translation>Seguretat</translation>
     </message>
     <message>
         <location filename="../src/nmmodel.cpp" line="1180"/>
         <source>IPv4</source>
         <comment>Active connection information</comment>
-        <translation type="unfinished"></translation>
+        <translation>IPv4</translation>
     </message>
     <message>
         <location filename="../src/nmmodel.cpp" line="1181"/>
         <source>IPv6</source>
         <comment>Active connection information</comment>
-        <translation type="unfinished"></translation>
+        <translation>IPv6</translation>
     </message>
     <message>
         <location filename="../src/nmmodel.cpp" line="1192"/>
         <source>IP Address</source>
         <comment>Active connection information</comment>
-        <translation type="unfinished"></translation>
+        <translation>Adreça IP</translation>
     </message>
     <message>
         <location filename="../src/nmmodel.cpp" line="1194"/>
         <source>Subnet Mask</source>
         <comment>Active connection information</comment>
-        <translation type="unfinished"></translation>
+        <translation>Masqueta de sosret</translation>
     </message>
     <message>
         <location filename="../src/nmmodel.cpp" line="1203"/>
         <source>Default route</source>
         <comment>Active connection information</comment>
-        <translation type="unfinished"></translation>
+        <translation>Rota per defaut</translation>
     </message>
     <message>
         <location filename="../src/nmmodel.cpp" line="1209"/>
         <source>DNS(%1)</source>
         <comment>Active connection information</comment>
-        <translation type="unfinished"></translation>
+        <translation>DNS(%1)</translation>
     </message>
 </context>
 <context>
@@ -174,97 +174,97 @@
     <message>
         <location filename="../src/tray.cpp" line="123"/>
         <source>&lt;pre&gt;Connection &lt;strong&gt;%1&lt;/strong&gt;(%2) active&lt;/pre&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;pre&gt;Connexion &lt;strong&gt;%1&lt;/strong&gt;(%2) activa&lt;/pre&gt;</translation>
     </message>
     <message>
         <location filename="../src/tray.cpp" line="129"/>
         <source>&lt;pre&gt;No active connection&lt;/pre&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;pre&gt;Connexion non activa&lt;/pre&gt;</translation>
     </message>
     <message>
         <location filename="../src/tray.cpp" line="202"/>
         <source>Connection lost</source>
-        <translation type="unfinished"></translation>
+        <translation>Connexion perduda</translation>
     </message>
     <message>
         <location filename="../src/tray.cpp" line="203"/>
         <source>No longer connected to %1 &apos;%2&apos;.</source>
-        <translation type="unfinished"></translation>
+        <translation>Pas mai connectat a %1 « %2 ».</translation>
     </message>
     <message>
         <location filename="../src/tray.cpp" line="215"/>
         <source>Connection established</source>
-        <translation type="unfinished"></translation>
+        <translation>Connexion establida</translation>
     </message>
     <message>
         <location filename="../src/tray.cpp" line="216"/>
         <source>Now connected to %1 &apos;%2&apos;.</source>
-        <translation type="unfinished"></translation>
+        <translation>Connectat a %1 « %2 ».</translation>
     </message>
     <message>
         <location filename="../src/tray.cpp" line="220"/>
         <source>NetworkManager(nm-tray)</source>
-        <translation type="unfinished"></translation>
+        <translation>NetworkManager(nm-tray)</translation>
     </message>
     <message>
         <location filename="../src/tray.cpp" line="253"/>
         <source>Enable Networking</source>
-        <translation type="unfinished"></translation>
+        <translation>Activar la ret</translation>
     </message>
     <message>
         <location filename="../src/tray.cpp" line="254"/>
         <source>Enable Wi-Fi</source>
-        <translation type="unfinished"></translation>
+        <translation>Activar lo Wi-FI</translation>
     </message>
     <message>
         <location filename="../src/tray.cpp" line="256"/>
         <source>Enable notifications</source>
-        <translation type="unfinished"></translation>
+        <translation>Activar las notificacions</translation>
     </message>
     <message>
         <location filename="../src/tray.cpp" line="258"/>
         <source>Connection information</source>
-        <translation type="unfinished"></translation>
+        <translation>Informacions de connexion</translation>
     </message>
     <message>
         <location filename="../src/tray.cpp" line="259"/>
         <source>Debug information</source>
-        <translation type="unfinished"></translation>
+        <translation>Informacion de desbogatge</translation>
     </message>
     <message>
         <location filename="../src/tray.cpp" line="260"/>
         <source>Wifi - request scan</source>
-        <translation type="unfinished"></translation>
+        <translation>Wifi – demanda d’analisi</translation>
     </message>
     <message>
         <location filename="../src/tray.cpp" line="261"/>
         <source>Edit connections...</source>
-        <translation type="unfinished"></translation>
+        <translation>Modificar las connexion...</translation>
     </message>
     <message>
         <location filename="../src/tray.cpp" line="264"/>
         <source>About</source>
-        <translation type="unfinished"></translation>
+        <translation>A prepaus</translation>
     </message>
     <message>
         <location filename="../src/tray.cpp" line="266"/>
         <source>Quit</source>
-        <translation type="unfinished"></translation>
+        <translation>Quitar</translation>
     </message>
     <message>
         <location filename="../src/tray.cpp" line="291"/>
         <source>nm-tray info</source>
-        <translation type="unfinished"></translation>
+        <translation>Informacions sus nm-tray</translation>
     </message>
     <message>
         <location filename="../src/tray.cpp" line="384"/>
         <source>%1 about</source>
-        <translation type="unfinished"></translation>
+        <translation>A prepaus de %1</translation>
     </message>
     <message>
         <location filename="../src/tray.cpp" line="385"/>
         <source>&lt;strong&gt;&lt;a href=&quot;https://github.com/palinek/nm-tray&quot;&gt;nm-tray&lt;/a&gt;&lt;/strong&gt; is a simple Qt based frontend for &lt;a href=&quot;https://wiki.gnome.org/Projects/NetworkManager&quot;&gt;NetworkManager&lt;/a&gt;.&lt;br/&gt;&lt;br/&gt;Version: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;strong&gt;&lt;a href=&quot;https://github.com/palinek/nm-tray&quot;&gt;nm-tray&lt;/a&gt;&lt;/strong&gt; es una simpla interfàcia en Qt per &lt;a href=&quot;https://wiki.gnome.org/Projects/NetworkManager&quot;&gt;NetworkManager&lt;/a&gt;.&lt;br/&gt;&lt;br/&gt;Version : %1</translation>
     </message>
 </context>
 <context>
@@ -272,17 +272,17 @@
     <message>
         <location filename="../src/windowmenu.cpp" line="163"/>
         <source>Active connection(s)</source>
-        <translation type="unfinished"></translation>
+        <translation>Connexions activas</translation>
     </message>
     <message>
         <location filename="../src/windowmenu.cpp" line="165"/>
         <source>Wi-Fi network(s)</source>
-        <translation type="unfinished"></translation>
+        <translation>Rets Wi-Fi</translation>
     </message>
     <message>
         <location filename="../src/windowmenu.cpp" line="167"/>
         <source>Known connection(s)</source>
-        <translation type="unfinished"></translation>
+        <translation>Connexions desconegudas</translation>
     </message>
 </context>
 </TS>
