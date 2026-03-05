@@ -73,6 +73,72 @@ bool managerStateEquivalent(const NmModel::ManagerState &a, const NmModel::Manag
         && a.primaryConnectionPath == b.primaryConnectionPath;
 }
 
+bool activeEquivalent(const nm::ActiveConnectionRecord &a, const nm::ActiveConnectionRecord &b)
+{
+    return a.path == b.path
+        && a.connectionPath == b.connectionPath
+        && a.specificObjectPath == b.specificObjectPath
+        && a.id == b.id
+        && a.uuid == b.uuid
+        && a.type == b.type
+        && a.devices == b.devices
+        && a.state == b.state
+        && a.isVpn == b.isVpn
+        && a.isDefault4 == b.isDefault4
+        && a.isDefault6 == b.isDefault6
+        && a.ip4ConfigPath == b.ip4ConfigPath
+        && a.ip6ConfigPath == b.ip6ConfigPath
+        && a.ip4Addresses == b.ip4Addresses
+        && a.ip6Addresses == b.ip6Addresses
+        && a.ip4Gateway == b.ip4Gateway
+        && a.ip6Gateway == b.ip6Gateway
+        && a.ip4Dns == b.ip4Dns
+        && a.ip6Dns == b.ip6Dns
+        && a.ip4RouteCount == b.ip4RouteCount
+        && a.ip6RouteCount == b.ip6RouteCount;
+}
+
+bool connectionEquivalent(const nm::ConnectionViewRecord &a, const nm::ConnectionViewRecord &b)
+{
+    return a.connectionPath == b.connectionPath
+        && a.id == b.id
+        && a.uuid == b.uuid
+        && a.type == b.type
+        && a.active == b.active
+        && a.stale == b.stale
+        && a.lastUsedTimestamp == b.lastUsedTimestamp;
+}
+
+bool deviceEquivalent(const nm::DeviceRecord &a, const nm::DeviceRecord &b)
+{
+    return a.path == b.path
+        && a.interfaceName == b.interfaceName
+        && a.ipInterfaceName == b.ipInterfaceName
+        && a.type == b.type
+        && a.state == b.state
+        && a.activeConnectionPath == b.activeConnectionPath
+        && a.activeAccessPointPath == b.activeAccessPointPath
+        && a.accessPointPaths == b.accessPointPaths
+        && a.hardwareAddress == b.hardwareAddress
+        && a.bitrateKbps == b.bitrateKbps
+        && a.rxBytes == b.rxBytes
+        && a.txBytes == b.txBytes;
+}
+
+bool wifiEquivalent(const nm::WifiViewRecord &a, const nm::WifiViewRecord &b)
+{
+    return a.apPath == b.apPath
+        && a.ssid == b.ssid
+        && a.devicePath == b.devicePath
+        && a.strength == b.strength
+        && a.secure == b.secure
+        && a.active == b.active
+        && a.savedConnectionPath == b.savedConnectionPath
+        && a.autoconnectPriority == b.autoconnectPriority
+        && a.lastUsedTimestamp == b.lastUsedTimestamp
+        && a.stale == b.stale;
+}
+
 } // namespace
 
 NmModel::NmModel(QObject *parent)
@@ -736,7 +802,7 @@ void NmModel::rebuildFromSnapshot(const nm::Snapshot &snapshot)
         nextWifi = std::move(filtered);
     }
 
-    auto applySection = [this](ItemId sectionId, auto &current, const auto &next, auto keyOf) {
+    auto applySection = [this](ItemId sectionId, auto &current, const auto &next, auto keyOf, auto isSameItem) {
         QStringList currentKeys;
         QStringList nextKeys;
         currentKeys.reserve(current.size());
@@ -794,15 +860,38 @@ void NmModel::rebuildFromSnapshot(const nm::Snapshot &snapshot)
             return;
         }
 
+        QList<QPair<int, int>> changedRanges;
+        int rangeStart = -1;
+        for (int i = 0; i < current.size(); ++i) {
+            if (!isSameItem(current.at(i), next.at(i))) {
+                if (rangeStart < 0) {
+                    rangeStart = i;
+                }
+                continue;
+            }
+            if (rangeStart >= 0) {
+                changedRanges.push_back({rangeStart, i - 1});
+                rangeStart = -1;
+            }
+        }
+        if (rangeStart >= 0) {
+            changedRanges.push_back({rangeStart, current.size() - 1});
+        }
+
+        if (changedRanges.isEmpty()) {
+            return;
+        }
+
         current = next;
-        emit dataChanged(createIndex(0, 0, leafId),
-                         createIndex(current.size() - 1, 0, leafId));
+        for (const auto &[first, last] : changedRanges) {
+            emit dataChanged(createIndex(first, 0, leafId), createIndex(last, 0, leafId));
+        }
     };
 
-    applySection(ITEM_ACTIVE, mActive, nextActive, [](const nm::ActiveConnectionRecord &item) { return item.path; });
-    applySection(ITEM_CONNECTION, mConnections, nextConnections, [](const nm::ConnectionViewRecord &item) { return item.connectionPath; });
-    applySection(ITEM_DEVICE, mDevices, nextDevices, [](const nm::DeviceRecord &item) { return item.path; });
-    applySection(ITEM_WIFINET, mWifi, nextWifi, [](const nm::WifiViewRecord &item) { return item.apPath; });
+    applySection(ITEM_ACTIVE, mActive, nextActive, [](const nm::ActiveConnectionRecord &item) { return item.path; }, activeEquivalent);
+    applySection(ITEM_CONNECTION, mConnections, nextConnections, [](const nm::ConnectionViewRecord &item) { return item.connectionPath; }, connectionEquivalent);
+    applySection(ITEM_DEVICE, mDevices, nextDevices, [](const nm::DeviceRecord &item) { return item.path; }, deviceEquivalent);
+    applySection(ITEM_WIFINET, mWifi, nextWifi, [](const nm::WifiViewRecord &item) { return item.apPath; }, wifiEquivalent);
 
     ManagerState nextManagerState;
     nextManagerState.networkingEnabled = mCache.snapshot().manager.networkingEnabled;

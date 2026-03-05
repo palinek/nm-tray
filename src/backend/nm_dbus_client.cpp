@@ -96,6 +96,114 @@ QStringList addressListFromData(const QVariant &value)
     return out;
 }
 
+bool managerEquivalent(const nm::ManagerState &a, const nm::ManagerState &b)
+{
+    return a.networkingEnabled == b.networkingEnabled
+        && a.wirelessEnabled == b.wirelessEnabled
+        && a.wirelessHardwareEnabled == b.wirelessHardwareEnabled
+        && a.primaryConnectionPath == b.primaryConnectionPath
+        && a.state == b.state
+        && a.connectivity == b.connectivity
+        && a.lastError == b.lastError;
+}
+
+bool deviceEquivalent(const nm::DeviceRecord &a, const nm::DeviceRecord &b)
+{
+    return a.path == b.path
+        && a.interfaceName == b.interfaceName
+        && a.ipInterfaceName == b.ipInterfaceName
+        && a.type == b.type
+        && a.state == b.state
+        && a.activeConnectionPath == b.activeConnectionPath
+        && a.activeAccessPointPath == b.activeAccessPointPath
+        && a.accessPointPaths == b.accessPointPaths
+        && a.hardwareAddress == b.hardwareAddress
+        && a.bitrateKbps == b.bitrateKbps
+        && a.rxBytes == b.rxBytes
+        && a.txBytes == b.txBytes;
+}
+
+bool accessPointEquivalent(const nm::AccessPointRecord &a, const nm::AccessPointRecord &b)
+{
+    return a.path == b.path
+        && a.devicePath == b.devicePath
+        && a.ssid == b.ssid
+        && a.ssidBytes == b.ssidBytes
+        && a.bssid == b.bssid
+        && a.strength == b.strength
+        && a.flags == b.flags
+        && a.wpaFlags == b.wpaFlags
+        && a.rsnFlags == b.rsnFlags
+        && a.frequency == b.frequency
+        && a.privacy == b.privacy;
+}
+
+bool savedConnectionEquivalent(const nm::SavedConnectionRecord &a, const nm::SavedConnectionRecord &b)
+{
+    return a.path == b.path
+        && a.id == b.id
+        && a.wifiSsid == b.wifiSsid
+        && a.wifiSsidBytes == b.wifiSsidBytes
+        && a.uuid == b.uuid
+        && a.type == b.type
+        && a.interfaceName == b.interfaceName
+        && a.timestamp == b.timestamp
+        && a.autoconnectPriority == b.autoconnectPriority
+        && a.autoconnect == b.autoconnect;
+}
+
+bool activeConnectionEquivalent(const nm::ActiveConnectionRecord &a, const nm::ActiveConnectionRecord &b)
+{
+    return a.path == b.path
+        && a.connectionPath == b.connectionPath
+        && a.specificObjectPath == b.specificObjectPath
+        && a.id == b.id
+        && a.uuid == b.uuid
+        && a.type == b.type
+        && a.devices == b.devices
+        && a.state == b.state
+        && a.isVpn == b.isVpn
+        && a.isDefault4 == b.isDefault4
+        && a.isDefault6 == b.isDefault6
+        && a.ip4ConfigPath == b.ip4ConfigPath
+        && a.ip6ConfigPath == b.ip6ConfigPath
+        && a.ip4Addresses == b.ip4Addresses
+        && a.ip6Addresses == b.ip6Addresses
+        && a.ip4Gateway == b.ip4Gateway
+        && a.ip6Gateway == b.ip6Gateway
+        && a.ip4Dns == b.ip4Dns
+        && a.ip6Dns == b.ip6Dns
+        && a.ip4RouteCount == b.ip4RouteCount
+        && a.ip6RouteCount == b.ip6RouteCount;
+}
+
+template <typename T, typename Eq>
+bool mapEquivalent(const QMap<QString, T> &a, const QMap<QString, T> &b, Eq eq)
+{
+    if (a.size() != b.size()) {
+        return false;
+    }
+    auto itA = a.cbegin();
+    auto itB = b.cbegin();
+    while (itA != a.cend() && itB != b.cend()) {
+        if (itA.key() != itB.key() || !eq(itA.value(), itB.value())) {
+            return false;
+        }
+        ++itA;
+        ++itB;
+    }
+    return true;
+}
+
+bool snapshotEquivalent(const nm::Snapshot &a, const nm::Snapshot &b)
+{
+    return managerEquivalent(a.manager, b.manager)
+        && mapEquivalent(a.devices, b.devices, deviceEquivalent)
+        && mapEquivalent(a.accessPoints, b.accessPoints, accessPointEquivalent)
+        && mapEquivalent(a.savedConnections, b.savedConnections, savedConnectionEquivalent)
+        && mapEquivalent(a.activeConnections, b.activeConnections, activeConnectionEquivalent);
+}
+
 } // namespace
 
 namespace nm
@@ -144,7 +252,6 @@ void NmDbusClient::scheduleRefresh()
         mRefreshQueued = true;
         return;
     }
-    qCDebug(NM_TRAY) << "nm-dbus: scheduling snapshot refresh";
     mRefreshDebounce.start();
 }
 
@@ -164,7 +271,6 @@ void NmDbusClient::registerSignals()
 
 void NmDbusClient::onManagerSignal()
 {
-    qCDebug(NM_TRAY) << "nm-dbus: manager signal received";
     scheduleRefresh();
 }
 
@@ -265,7 +371,6 @@ void NmDbusClient::onPropertiesChanged(QString interfaceName, QVariantMap change
         return;
     }
 
-    qCDebug(NM_TRAY) << "nm-dbus: properties changed on interface" << interfaceName;
     scheduleRefresh();
 }
 
@@ -275,7 +380,6 @@ void NmDbusClient::refreshSnapshot()
         return;
     }
     mRefreshInProgress = true;
-    qCDebug(NM_TRAY) << "nm-dbus: refreshing snapshot";
     Snapshot next;
     next.collectedAt = QDateTime::currentDateTimeUtc();
 
@@ -407,18 +511,15 @@ void NmDbusClient::refreshSnapshot()
         next.manager.state != mSnapshot.manager.state ||
         next.manager.connectivity != mSnapshot.manager.connectivity;
 
+    const bool changed = !snapshotEquivalent(next, mSnapshot);
     updateDynamicPropertySubscriptions(next);
     mSnapshot = std::move(next);
-    qCDebug(NM_TRAY) << "nm-dbus: snapshot ready"
-                     << "devices=" << mSnapshot.devices.size()
-                     << "aps=" << mSnapshot.accessPoints.size()
-                     << "saved=" << mSnapshot.savedConnections.size()
-                     << "active=" << mSnapshot.activeConnections.size();
     if (managerChanged) {
-        qCDebug(NM_TRAY) << "nm-dbus: manager state changed";
         emit managerStateChanged();
     }
-    emit snapshotChanged(mSnapshot);
+    if (changed) {
+        emit snapshotChanged(mSnapshot);
+    }
     mRefreshInProgress = false;
     if (mRefreshQueued) {
         mRefreshQueued = false;
