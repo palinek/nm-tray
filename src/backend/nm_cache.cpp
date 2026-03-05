@@ -2,6 +2,7 @@
 
 #include <QDateTime>
 #include <algorithm>
+#include <ranges>
 
 namespace
 {
@@ -136,14 +137,11 @@ QList<WifiViewRecord> NmCache::wifiEntries(bool hideStale) const
 
     QList<WifiViewRecord> out;
     out.reserve(merged.size());
-    for (const auto &item : merged) {
-        if (hideStale && item.stale && !item.active) {
-            continue;
-        }
-        out.push_back(item);
-    }
+    std::ranges::copy_if(merged, std::back_inserter(out), [hideStale](const WifiViewRecord &item) {
+        return !(hideStale && item.stale && !item.active);
+    });
 
-    std::sort(out.begin(), out.end(), [](const WifiViewRecord &a, const WifiViewRecord &b) {
+    std::ranges::sort(out, [](const WifiViewRecord &a, const WifiViewRecord &b) {
         if (a.active != b.active) {
             return a.active;
         }
@@ -195,7 +193,7 @@ QList<ConnectionViewRecord> NmCache::knownConnections(bool hideStale) const
         out.push_back(item);
     }
 
-    std::sort(out.begin(), out.end(), [](const ConnectionViewRecord &a, const ConnectionViewRecord &b) {
+    std::ranges::sort(out, [](const ConnectionViewRecord &a, const ConnectionViewRecord &b) {
         if (a.active != b.active) {
             return a.active;
         }
@@ -214,7 +212,7 @@ QList<DeviceRecord> NmCache::devices() const
     for (const auto &it : mSnapshot.devices) {
         out.push_back(it);
     }
-    std::sort(out.begin(), out.end(), [](const DeviceRecord &a, const DeviceRecord &b) {
+    std::ranges::sort(out, [](const DeviceRecord &a, const DeviceRecord &b) {
         return QString::compare(a.interfaceName, b.interfaceName, Qt::CaseInsensitive) < 0;
     });
     return out;

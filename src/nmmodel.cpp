@@ -527,7 +527,6 @@ void NmModel::activateConnection(const QModelIndex &index)
         return;
     }
 
-    QString error;
     if (id == ITEM_CONNECTION_LEAF) {
         const auto &conn = mConnections.at(index.row());
         QString devicePath = QStringLiteral("/");
@@ -553,8 +552,8 @@ void NmModel::activateConnection(const QModelIndex &index)
             }
         }
 
-        if (!nm::NmActions::activateConnection(conn.connectionPath, devicePath, specificObject, &error)) {
-            qCWarning(NM_TRAY).noquote() << QStringLiteral("activateConnection failed for '%1': %2").arg(conn.id, error);
+        if (auto result = nm::NmActions::activateConnection(conn.connectionPath, devicePath, specificObject); !result) {
+            qCWarning(NM_TRAY).noquote() << QStringLiteral("activateConnection failed for '%1': %2").arg(conn.id, result.error());
         }
         return;
     }
@@ -569,8 +568,8 @@ void NmModel::activateConnection(const QModelIndex &index)
             qCWarning(NM_TRAY).noquote() << QStringLiteral("No saved profile for SSID '%1'. Connection creation is intentionally delegated to NetworkManager secret agents.").arg(wifi.ssid);
             return;
         }
-        if (!nm::NmActions::activateConnection(savedConnectionPath, wifi.devicePath, wifi.apPath, &error)) {
-            qCWarning(NM_TRAY).noquote() << QStringLiteral("activateConnection failed for SSID '%1': %2").arg(wifi.ssid, error);
+        if (auto result = nm::NmActions::activateConnection(savedConnectionPath, wifi.devicePath, wifi.apPath); !result) {
+            qCWarning(NM_TRAY).noquote() << QStringLiteral("activateConnection failed for SSID '%1': %2").arg(wifi.ssid, result.error());
         }
     }
 }
@@ -580,10 +579,9 @@ void NmModel::deactivateConnection(const QModelIndex &index)
     if (!isValidDataIndex(index) || static_cast<ItemId>(index.internalId()) != ITEM_ACTIVE_LEAF) {
         return;
     }
-    QString error;
     const auto &active = mActive.at(index.row());
-    if (!nm::NmActions::deactivateConnection(active.path, &error)) {
-        qCWarning(NM_TRAY).noquote() << QStringLiteral("deactivateConnection failed for '%1': %2").arg(active.id, error);
+    if (auto result = nm::NmActions::deactivateConnection(active.path); !result) {
+        qCWarning(NM_TRAY).noquote() << QStringLiteral("deactivateConnection failed for '%1': %2").arg(active.id, result.error());
     }
 }
 
@@ -596,9 +594,8 @@ void NmModel::requestScan(const QModelIndex &index) const
     if (dev.type != nm::DeviceType::Wifi) {
         return;
     }
-    QString error;
-    if (!nm::NmActions::requestScan(dev.path, &error)) {
-        qCWarning(NM_TRAY).noquote() << QStringLiteral("requestScan failed for '%1': %2").arg(dev.interfaceName, error);
+    if (auto result = nm::NmActions::requestScan(dev.path); !result) {
+        qCWarning(NM_TRAY).noquote() << QStringLiteral("requestScan failed for '%1': %2").arg(dev.interfaceName, result.error());
     }
 }
 
@@ -609,26 +606,23 @@ void NmModel::requestAllWifiScan() const
         if (dev.type != nm::DeviceType::Wifi) {
             continue;
         }
-        QString error;
-        if (!nm::NmActions::requestScan(dev.path, &error)) {
-            qCWarning(NM_TRAY).noquote() << QStringLiteral("requestScan failed for '%1': %2").arg(dev.interfaceName, error);
+        if (auto result = nm::NmActions::requestScan(dev.path); !result) {
+            qCWarning(NM_TRAY).noquote() << QStringLiteral("requestScan failed for '%1': %2").arg(dev.interfaceName, result.error());
         }
     }
 }
 
 void NmModel::setNetworkingEnabled(bool enabled)
 {
-    QString error;
-    if (!nm::NmActions::setNetworkingEnabled(enabled, &error)) {
-        qCWarning(NM_TRAY).noquote() << QStringLiteral("setNetworkingEnabled failed: %1").arg(error);
+    if (auto result = nm::NmActions::setNetworkingEnabled(enabled); !result) {
+        qCWarning(NM_TRAY).noquote() << QStringLiteral("setNetworkingEnabled failed: %1").arg(result.error());
     }
 }
 
 void NmModel::setWirelessEnabled(bool enabled)
 {
-    QString error;
-    if (!nm::NmActions::setWirelessEnabled(enabled, &error)) {
-        qCWarning(NM_TRAY).noquote() << QStringLiteral("setWirelessEnabled failed: %1").arg(error);
+    if (auto result = nm::NmActions::setWirelessEnabled(enabled); !result) {
+        qCWarning(NM_TRAY).noquote() << QStringLiteral("setWirelessEnabled failed: %1").arg(result.error());
     }
 }
 
@@ -646,9 +640,8 @@ void NmModel::disconnectPrimaryConnection()
     if (mManagerState.primaryConnectionPath.isEmpty() || mManagerState.primaryConnectionPath == QStringLiteral("/")) {
         return;
     }
-    QString error;
-    if (!nm::NmActions::deactivateConnection(mManagerState.primaryConnectionPath, &error)) {
-        qCWarning(NM_TRAY).noquote() << QStringLiteral("disconnectPrimaryConnection failed: %1").arg(error);
+    if (auto result = nm::NmActions::deactivateConnection(mManagerState.primaryConnectionPath); !result) {
+        qCWarning(NM_TRAY).noquote() << QStringLiteral("disconnectPrimaryConnection failed: %1").arg(result.error());
     }
 }
 
@@ -667,7 +660,6 @@ void NmModel::activateConnectionPath(const QString &connectionPath)
 
     QString devicePath = QStringLiteral("/");
     QString specificObject = QStringLiteral("/");
-    QString error;
     if (isWirelessType(connIt->type)) {
         QString ifaceHint;
         const auto sIt = mCache.snapshot().savedConnections.find(connIt->connectionPath);
@@ -688,8 +680,8 @@ void NmModel::activateConnectionPath(const QString &connectionPath)
         }
     }
 
-    if (!nm::NmActions::activateConnection(connIt->connectionPath, devicePath, specificObject, &error)) {
-        qCWarning(NM_TRAY).noquote() << QStringLiteral("activateConnectionPath failed for '%1': %2").arg(connIt->id, error);
+    if (auto result = nm::NmActions::activateConnection(connIt->connectionPath, devicePath, specificObject); !result) {
+        qCWarning(NM_TRAY).noquote() << QStringLiteral("activateConnectionPath failed for '%1': %2").arg(connIt->id, result.error());
     }
 }
 
