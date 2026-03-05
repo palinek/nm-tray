@@ -1,100 +1,160 @@
-/*COPYRIGHT_HEADER
-
-This file is a part of nm-tray.
-
-Copyright (c)
-    2015~now Palo Kisa <palo.kisa@gmail.com>
-
-nm-tray is free software; you can redistribute it and/or
-modify it under the terms of the GNU General Public License
-as published by the Free Software Foundation; either version 2
-of the License, or (at your option) any later version.
-
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
-
-You should have received a copy of the GNU General Public License
-along with this program; if not, write to the Free Software
-Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
-
-COPYRIGHT_HEADER*/
 #if !defined(NMMODEL_H)
 #define NMMODEL_H
 
 #include <QAbstractItemModel>
+#include <QString>
+#include <QStringList>
 
-class NmModelPrivate;
+#include "backend/nm_cache.h"
+#include "backend/nm_dbus_client.h"
 
 class NmModel : public QAbstractItemModel
 {
     Q_OBJECT
 
 public:
-    enum ItemType
+    enum class OverallState
     {
-        HelperType
-            , ActiveConnectionType
-            , ConnectionType
-            , DeviceType
-            , WifiNetworkType
+        Disconnected,
+        Connecting,
+        Connected,
+        Limited
     };
-    enum ItemRole
+
+    enum class PrimaryKind
     {
-        ItemTypeRole = Qt::UserRole + 1
-            , NameRole
+        Unknown,
+        Wifi,
+        Wired
+    };
 
-            , IconTypeRole
-            , IconRole
-            , ConnectionTypeRole
-            , ActiveConnectionTypeRole = ConnectionTypeRole
-            , ConnectionTypeStringRole
-            , ActiveConnectionTypeStringRole = ConnectionTypeStringRole
-            , ConnectionUuidRole
-            , ActiveConnectionUuidRole = ConnectionUuidRole
-            , ConnectionPathRole
-            , ActiveConnectionPathRole = ConnectionPathRole
-            , ActiveConnectionInfoRole
-            , ActiveConnectionStateRole
-            , ActiveConnectionMasterRole
-            , ActiveConnectionDevicesRole
-            , IconSecurityTypeRole
-            , IconSecurityRole
+    struct ManagerState
+    {
+        OverallState overallState = OverallState::Disconnected;
+        PrimaryKind primaryKind = PrimaryKind::Unknown;
+        QString primaryName;
+        int wifiStrength = -1;
+        QStringList vpnActive;
+        QString lastError;
+        bool networkingEnabled = false;
+        bool wirelessEnabled = false;
+        bool wirelessHardwareEnabled = false;
+        QString primaryConnectionPath;
+    };
 
-            , SignalRole
+    struct RecentConnection
+    {
+        QString id;
+        QString connectionPath;
+        qint64 lastUsedTimestamp = 0;
     };
 
 public:
-    explicit NmModel(QObject * parent = nullptr);
-    ~NmModel();
+    enum ItemType
+    {
+        HelperType,
+        ActiveConnectionType,
+        ConnectionType,
+        DeviceType,
+        WifiNetworkType
+    };
 
-    //QAbstractItemModel methods
-    virtual int rowCount(const QModelIndex &parent = QModelIndex()) const override;
-    virtual int columnCount(const QModelIndex &parent = QModelIndex()) const override;
+    enum ItemRole
+    {
+        ItemTypeRole = Qt::UserRole + 1,
+        NameRole,
 
-    virtual QModelIndex index(int row, int column, const QModelIndex &parent = QModelIndex()) const override;
-    virtual QModelIndex parent(const QModelIndex &index) const override;
+        IconTypeRole,
+        IconRole,
+        ConnectionTypeRole,
+        ActiveConnectionTypeRole = ConnectionTypeRole,
+        ConnectionTypeStringRole,
+        ActiveConnectionTypeStringRole = ConnectionTypeStringRole,
+        ConnectionUuidRole,
+        ActiveConnectionUuidRole = ConnectionUuidRole,
+        ConnectionPathRole,
+        ActiveConnectionPathRole = ConnectionPathRole,
+        ActiveConnectionInfoRole,
+        ActiveConnectionStateRole,
+        ActiveConnectionMasterRole,
+        ActiveConnectionDevicesRole,
+        IconSecurityTypeRole,
+        IconSecurityRole,
 
-    virtual QVariant data(const QModelIndex &index, int role) const override;
+        SignalRole
+    };
+
+    enum ActiveConnectionState
+    {
+        ActiveUnknown = 0,
+        ActiveActivating = 1,
+        ActiveActivated = 2,
+        ActiveDeactivating = 3,
+        ActiveDeactivated = 4
+    };
+
+public:
+    explicit NmModel(QObject *parent = nullptr);
+    ~NmModel() override;
+
+    int rowCount(const QModelIndex &parent = QModelIndex()) const override;
+    int columnCount(const QModelIndex &parent = QModelIndex()) const override;
+    QModelIndex index(int row, int column, const QModelIndex &parent = QModelIndex()) const override;
+    QModelIndex parent(const QModelIndex &index) const override;
+    QVariant data(const QModelIndex &index, int role) const override;
 
     QModelIndex indexTypeRoot(ItemType type) const;
 
+    ManagerState managerState() const;
+    bool networkingEnabled() const;
+    bool wirelessEnabled() const;
+    bool wirelessHardwareEnabled() const;
+    QString primaryConnectionPath() const;
+    bool showLowSignalNetworks() const;
+    QList<RecentConnection> recentConnections(int maxCount = 3) const;
+
+Q_SIGNALS:
+    void managerStateChanged();
+
 public Q_SLOTS:
-    //NetworkManager management methods
-    void activateConnection(QModelIndex const & index);
-    void deactivateConnection(QModelIndex const & index);
-    void requestScan(QModelIndex const & index) const;
+    void activateConnection(const QModelIndex &index);
+    void deactivateConnection(const QModelIndex &index);
+    void requestScan(const QModelIndex &index) const;
     void requestAllWifiScan() const;
+    void setNetworkingEnabled(bool enabled);
+    void setWirelessEnabled(bool enabled);
+    void setShowLowSignalNetworks(bool enabled);
+    void disconnectPrimaryConnection();
+    void activateConnectionPath(const QString &connectionPath);
 
 private:
-    bool isValidDataIndex(const QModelIndex & index) const;
-    template <int role>
-    QVariant dataRole(const QModelIndex & index) const;
+    enum ItemId
+    {
+        ITEM_ROOT = 0x0,
+        ITEM_ACTIVE = 0x01,
+        ITEM_ACTIVE_LEAF = 0x11,
+        ITEM_CONNECTION = 0x2,
+        ITEM_CONNECTION_LEAF = 0x21,
+        ITEM_DEVICE = 0x3,
+        ITEM_DEVICE_LEAF = 0x31,
+        ITEM_WIFINET = 0x4,
+        ITEM_WIFINET_LEAF = 0x41
+    };
+
+    bool isValidDataIndex(const QModelIndex &index) const;
+    void rebuildFromSnapshot();
+    QString buildActiveInfo(const nm::ActiveConnectionRecord &active) const;
 
 private:
-    QScopedPointer<NmModelPrivate> d;
+    nm::NmDbusClient mDbus;
+    nm::NmCache mCache;
+
+    QList<nm::ActiveConnectionRecord> mActive;
+    QList<nm::ConnectionViewRecord> mConnections;
+    QList<nm::DeviceRecord> mDevices;
+    QList<nm::WifiViewRecord> mWifi;
+    ManagerState mManagerState;
+    bool mShowLowSignalNetworks = false;
 };
 
-
-#endif //NMMODEL_H
+#endif // NMMODEL_H

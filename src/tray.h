@@ -49,7 +49,7 @@ private Q_SLOTS:
 
     //NetworkManager
     void setActionsStates();
-    void onPrimaryConnectionChanged(QString const & uni);
+    void onPrimaryConnectionChanged();
 
 private:
     QScopedPointer<TrayPrivate> d;

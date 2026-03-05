@@ -1,33 +1,76 @@
-# nm-tray
+# nm-tray-alt
 
-**nm-tray** is a simple [NetworkManager](https://wiki.gnome.org/Projects/NetworkManager) front end with information icon residing in system tray (like e.g. nm-applet).
-It's a pure Qt application. For interaction with *NetworkManager* it uses API provided by [**KF5::NetworkManagerQt**](https://projects.kde.org/projects/frameworks/networkmanager-qt) -> plain DBus communication.
+`nm-tray-alt` is a usability-focused fork of `nm-tray`.
+
+It keeps the lightweight Qt tray UI, but replaces the old backend integration with a direct `QtDBus` + NetworkManager model/cache pipeline.
+
+## What Changed In This Fork
+
+- Direct `QtDBus` backend (no `NetworkManagerQt` dependency)
+- C++23 build
+- Event-driven refresh with coalescing/debounce
+- Better Wi-Fi menu behavior:
+  - practical sorting
+  - low-signal toggle
+  - hidden/noise filtering
+- Cleaner popup UX:
+  - connected status at top
+  - one-click disconnect from top status line
+  - recent connections list
+  - connection details/usage shortcut
+- Better reconnect handling for saved Wi-Fi profiles
+- Rebranded app text to `nm-tray-alt`
 
 ## License
 
-This software is licensed under [GNU GPLv2 or later](https://www.gnu.org/licenses/old-licenses/gpl-2.0.html)
+This project remains licensed under **GNU GPLv2-or-later**.
 
-## Build example
+## Build (Ubuntu/Debian Example)
 
-    git clone https://github.com/palinek/nm-tray.git
-    cd nm-tray
-    mkdir build
-    cd build
-    cmake ..
-    make
-    ./nm-tray
+Install dependencies:
 
-## Packages
+```bash
+sudo apt-get update
+sudo apt-get install -y \
+  build-essential cmake pkg-config \
+  qt6-base-dev qt6-tools-dev qt6-tools-dev-tools qt6-l10n-tools
+```
 
-### arch
-For [arch users](https://www.archlinux.org/) there is an AUR package [nm-tray-git](https://aur.archlinux.org/packages/nm-tray-git/) (thanks to [pmattern](https://github.com/pmattern)).
+Configure + build:
 
-### openSUSE
-nm-tray is in the official repository of [openSUSE](https://www.opensuse.org/) since Leap 15.0. There is a also a [git package](https://build.opensuse.org/package/show/X11:LXQt:git/nm-tray) in the [X11:LXQt:git](https://build.opensuse.org/project/show/X11:LXQt:git) devel project of OBS.
+```bash
+git clone https://github.com/LegeApp/nm-tray-alt.git
+cd nm-tray-alt
+cmake -S . -B build -DCMAKE_BUILD_TYPE=Release
+cmake --build build -j"$(nproc)"
+```
 
-### debian
-Thanks to [agaida](https://github.com/agaida) nm-tray is now in official debian repositories ([nm-tray](https://packages.debian.org/sid/nm-tray)).
+Run without installing:
 
-## Translations
+```bash
+./build/nm-tray
+```
 
-Thanks to [Weblate](https://weblate.org/) anyone can help us to localize nm-tray by using the [hosted weblate service](https://hosted.weblate.org/projects/nm-tray/translations/).
+## Install System-Wide
+
+```bash
+cmake -S . -B build \
+  -DCMAKE_BUILD_TYPE=Release \
+  -DCMAKE_INSTALL_PREFIX=/usr/local \
+  -DNM_TRAY_XDG_AUTOSTART_DIR=/etc/xdg/autostart
+cmake --build build -j"$(nproc)"
+sudo cmake --install build
+```
+
+This installs:
+
+- binary: `/usr/local/bin/nm-tray`
+- desktop entry: `/usr/local/share/applications/nm-tray.desktop`
+- autostart entry: `/etc/xdg/autostart/nm-tray-autostart.desktop`
+
+## Notes
+
+- Networking is still managed by NetworkManager (`network-manager` service).
+- If another tray applet is already autostarting, disable it to avoid duplicate tray icons.
+- `Edit connections...` tries multiple launch fallbacks (`nm-connection-editor`, terminal + `nmtui-edit`).
+

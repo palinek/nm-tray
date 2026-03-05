@@ -1,6 +1,6 @@
 [Desktop Entry]
 Type=Application
-Name=nm-tray
+Name=nm-tray-alt
 TryExec=nm-tray
 Exec=nm-tray
 NotShowIn=KDE;GNOME;

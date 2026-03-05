@@ -7,7 +7,6 @@ cmake_policy(SET CMP0071 NEW)
 set(NM_TRAY_VERSION "0.5.1")
 
 set(QT_MIN_VERSION "6.6.2")
-set(KF6_MIN_VERSION "6.5.0")
 
 set(CMAKE_AUTOMOC on)
 set(CMAKE_AUTOUIC on)
@@ -23,7 +22,6 @@ find_package(Qt6 ${QT_MIN_VERSION} REQUIRED COMPONENTS
 
     LinguistTools
 )
-find_package(KF6NetworkManagerQt ${KF6_MIN_VERSION} REQUIRED)
 include(GNUInstallDirs)
 
 set(TRANSLATION_DIR "${CMAKE_INSTALL_FULL_DATADIR}/${PROJECT_NAME}")
@@ -39,6 +37,10 @@ message(STATUS "Autostart .desktop entry destination dir: ${NM_TRAY_XDG_AUTOSTAR
 set(SRCS
     src/log.cpp
     src/icons.cpp
+    src/backend/nm_types.cpp
+    src/backend/nm_dbus_client.cpp
+    src/backend/nm_actions.cpp
+    src/backend/nm_cache.cpp
     src/nmmodel.cpp
     src/nmproxy.cpp
     src/connectioninfo.cpp
@@ -73,20 +75,14 @@ add_executable(nm-tray
     ${RESOURCES}
 )
 
-set_property(TARGET nm-tray PROPERTY CXX_STANDARD 17)
+set_property(TARGET nm-tray PROPERTY CXX_STANDARD 23)
 set_property(TARGET nm-tray PROPERTY CXX_STANDARD_REQUIRED on)
 
 target_link_libraries(nm-tray
     Qt6::Widgets
     Qt6::Gui
-    KF6::NetworkManagerQt
+    Qt6::DBus
 )
-
-if (WITH_MODEMMANAGER_SUPPORT)
-    find_package(Qt6 ${QT_MIN_VERSION} REQUIRED COMPONENTS Xml)
-    find_package(KF6ModemManagerQt ${KF6_MIN_VERSION} REQUIRED)
-    target_link_libraries(nm-tray KF6::ModemManagerQt)
-endif()
 
 install(TARGETS nm-tray RUNTIME DESTINATION "${CMAKE_INSTALL_FULL_BINDIR}" COMPONENT runtime)
 install(FILES ${QMS} DESTINATION "${TRANSLATION_DIR}" COMPONENT translations)

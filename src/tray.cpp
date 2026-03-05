@@ -27,9 +27,6 @@ COPYRIGHT_HEADER*/
 #include <QApplication>
 #include <QPersistentModelIndex>
 
-#include <NetworkManagerQt/Manager>
-#include <NetworkManagerQt/WirelessDevice>
-
 #include "icons.h"
 #include "nmmodel.h"
 #include "nmproxy.h"
@@ -93,11 +90,11 @@ void TrayPrivate::updateState(QModelIndex const & index, bool removing)
 {
     notify(index, removing);
 
-    const auto state = static_cast<NetworkManager::ActiveConnection::State>(mActiveConnections.data(index, NmModel::ActiveConnectionStateRole).toInt());
+    const auto state = static_cast<NmModel::ActiveConnectionState>(mActiveConnections.data(index, NmModel::ActiveConnectionStateRole).toInt());
     const bool is_primary = mPrimaryConnection == index;
 //qCDebug(NM_TRAY) << __FUNCTION__ << index << removing << mActiveConnections.data(index, NmModel::NameRole) << mActiveConnections.data(index, NmModel::ConnectionUuidRole).toString() << is_primary << mActiveConnections.data(index, NmModel::ConnectionTypeRole).toInt() << state;
 
-    if (removing || NetworkManager::ActiveConnection::Deactivated == state || NetworkManager::ActiveConnection::Deactivating == state)
+    if (removing || NmModel::ActiveDeactivated == state || NmModel::ActiveDeactivating == state)
     {
         if (is_primary)
         {
@@ -109,7 +106,7 @@ void TrayPrivate::updateState(QModelIndex const & index, bool removing)
         }
     } else
     {
-        if (is_primary || NetworkManager::ActiveConnection::Activating == state)
+        if (is_primary || NmModel::ActiveActivating == state)
         {
             setShown(index);
         } else if (mShownConnection == index)
@@ -132,17 +129,16 @@ void TrayPrivate::updateState(QModelIndex const & index, bool removing)
 
 void TrayPrivate::primaryConnectionUpdate()
 {
-    NetworkManager::ActiveConnection::Ptr prim_conn = NetworkManager::primaryConnection();
-    if (!prim_conn || !prim_conn->isValid())
+    const NmModel::ManagerState manager_state = mNmModel.managerState();
+    const QString prim_conn_path = manager_state.primaryConnectionPath;
+    if (prim_conn_path.isEmpty() || prim_conn_path == QStringLiteral("/"))
     {
         mPrimaryConnection = QModelIndex{};
         setShown(mPrimaryConnection);
         return;
     }
 
-//qCDebug(NM_TRAY) << __FUNCTION__ << prim_conn->uuid();
-
-    QModelIndexList l = mActiveConnections.match(mActiveConnections.index(0, 0, QModelIndex{}), NmModel::ActiveConnectionUuidRole, prim_conn->uuid(), -1, Qt::MatchExactly);
+    QModelIndexList l = mActiveConnections.match(mActiveConnections.index(0, 0, QModelIndex{}), NmModel::ActiveConnectionPathRole, prim_conn_path, -1, Qt::MatchExactly);
 //qCDebug(NM_TRAY) << __FUNCTION__ << l.size();
     //nothing to do if the connection not populated in model yet
     if (0 >= l.size())
@@ -206,7 +202,7 @@ void TrayPrivate::notify(QModelIndex const & index, bool removing)
         const int notif_i = mConnectionsToNotify.indexOf(index);
         // do nothing if not just added or the connection is not activated yet
         if (-1 == notif_i
-                || NetworkManager::ActiveConnection::Activated != static_cast<NetworkManager::ActiveConnection::State>(mActiveConnections.data(index, NmModel::ActiveConnectionStateRole).toInt())
+                || NmModel::ActiveActivated != static_cast<NmModel::ActiveConnectionState>(mActiveConnections.data(index, NmModel::ActiveConnectionStateRole).toInt())
            )
         {
             return;
@@ -217,7 +213,7 @@ void TrayPrivate::notify(QModelIndex const & index, bool removing)
     }
 
     // TODO: do somehow check the result?
-    mNotification.Notify(Tray::tr("NetworkManager(nm-tray)")
+    mNotification.Notify(Tray::tr("NetworkManager(nm-tray-alt)")
             , 0
             , icons::getIcon(static_cast<icons::Icon>(mActiveConnections.data(index, NmModel::IconTypeRole).toInt()), false).name()
             , summary
@@ -272,8 +268,8 @@ Tray::Tray(QObject *parent/* = nullptr*/)
     d->mActEnableWifi->setCheckable(true);
     enable_notifications->setCheckable(true);
     enable_notifications->setChecked(d->mEnableNotifications);
-    connect(d->mActEnableNetwork, &QAction::triggered, [] (bool checked) { NetworkManager::setNetworkingEnabled(checked); });
-    connect(d->mActEnableWifi, &QAction::triggered, [] (bool checked) { NetworkManager::setWirelessEnabled(checked); });
+    connect(d->mActEnableNetwork, &QAction::triggered, &d->mNmModel, &NmModel::setNetworkingEnabled);
+    connect(d->mActEnableWifi, &QAction::triggered, &d->mNmModel, &NmModel::setWirelessEnabled);
     connect(enable_notifications, &QAction::triggered, this, [this] (bool checked) { d->mEnableNotifications = checked; QSettings{}.setValue(ENABLE_NOTIFICATIONS, checked); });
     connect(d->mActConnInfo, &QAction::triggered, this, [this] (bool ) {
         if (d->mInfoDialog.isNull())
@@ -288,7 +284,7 @@ Tray::Tray(QObject *parent/* = nullptr*/)
     connect(d->mActDebugInfo, &QAction::triggered, this, [this] (bool ) {
         if (d->mConnDialog.isNull())
         {
-            d->mConnDialog.reset(new NmList{Tray::tr("nm-tray info"), &d->mNmModel});
+            d->mConnDialog.reset(new NmList{Tray::tr("nm-tray-alt info"), &d->mNmModel});
             connect(d->mConnDialog.data(), &QDialog::finished, [this] {
                 d->mConnDialog.reset(nullptr);
             });
@@ -297,15 +293,11 @@ Tray::Tray(QObject *parent/* = nullptr*/)
     });
     connect(d->mRequestScan, &QAction::triggered, &d->mNmModel, &NmModel::requestAllWifiScan);
 
-    // Note: Force all the updates as the NetworkManager::Notifier signals aren't
-    // emitted at application startup.
     d->primaryConnectionUpdate();
     setActionsStates();
 
-    connect(NetworkManager::notifier(), &NetworkManager::Notifier::networkingEnabledChanged, &d->mStateTimer, static_cast<void (QTimer::*)()>(&QTimer::start));
-    connect(NetworkManager::notifier(), &NetworkManager::Notifier::wirelessEnabledChanged, &d->mStateTimer, static_cast<void (QTimer::*)()>(&QTimer::start));
-    connect(NetworkManager::notifier(), &NetworkManager::Notifier::wirelessHardwareEnabledChanged, &d->mStateTimer, static_cast<void (QTimer::*)()>(&QTimer::start));
-    connect(NetworkManager::notifier(), &NetworkManager::Notifier::primaryConnectionChanged, this, &Tray::onPrimaryConnectionChanged);
+    connect(&d->mNmModel, &NmModel::managerStateChanged, &d->mStateTimer, static_cast<void (QTimer::*)()>(&QTimer::start));
+    connect(&d->mNmModel, &NmModel::managerStateChanged, this, &Tray::onPrimaryConnectionChanged);
 
     connect(&d->mActiveConnections, &QAbstractItemModel::rowsInserted, [this] (QModelIndex const & parent, int first, int last) {
         for (int i = first; i <= last; ++i)
@@ -348,43 +340,47 @@ bool Tray::eventFilter(QObject * object, QEvent * event)
 
 void Tray::onEditConnectionsTriggered()
 {
-    const QStringList connections_editor = QSettings{}.value(CONNECTIONS_EDITOR, QStringList{{"xterm", "-e", "nmtui-edit"}}).toStringList();
-    if (connections_editor.empty() || connections_editor.front().isEmpty())
+    const QStringList configured = QSettings{}.value(CONNECTIONS_EDITOR, QStringList{{"nm-connection-editor"}}).toStringList();
+    QList<QStringList> candidates;
+    if (!configured.isEmpty() && !configured.front().isEmpty()) {
+        candidates.push_back(configured);
+    }
+    candidates.push_back(QStringList{QStringLiteral("nm-connection-editor")});
+    candidates.push_back(QStringList{QStringLiteral("x-terminal-emulator"), QStringLiteral("-e"), QStringLiteral("nmtui-edit")});
+    candidates.push_back(QStringList{QStringLiteral("xterm"), QStringLiteral("-e"), QStringLiteral("nmtui-edit")});
+
+    if (candidates.isEmpty())
     {
         qCCritical(NM_TRAY) << "Can't start connection editor, because of misconfiguration. Value of"
-            << CONNECTIONS_EDITOR << "invalid key," << connections_editor;
+            << CONNECTIONS_EDITOR << "invalid key";
         return;
     }
 
-    // Note: let this object dangle, if the process isn't finished until our application is closed
-    QProcess * editor = new QProcess;
-    editor->setProcessChannelMode(QProcess::ForwardedChannels);
-    connect(editor, static_cast<void(QProcess::*)(int, QProcess::ExitStatus)>(&QProcess::finished)
-            , [connections_editor, editor] (int exitCode, QProcess::ExitStatus exitStatus) {
-            qCInfo(NM_TRAY) << "connection editor " << connections_editor << " finished, exitCode=" << exitCode << ", exitStatus=" << exitStatus;
-            editor->deleteLater();
-    });
-    connect(editor, &QProcess::errorOccurred
-            , [connections_editor, editor] (QProcess::ProcessError error) {
-            qCInfo(NM_TRAY) << "connection editor " << connections_editor << " failed, error=" << error;
-            editor->deleteLater();
-    });
+    for (const auto &cmd : candidates) {
+        if (cmd.isEmpty() || cmd.front().isEmpty()) {
+            continue;
+        }
+        const QString program = cmd.front();
+        QStringList args = cmd;
+        args.removeFirst();
 
-    qCInfo(NM_TRAY) << "starting connection editor " << connections_editor;
+        qCInfo(NM_TRAY) << "starting connection editor " << cmd;
+        const bool started = QProcess::startDetached(program, args);
+        if (started) {
+            return;
+        }
+        qCInfo(NM_TRAY) << "connection editor " << cmd << " failed to start";
+    }
 
-    QString program = connections_editor.front();
-    QStringList args;
-    std::copy(connections_editor.cbegin() + 1, connections_editor.cend(), std::back_inserter(args));
-    editor->start(program, args);
-    editor->closeWriteChannel();
+    qCCritical(NM_TRAY) << "All connection editor launch attempts failed.";
 }
 
 void Tray::onAboutTriggered()
 {
-    QMessageBox::about(nullptr, Tray::tr("%1 about").arg(QStringLiteral("nm-tray"))
-                , Tray::tr("<strong><a href=\"https://github.com/palinek/nm-tray\">nm-tray</a></strong> is a simple Qt based"
-                    " frontend for <a href=\"https://wiki.gnome.org/Projects/NetworkManager\">NetworkManager</a>.<br/><br/>"
-                    "Version: %1").arg(NM_TRAY_VERSION));
+    QMessageBox::about(nullptr, Tray::tr("%1 about").arg(QStringLiteral("nm-tray-alt"))
+                , Tray::tr("<strong>nm-tray-alt</strong> is a usability-focused fork of nm-tray, "
+                    "a simple Qt-based frontend for "
+                    "<a href=\"https://wiki.gnome.org/Projects/NetworkManager\">NetworkManager</a>."));
 }
 
 
@@ -413,18 +409,19 @@ void Tray::onActivated(const QSystemTrayIcon::ActivationReason reason)
 
 void Tray::setActionsStates()
 {
-    const bool net_enabled = NetworkManager::isNetworkingEnabled();
+    const NmModel::ManagerState state = d->mNmModel.managerState();
+    const bool net_enabled = state.networkingEnabled;
     d->mActEnableNetwork->setChecked(net_enabled);
 
-    d->mActEnableWifi->setChecked(NetworkManager::isWirelessEnabled());
-    const bool wifi_enabled = NetworkManager::isNetworkingEnabled() && NetworkManager::isWirelessHardwareEnabled();
+    d->mActEnableWifi->setChecked(state.wirelessEnabled);
+    const bool wifi_enabled = state.networkingEnabled && state.wirelessHardwareEnabled;
     d->mActEnableWifi->setEnabled(wifi_enabled);
     d->mRequestScan->setEnabled(wifi_enabled);
 
     d->mActConnInfo->setEnabled(net_enabled);
 }
 
-void Tray::onPrimaryConnectionChanged(QString const & /*uni*/)
+void Tray::onPrimaryConnectionChanged()
 {
     d->primaryConnectionUpdate();
 }

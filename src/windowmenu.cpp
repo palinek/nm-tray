@@ -25,8 +25,10 @@ COPYRIGHT_HEADER*/
 #include "nmmodel.h"
 #include "nmproxy.h"
 #include "menuview.h"
+#include "connectioninfo.h"
 
 #include <QWidgetAction>
+#include <QPushButton>
 #include <functional>
 #include <QTimer>
 
@@ -37,9 +39,6 @@ public:
 
     QScopedPointer<NmProxy> mWirelessModel;
     QWidgetAction * mWirelessAction;
-
-    QScopedPointer<NmProxy> mActiveModel;
-    QWidgetAction * mActiveAction;
 
     QScopedPointer<NmProxy> mConnectionModel;
     QWidgetAction * mConnectionAction;
@@ -114,21 +113,40 @@ WindowMenu::WindowMenu(NmModel * nmModel, QWidget * parent /*= nullptr*/)
 {
     Q_D(WindowMenu);
     d->mNmModel = nmModel;
+    d->mNmModel->requestAllWifiScan();
 
-    //active proxy & widgets
-    d->mActiveModel.reset(new NmProxy);
-    d->mActiveModel->setNmModel(d->mNmModel, NmModel::ActiveConnectionType);
-    MenuView * active_view = new MenuView{d->mActiveModel.data()};
-    connect(active_view, &MenuView::activatedNoMiddleRight, [this, d] (const QModelIndex & index) {
-        d->onActivated(index, d->mActiveModel.data(), std::bind(&NmProxy::deactivateConnection, d->mActiveModel.data(), std::placeholders::_1));
-        close();
+    const NmModel::ManagerState state = d->mNmModel->managerState();
+    QString statusText = tr("No active connection");
+    bool hasPrimaryConnection = false;
+    if (!state.primaryName.isEmpty()) {
+        hasPrimaryConnection = true;
+        statusText = tr("Connected: %1").arg(state.primaryName);
+        if (state.wifiStrength >= 0) {
+            statusText += tr(" (%1%)").arg(state.wifiStrength);
+        }
+    }
+    auto *statusButton = new QPushButton(statusText);
+    statusButton->setFlat(true);
+    statusButton->setCursor(Qt::PointingHandCursor);
+    statusButton->setEnabled(hasPrimaryConnection);
+    statusButton->setToolTip(hasPrimaryConnection
+            ? tr("Disconnect current connection")
+            : tr("No active connection to disconnect"));
+    auto *statusAction = new QWidgetAction(this);
+    statusAction->setDefaultWidget(statusButton);
+    addAction(statusAction);
+    connect(statusButton, &QPushButton::clicked, this, [this, d] {
+        d->mNmModel->disconnectPrimaryConnection();
     });
-
-    d->mActiveAction = new QWidgetAction{this};
-    d->mActiveAction->setDefaultWidget(active_view);
-    connect(d->mActiveModel.data(), &QAbstractItemModel::modelReset, [d] { d->onViewRowChange(d->mActiveAction, d->mActiveModel.data()); });
-    connect(d->mActiveModel.data(), &QAbstractItemModel::rowsInserted, [d] { d->onViewRowChange(d->mActiveAction, d->mActiveModel.data()); });
-    connect(d->mActiveModel.data(), &QAbstractItemModel::rowsRemoved, [d] { d->onViewRowChange(d->mActiveAction, d->mActiveModel.data()); });
+    QAction *usageAction = addAction(tr("Connection details / usage..."));
+    connect(usageAction, &QAction::triggered, [this, d] {
+        auto *dialog = new ConnectionInfo{d->mNmModel, nullptr};
+        dialog->setAttribute(Qt::WA_DeleteOnClose);
+        dialog->show();
+        dialog->raise();
+        dialog->activateWindow();
+    });
+    addSeparator();
 
     //wireless proxy & widgets
     d->mWirelessModel.reset(new NmProxy);
@@ -160,19 +178,48 @@ WindowMenu::WindowMenu(NmModel * nmModel, QWidget * parent /*= nullptr*/)
     connect(d->mConnectionModel.data(), &QAbstractItemModel::rowsInserted, [d] { d->onViewRowChange(d->mConnectionAction, d->mConnectionModel.data()); });
     connect(d->mConnectionModel.data(), &QAbstractItemModel::rowsRemoved, [d] { d->onViewRowChange(d->mConnectionAction, d->mConnectionModel.data()); });
 
-    addAction(tr("Active connection(s)"))->setEnabled(false);
-    addAction(d->mActiveAction);
+    addAction(tr("Recent connection(s)"))->setEnabled(false);
+    const auto recents = d->mNmModel->recentConnections(3);
+    if (recents.isEmpty()) {
+        QAction *none = addAction(tr("No recent connections"));
+        none->setEnabled(false);
+    } else {
+        for (const auto &recent : recents) {
+            QAction *a = addAction(recent.id);
+            a->setToolTip(tr("Reconnect"));
+            connect(a, &QAction::triggered, this, [this, d, path = recent.connectionPath] {
+                d->mNmModel->activateConnectionPath(path);
+            });
+        }
+    }
     addAction(tr("Wi-Fi network(s)"))->setEnabled(false);
     addAction(d->mWirelessAction);
     addAction(tr("Known connection(s)"))->setEnabled(false);
     addAction(d->mConnectionAction);
+    addSeparator();
+    auto *toggleButton = new QPushButton(d->mNmModel->showLowSignalNetworks()
+            ? tr("Hide low signal networks")
+            : tr("Show low signal networks"));
+    toggleButton->setFlat(true);
+    toggleButton->setCursor(Qt::PointingHandCursor);
+    toggleButton->setToolTip(tr("Toggle visibility of weak Wi-Fi networks"));
+    auto *toggleAction = new QWidgetAction(this);
+    toggleAction->setDefaultWidget(toggleButton);
+    addAction(toggleAction);
+    connect(toggleButton, &QPushButton::clicked, this, [d] {
+        d->mNmModel->setShowLowSignalNetworks(!d->mNmModel->showLowSignalNetworks());
+    });
+    connect(d->mNmModel, &QAbstractItemModel::modelReset, toggleButton, [d, toggleButton] {
+        toggleButton->setText(d->mNmModel->showLowSignalNetworks()
+                ? WindowMenu::tr("Hide low signal networks")
+                : WindowMenu::tr("Show low signal networks"));
+    });
 
     d->mMakeDirtyAction = new QAction{this};
     d->mDelaySizeRefreshTimer.setInterval(200);
     d->mDelaySizeRefreshTimer.setSingleShot(true);
     connect(&d->mDelaySizeRefreshTimer, &QTimer::timeout, [d] { d->forceSizeRefresh(); });
 
-    d->onViewRowChange(d->mActiveAction, d->mActiveModel.data());
     d->onViewRowChange(d->mWirelessAction, d->mWirelessModel.data());
     d->onViewRowChange(d->mConnectionAction, d->mConnectionModel.data());
 }

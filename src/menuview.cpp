@@ -96,12 +96,9 @@ MenuView::MenuView(QAbstractItemModel * model, QWidget * parent /*= nullptr*/)
 
     setStyle(new SingleActivateStyle);
     mProxy->setSourceModel(model);
-    mProxy->setDynamicSortFilter(true);
+    mProxy->setDynamicSortFilter(false);
     mProxy->setFilterRole(Qt::DisplayRole);
     mProxy->setFilterCaseSensitivity(Qt::CaseInsensitive);
-    mProxy->setSortRole(Qt::DisplayRole);
-    mProxy->setSortCaseSensitivity(Qt::CaseInsensitive);
-    mProxy->sort(0);
     {
         QScopedPointer<QItemSelectionModel> guard{selectionModel()};
         setModel(mProxy);

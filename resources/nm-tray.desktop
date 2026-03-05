@@ -1,6 +1,6 @@
 [Desktop Entry]
 Type=Application
-Name=nm-tray
+Name=nm-tray-alt
 Comment=NetworkManager frontend (tray icon)
 Icon=network-transmit
 TryExec=nm-tray
