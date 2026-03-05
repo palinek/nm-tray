@@ -4,6 +4,7 @@
 #include "nm_types.h"
 
 #include <QObject>
+#include <QSet>
 #include <QTimer>
 
 namespace nm
@@ -16,12 +17,13 @@ class NmDbusClient : public QObject
 public:
     explicit NmDbusClient(QObject *parent = nullptr);
 
-    const Snapshot &snapshot() const;
-    void refreshNow();
-
 Q_SIGNALS:
-    void snapshotChanged();
+    void snapshotChanged(const Snapshot &snapshot);
     void managerStateChanged();
+
+public Q_SLOTS:
+    void start();
+    void refreshNow();
 
 private Q_SLOTS:
     void onManagerSignal();
@@ -31,9 +33,14 @@ private Q_SLOTS:
 private:
     void registerSignals();
     void refreshSnapshot();
+    void updateDynamicPropertySubscriptions(const Snapshot &snapshot);
 
     Snapshot mSnapshot;
     QTimer mRefreshDebounce;
+    bool mStarted = false;
+    bool mRefreshInProgress = false;
+    bool mRefreshQueued = false;
+    QSet<QString> mDynamicPropertyPaths;
 };
 
 } // namespace nm

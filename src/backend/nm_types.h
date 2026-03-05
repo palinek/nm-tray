@@ -4,7 +4,10 @@
 #include <QDateTime>
 #include <QList>
 #include <QMap>
+#include <QMetaType>
+#include <QByteArray>
 #include <QString>
+#include <QStringList>
 
 namespace nm
 {
@@ -30,6 +33,8 @@ struct AccessPointRecord
     QString path;
     QString devicePath;
     QString ssid;
+    QByteArray ssidBytes;
+    QString bssid;
     int strength = 0;
     uint32_t flags = 0;
     uint32_t wpaFlags = 0;
@@ -50,6 +55,8 @@ struct DeviceRecord
     QList<QString> accessPointPaths;
     QString hardwareAddress;
     int bitrateKbps = -1;
+    qulonglong rxBytes = 0;
+    qulonglong txBytes = 0;
 };
 
 struct SavedConnectionRecord
@@ -57,6 +64,7 @@ struct SavedConnectionRecord
     QString path;
     QString id;
     QString wifiSsid;
+    QByteArray wifiSsidBytes;
     QString uuid;
     QString type;
     QString interfaceName;
@@ -80,6 +88,14 @@ struct ActiveConnectionRecord
     bool isDefault6 = false;
     QString ip4ConfigPath;
     QString ip6ConfigPath;
+    QStringList ip4Addresses;
+    QStringList ip6Addresses;
+    QString ip4Gateway;
+    QString ip6Gateway;
+    QStringList ip4Dns;
+    QStringList ip6Dns;
+    int ip4RouteCount = 0;
+    int ip6RouteCount = 0;
 };
 
 struct ManagerState
@@ -107,5 +123,7 @@ bool isVpnType(const QString &type);
 QString connectionTypeLabel(const QString &type);
 
 } // namespace nm
+
+Q_DECLARE_METATYPE(nm::Snapshot)
 
 #endif

@@ -13,6 +13,17 @@ bool hasConcreteSsid(const QString &ssid)
     return !ssid.isEmpty() && ssid != kHiddenSsid;
 }
 
+QString wifiGroupingKey(const nm::AccessPointRecord &ap)
+{
+    if (!ap.ssidBytes.isEmpty()) {
+        return ap.devicePath + QLatin1Char('\x1f') + QString::fromLatin1(ap.ssidBytes.toBase64());
+    }
+    if (!ap.bssid.isEmpty()) {
+        return ap.devicePath + QLatin1Char('\x1f') + ap.bssid.toLower();
+    }
+    return ap.devicePath + QLatin1Char('\x1f') + ap.path;
+}
+
 bool isUserFacingConnectionType(const QString &type)
 {
     return type == QStringLiteral("802-11-wireless")
@@ -67,8 +78,12 @@ QList<WifiViewRecord> NmCache::wifiEntries(bool hideStale) const
             if (conn.type != QStringLiteral("802-11-wireless")) {
                 continue;
             }
-            const bool wifiSsidUsable = hasConcreteSsid(conn.wifiSsid);
-            if (wifiSsidUsable) {
+            const bool connHasSsidBytes = !conn.wifiSsidBytes.isEmpty();
+            if (connHasSsidBytes) {
+                if (conn.wifiSsidBytes != ap.ssidBytes) {
+                    continue;
+                }
+            } else if (hasConcreteSsid(conn.wifiSsid)) {
                 if (conn.wifiSsid != item.ssid) {
                     continue;
                 }
@@ -93,7 +108,7 @@ QList<WifiViewRecord> NmCache::wifiEntries(bool hideStale) const
             item.active = deviceIt->activeAccessPointPath == ap.path;
         }
 
-        const QString key = item.devicePath + QLatin1Char('\x1f') + item.ssid;
+        const QString key = wifiGroupingKey(ap);
         auto it = merged.find(key);
         if (it == merged.end()) {
             merged.insert(key, item);

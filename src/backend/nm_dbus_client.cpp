@@ -8,7 +8,10 @@
 #include <QDBusObjectPath>
 #include <QDBusReply>
 #include <QDateTime>
+#include <QMetaObject>
 #include <QSet>
+#include <QThread>
+#include <utility>
 
 namespace
 {
@@ -19,6 +22,7 @@ constexpr const char *kSettingsPath = "/org/freedesktop/NetworkManager/Settings"
 constexpr const char *kSettingsIface = "org.freedesktop.NetworkManager.Settings";
 constexpr const char *kDeviceIface = "org.freedesktop.NetworkManager.Device";
 constexpr const char *kDeviceWirelessIface = "org.freedesktop.NetworkManager.Device.Wireless";
+constexpr const char *kDeviceStatsIface = "org.freedesktop.NetworkManager.Device.Statistics";
 constexpr const char *kAccessPointIface = "org.freedesktop.NetworkManager.AccessPoint";
 constexpr const char *kActiveConnIface = "org.freedesktop.NetworkManager.Connection.Active";
 constexpr const char *kSettingsConnIface = "org.freedesktop.NetworkManager.Settings.Connection";
@@ -77,6 +81,21 @@ QVariantMap section(const QVariantMap &m, const QString &key)
     return m.value(key).toMap();
 }
 
+QStringList addressListFromData(const QVariant &value)
+{
+    QStringList out;
+    const QVariantList list = value.toList();
+    out.reserve(list.size());
+    for (const QVariant &entry : list) {
+        const QVariantMap map = entry.toMap();
+        const QString address = map.value(QStringLiteral("address")).toString();
+        if (!address.isEmpty()) {
+            out.push_back(address);
+        }
+    }
+    return out;
+}
+
 } // namespace
 
 namespace nm
@@ -85,6 +104,16 @@ namespace nm
 NmDbusClient::NmDbusClient(QObject *parent)
     : QObject(parent)
 {
+    mRefreshDebounce.setParent(this);
+}
+
+void NmDbusClient::start()
+{
+    if (mStarted) {
+        return;
+    }
+    mStarted = true;
+
     mRefreshDebounce.setSingleShot(true);
     mRefreshDebounce.setInterval(120);
     connect(&mRefreshDebounce, &QTimer::timeout, this, &NmDbusClient::refreshSnapshot);
@@ -93,18 +122,28 @@ NmDbusClient::NmDbusClient(QObject *parent)
     refreshSnapshot();
 }
 
-const Snapshot &NmDbusClient::snapshot() const
-{
-    return mSnapshot;
-}
-
 void NmDbusClient::refreshNow()
 {
+    if (QThread::currentThread() != thread()) {
+        QMetaObject::invokeMethod(this, "refreshNow", Qt::QueuedConnection);
+        return;
+    }
     refreshSnapshot();
 }
 
 void NmDbusClient::scheduleRefresh()
 {
+    if (QThread::currentThread() != thread()) {
+        QMetaObject::invokeMethod(this, "scheduleRefresh", Qt::QueuedConnection);
+        return;
+    }
+    if (!mStarted) {
+        return;
+    }
+    if (mRefreshInProgress) {
+        mRefreshQueued = true;
+        return;
+    }
     qCDebug(NM_TRAY) << "nm-dbus: scheduling snapshot refresh";
     mRefreshDebounce.start();
 }
@@ -117,7 +156,6 @@ void NmDbusClient::registerSignals()
     bus.connect(QString::fromLatin1(kNmService), QString::fromLatin1(kNmPath), QString::fromLatin1(kNmIface), QStringLiteral("DeviceAdded"), this, SLOT(onManagerSignal()));
     bus.connect(QString::fromLatin1(kNmService), QString::fromLatin1(kNmPath), QString::fromLatin1(kNmIface), QStringLiteral("DeviceRemoved"), this, SLOT(onManagerSignal()));
     bus.connect(QString::fromLatin1(kNmService), QString::fromLatin1(kNmPath), QString::fromLatin1(kDbusPropsIface), QStringLiteral("PropertiesChanged"), this, SLOT(onPropertiesChanged(QString,QVariantMap,QStringList)));
-    bus.connect(QString::fromLatin1(kNmService), QString(), QString::fromLatin1(kDbusPropsIface), QStringLiteral("PropertiesChanged"), this, SLOT(onPropertiesChanged(QString,QVariantMap,QStringList)));
     bus.connect(QString::fromLatin1(kNmService), QString::fromLatin1(kSettingsPath), QString::fromLatin1(kSettingsIface), QStringLiteral("NewConnection"), this, SLOT(onManagerSignal()));
     bus.connect(QString::fromLatin1(kNmService), QString::fromLatin1(kSettingsPath), QString::fromLatin1(kSettingsIface), QStringLiteral("ConnectionRemoved"), this, SLOT(onManagerSignal()));
     bus.connect(QString::fromLatin1(kNmService), QString(), QString::fromLatin1(kDeviceWirelessIface), QStringLiteral("AccessPointAdded"), this, SLOT(onManagerSignal()));
@@ -137,6 +175,7 @@ void NmDbusClient::onPropertiesChanged(QString interfaceName, QVariantMap change
         QString::fromLatin1(kNmIface),
         QString::fromLatin1(kDeviceIface),
         QString::fromLatin1(kDeviceWirelessIface),
+        QString::fromLatin1(kDeviceStatsIface),
         QString::fromLatin1(kAccessPointIface),
         QString::fromLatin1(kActiveConnIface),
         QString::fromLatin1(kSettingsConnIface),
@@ -166,6 +205,10 @@ void NmDbusClient::onPropertiesChanged(QString interfaceName, QVariantMap change
         QStringLiteral("ActiveAccessPoint"),
         QStringLiteral("AccessPoints"),
         QStringLiteral("Bitrate"),
+    };
+    static const QSet<QString> kRelevantDeviceStatsKeys{
+        QStringLiteral("RxBytes"),
+        QStringLiteral("TxBytes"),
     };
     static const QSet<QString> kRelevantApKeys{
         QStringLiteral("Ssid"),
@@ -201,6 +244,8 @@ void NmDbusClient::onPropertiesChanged(QString interfaceName, QVariantMap change
         relevantKeys = &kRelevantDeviceKeys;
     } else if (interfaceName == QString::fromLatin1(kDeviceWirelessIface)) {
         relevantKeys = &kRelevantWifiDevKeys;
+    } else if (interfaceName == QString::fromLatin1(kDeviceStatsIface)) {
+        relevantKeys = &kRelevantDeviceStatsKeys;
     } else if (interfaceName == QString::fromLatin1(kAccessPointIface)) {
         relevantKeys = &kRelevantApKeys;
     } else if (interfaceName == QString::fromLatin1(kActiveConnIface)) {
@@ -226,6 +271,10 @@ void NmDbusClient::onPropertiesChanged(QString interfaceName, QVariantMap change
 
 void NmDbusClient::refreshSnapshot()
 {
+    if (!mStarted) {
+        return;
+    }
+    mRefreshInProgress = true;
     qCDebug(NM_TRAY) << "nm-dbus: refreshing snapshot";
     Snapshot next;
     next.collectedAt = QDateTime::currentDateTimeUtc();
@@ -256,6 +305,9 @@ void NmDbusClient::refreshSnapshot()
             dev.hardwareAddress = wifiProps.value(QStringLiteral("HwAddress")).toString();
             dev.bitrateKbps = wifiProps.value(QStringLiteral("Bitrate")).toInt();
         }
+        const QVariantMap devStats = dbusGetAll(path, QString::fromLatin1(kDeviceStatsIface));
+        dev.rxBytes = devStats.value(QStringLiteral("RxBytes")).toULongLong();
+        dev.txBytes = devStats.value(QStringLiteral("TxBytes")).toULongLong();
 
         next.devices.insert(path, dev);
     }
@@ -269,7 +321,9 @@ void NmDbusClient::refreshSnapshot()
             ap.path = apPath;
             ap.devicePath = dev.path;
             const QVariantMap apProps = dbusGetAll(apPath, QString::fromLatin1(kAccessPointIface));
+            ap.ssidBytes = apProps.value(QStringLiteral("Ssid")).toByteArray();
             ap.ssid = decodeSsid(apProps.value(QStringLiteral("Ssid")));
+            ap.bssid = apProps.value(QStringLiteral("HwAddress")).toString();
             ap.strength = apProps.value(QStringLiteral("Strength")).toInt();
             ap.flags = apProps.value(QStringLiteral("Flags")).toUInt();
             ap.wpaFlags = apProps.value(QStringLiteral("WpaFlags")).toUInt();
@@ -297,6 +351,7 @@ void NmDbusClient::refreshSnapshot()
         const QVariantMap wifi = section(settings, QStringLiteral("802-11-wireless"));
 
         conn.id = connection.value(QStringLiteral("id")).toString();
+        conn.wifiSsidBytes = wifi.value(QStringLiteral("ssid")).toByteArray();
         conn.wifiSsid = decodeSsid(wifi.value(QStringLiteral("ssid")));
         conn.uuid = connection.value(QStringLiteral("uuid")).toString();
         conn.type = connection.value(QStringLiteral("type")).toString();
@@ -327,6 +382,18 @@ void NmDbusClient::refreshSnapshot()
         active.isDefault6 = activeProps.value(QStringLiteral("Default6")).toBool();
         active.ip4ConfigPath = toObjectPath(activeProps.value(QStringLiteral("Ip4Config")));
         active.ip6ConfigPath = toObjectPath(activeProps.value(QStringLiteral("Ip6Config")));
+        const QVariantMap ip4Props = dbusGetAll(active.ip4ConfigPath, QStringLiteral("org.freedesktop.NetworkManager.IP4Config"));
+        active.ip4Addresses = addressListFromData(ip4Props.value(QStringLiteral("AddressData")));
+        active.ip4Gateway = ip4Props.value(QStringLiteral("Gateway")).toString();
+        active.ip4Dns = addressListFromData(ip4Props.value(QStringLiteral("NameserverData")));
+        active.ip4RouteCount = ip4Props.value(QStringLiteral("RouteData")).toList().size();
+
+        const QVariantMap ip6Props = dbusGetAll(active.ip6ConfigPath, QStringLiteral("org.freedesktop.NetworkManager.IP6Config"));
+        active.ip6Addresses = addressListFromData(ip6Props.value(QStringLiteral("AddressData")));
+        active.ip6Gateway = ip6Props.value(QStringLiteral("Gateway")).toString();
+        active.ip6Dns = addressListFromData(ip6Props.value(QStringLiteral("NameserverData")));
+        active.ip6RouteCount = ip6Props.value(QStringLiteral("RouteData")).toList().size();
+
         next.activeConnections.insert(path, active);
     }
 
@@ -340,6 +407,7 @@ void NmDbusClient::refreshSnapshot()
         next.manager.state != mSnapshot.manager.state ||
         next.manager.connectivity != mSnapshot.manager.connectivity;
 
+    updateDynamicPropertySubscriptions(next);
     mSnapshot = std::move(next);
     qCDebug(NM_TRAY) << "nm-dbus: snapshot ready"
                      << "devices=" << mSnapshot.devices.size()
@@ -350,7 +418,57 @@ void NmDbusClient::refreshSnapshot()
         qCDebug(NM_TRAY) << "nm-dbus: manager state changed";
         emit managerStateChanged();
     }
-    emit snapshotChanged();
+    emit snapshotChanged(mSnapshot);
+    mRefreshInProgress = false;
+    if (mRefreshQueued) {
+        mRefreshQueued = false;
+        scheduleRefresh();
+    }
+}
+
+void NmDbusClient::updateDynamicPropertySubscriptions(const Snapshot &snapshot)
+{
+    QSet<QString> nextPaths;
+    for (const auto &device : snapshot.devices) {
+        nextPaths.insert(device.path);
+    }
+    for (const auto &ap : snapshot.accessPoints) {
+        nextPaths.insert(ap.path);
+    }
+    for (const auto &active : snapshot.activeConnections) {
+        nextPaths.insert(active.path);
+    }
+    for (const auto &saved : snapshot.savedConnections) {
+        nextPaths.insert(saved.path);
+    }
+
+    QDBusConnection bus = QDBusConnection::systemBus();
+
+    for (const QString &path : nextPaths) {
+        if (mDynamicPropertyPaths.contains(path)) {
+            continue;
+        }
+        bus.connect(QString::fromLatin1(kNmService),
+                    path,
+                    QString::fromLatin1(kDbusPropsIface),
+                    QStringLiteral("PropertiesChanged"),
+                    this,
+                    SLOT(onPropertiesChanged(QString,QVariantMap,QStringList)));
+    }
+
+    for (const QString &path : std::as_const(mDynamicPropertyPaths)) {
+        if (nextPaths.contains(path)) {
+            continue;
+        }
+        bus.disconnect(QString::fromLatin1(kNmService),
+                       path,
+                       QString::fromLatin1(kDbusPropsIface),
+                       QStringLiteral("PropertiesChanged"),
+                       this,
+                       SLOT(onPropertiesChanged(QString,QVariantMap,QStringList)));
+    }
+
+    mDynamicPropertyPaths = std::move(nextPaths);
 }
 
 } // namespace nm

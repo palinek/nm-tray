@@ -4,30 +4,13 @@
 #include "icons.h"
 #include "log.h"
 
-#include <QDBusConnection>
-#include <QDBusMessage>
-#include <QDBusObjectPath>
-#include <QDBusVariant>
 #include <QLocale>
+#include <QMetaObject>
+#include <QMetaType>
 #include <algorithm>
 
 namespace
 {
-constexpr const char *kNmService = "org.freedesktop.NetworkManager";
-constexpr const char *kDbusPropsIface = "org.freedesktop.DBus.Properties";
-
-QVariant dbusGet(const QString &path, const QString &iface, const QString &property)
-{
-    QDBusMessage msg = QDBusMessage::createMethodCall(
-        QString::fromLatin1(kNmService), path, QString::fromLatin1(kDbusPropsIface), QStringLiteral("Get"));
-    msg << iface << property;
-    const QDBusMessage reply = QDBusConnection::systemBus().call(msg);
-    if (reply.type() == QDBusMessage::ErrorMessage || reply.arguments().isEmpty()) {
-        return {};
-    }
-    return reply.arguments().at(0).value<QDBusVariant>().variant();
-}
-
 int connTypeToInt(const QString &type)
 {
     if (type == QStringLiteral("802-11-wireless")) {
@@ -76,17 +59,45 @@ NmModel::OverallState toOverallState(uint nmState, uint connectivity)
     return NmModel::OverallState::Disconnected;
 }
 
+bool managerStateEquivalent(const NmModel::ManagerState &a, const NmModel::ManagerState &b)
+{
+    return a.overallState == b.overallState
+        && a.primaryKind == b.primaryKind
+        && a.primaryName == b.primaryName
+        && a.wifiStrength == b.wifiStrength
+        && a.vpnActive == b.vpnActive
+        && a.lastError == b.lastError
+        && a.networkingEnabled == b.networkingEnabled
+        && a.wirelessEnabled == b.wirelessEnabled
+        && a.wirelessHardwareEnabled == b.wirelessHardwareEnabled
+        && a.primaryConnectionPath == b.primaryConnectionPath;
+}
+
 } // namespace
 
 NmModel::NmModel(QObject *parent)
     : QAbstractItemModel(parent)
 {
-    connect(&mDbus, &nm::NmDbusClient::snapshotChanged, this, &NmModel::rebuildFromSnapshot);
-    connect(&mDbus, &nm::NmDbusClient::managerStateChanged, this, &NmModel::managerStateChanged);
-    rebuildFromSnapshot();
+    qRegisterMetaType<nm::Snapshot>();
+
+    mDbus = new nm::NmDbusClient;
+    mDbus->moveToThread(&mDbusThread);
+    connect(&mDbusThread, &QThread::finished, mDbus, &QObject::deleteLater);
+    connect(mDbus, &nm::NmDbusClient::snapshotChanged, this, &NmModel::onSnapshotChanged, Qt::QueuedConnection);
+
+    mDbusThread.start();
+    QMetaObject::invokeMethod(mDbus, "start", Qt::QueuedConnection);
+
+    rebuildFromSnapshot(nm::Snapshot{});
 }
 
-NmModel::~NmModel() = default;
+NmModel::~NmModel()
+{
+    if (mDbusThread.isRunning()) {
+        mDbusThread.quit();
+        mDbusThread.wait();
+    }
+}
 
 int NmModel::rowCount(const QModelIndex &parent) const
 {
@@ -627,7 +638,7 @@ void NmModel::setShowLowSignalNetworks(bool enabled)
         return;
     }
     mShowLowSignalNetworks = enabled;
-    rebuildFromSnapshot();
+    rebuildFromSnapshot(mCache.snapshot());
 }
 
 void NmModel::disconnectPrimaryConnection()
@@ -682,6 +693,11 @@ void NmModel::activateConnectionPath(const QString &connectionPath)
     }
 }
 
+void NmModel::onSnapshotChanged(const nm::Snapshot &snapshot)
+{
+    rebuildFromSnapshot(snapshot);
+}
+
 bool NmModel::isValidDataIndex(const QModelIndex &index) const
 {
     if (!index.isValid()) {
@@ -707,68 +723,143 @@ bool NmModel::isValidDataIndex(const QModelIndex &index) const
     return false;
 }
 
-void NmModel::rebuildFromSnapshot()
+void NmModel::rebuildFromSnapshot(const nm::Snapshot &snapshot)
 {
     static constexpr int kMinShownSignalPercent = 25;
-    beginResetModel();
-    mCache.setSnapshot(mDbus.snapshot());
-    mActive = mCache.activeConnections();
-    mConnections = mCache.knownConnections(true);
-    mDevices = mCache.devices();
-    mWifi = mCache.wifiEntries(true);
+    const ManagerState oldManagerState = mManagerState;
+
+    mCache.setSnapshot(snapshot);
+    QList<nm::ActiveConnectionRecord> nextActive = mCache.activeConnections();
+    QList<nm::ConnectionViewRecord> nextConnections = mCache.knownConnections(true);
+    QList<nm::DeviceRecord> nextDevices = mCache.devices();
+    QList<nm::WifiViewRecord> nextWifi = mCache.wifiEntries(true);
     if (!mShowLowSignalNetworks) {
         QList<nm::WifiViewRecord> filtered;
-        filtered.reserve(mWifi.size());
-        for (const auto &wifi : mWifi) {
+        filtered.reserve(nextWifi.size());
+        for (const auto &wifi : nextWifi) {
             if (wifi.active || wifi.strength >= kMinShownSignalPercent) {
                 filtered.push_back(wifi);
             }
         }
-        mWifi = std::move(filtered);
+        nextWifi = std::move(filtered);
     }
-    mManagerState.networkingEnabled = mCache.snapshot().manager.networkingEnabled;
-    mManagerState.wirelessEnabled = mCache.snapshot().manager.wirelessEnabled;
-    mManagerState.wirelessHardwareEnabled = mCache.snapshot().manager.wirelessHardwareEnabled;
-    mManagerState.primaryConnectionPath = mCache.snapshot().manager.primaryConnectionPath;
-    mManagerState.overallState = toOverallState(mCache.snapshot().manager.state, mCache.snapshot().manager.connectivity);
-    mManagerState.primaryKind = PrimaryKind::Unknown;
-    mManagerState.primaryName.clear();
-    mManagerState.wifiStrength = -1;
-    mManagerState.vpnActive.clear();
-    mManagerState.lastError = mCache.snapshot().manager.lastError;
+
+    auto applySection = [this](ItemId sectionId, auto &current, const auto &next, auto keyOf) {
+        QStringList currentKeys;
+        QStringList nextKeys;
+        currentKeys.reserve(current.size());
+        nextKeys.reserve(next.size());
+        for (const auto &item : current) {
+            currentKeys.push_back(keyOf(item));
+        }
+        for (const auto &item : next) {
+            nextKeys.push_back(keyOf(item));
+        }
+
+        int sectionRow = -1;
+        ItemId leafId = ITEM_ROOT;
+        switch (sectionId) {
+        case ITEM_ACTIVE:
+            sectionRow = 0;
+            leafId = ITEM_ACTIVE_LEAF;
+            break;
+        case ITEM_CONNECTION:
+            sectionRow = 1;
+            leafId = ITEM_CONNECTION_LEAF;
+            break;
+        case ITEM_DEVICE:
+            sectionRow = 2;
+            leafId = ITEM_DEVICE_LEAF;
+            break;
+        case ITEM_WIFINET:
+            sectionRow = 3;
+            leafId = ITEM_WIFINET_LEAF;
+            break;
+        default:
+            break;
+        }
+        if (sectionRow < 0 || leafId == ITEM_ROOT) {
+            current = next;
+            return;
+        }
+
+        const QModelIndex parentIdx = createIndex(sectionRow, 0, sectionId);
+        if (currentKeys != nextKeys) {
+            if (!current.isEmpty()) {
+                beginRemoveRows(parentIdx, 0, current.size() - 1);
+                current.clear();
+                endRemoveRows();
+            }
+            if (!next.isEmpty()) {
+                beginInsertRows(parentIdx, 0, next.size() - 1);
+                current = next;
+                endInsertRows();
+            }
+            return;
+        }
+
+        if (current.isEmpty()) {
+            return;
+        }
+
+        current = next;
+        emit dataChanged(createIndex(0, 0, leafId),
+                         createIndex(current.size() - 1, 0, leafId));
+    };
+
+    applySection(ITEM_ACTIVE, mActive, nextActive, [](const nm::ActiveConnectionRecord &item) { return item.path; });
+    applySection(ITEM_CONNECTION, mConnections, nextConnections, [](const nm::ConnectionViewRecord &item) { return item.connectionPath; });
+    applySection(ITEM_DEVICE, mDevices, nextDevices, [](const nm::DeviceRecord &item) { return item.path; });
+    applySection(ITEM_WIFINET, mWifi, nextWifi, [](const nm::WifiViewRecord &item) { return item.apPath; });
+
+    ManagerState nextManagerState;
+    nextManagerState.networkingEnabled = mCache.snapshot().manager.networkingEnabled;
+    nextManagerState.wirelessEnabled = mCache.snapshot().manager.wirelessEnabled;
+    nextManagerState.wirelessHardwareEnabled = mCache.snapshot().manager.wirelessHardwareEnabled;
+    nextManagerState.primaryConnectionPath = mCache.snapshot().manager.primaryConnectionPath;
+    nextManagerState.overallState = toOverallState(mCache.snapshot().manager.state, mCache.snapshot().manager.connectivity);
+    nextManagerState.primaryKind = PrimaryKind::Unknown;
+    nextManagerState.primaryName.clear();
+    nextManagerState.wifiStrength = -1;
+    nextManagerState.vpnActive.clear();
+    nextManagerState.lastError = mCache.snapshot().manager.lastError;
 
     for (const auto &active : mActive) {
         if (active.isVpn || nm::isVpnType(active.type)) {
-            mManagerState.vpnActive.push_back(active.id);
+            nextManagerState.vpnActive.push_back(active.id);
         }
     }
 
-    const auto primaryIt = std::find_if(mActive.cbegin(), mActive.cend(), [this](const nm::ActiveConnectionRecord &active) {
-        return active.path == mManagerState.primaryConnectionPath;
+    const auto primaryIt = std::find_if(mActive.cbegin(), mActive.cend(), [this, &nextManagerState](const nm::ActiveConnectionRecord &active) {
+        return active.path == nextManagerState.primaryConnectionPath;
     });
     if (primaryIt != mActive.cend()) {
-        mManagerState.primaryName = primaryIt->id;
+        nextManagerState.primaryName = primaryIt->id;
         if (isWirelessType(primaryIt->type)) {
-            mManagerState.primaryKind = PrimaryKind::Wifi;
+            nextManagerState.primaryKind = PrimaryKind::Wifi;
             const auto apIt = mCache.snapshot().accessPoints.find(primaryIt->specificObjectPath);
             if (apIt != mCache.snapshot().accessPoints.end()) {
-                mManagerState.primaryName = apIt->ssid;
-                mManagerState.wifiStrength = apIt->strength;
+                nextManagerState.primaryName = apIt->ssid;
+                nextManagerState.wifiStrength = apIt->strength;
             } else if (!primaryIt->devices.isEmpty()) {
                 const auto devIt = mCache.snapshot().devices.find(primaryIt->devices.first());
                 if (devIt != mCache.snapshot().devices.end()) {
                     const auto activeAp = mCache.snapshot().accessPoints.find(devIt->activeAccessPointPath);
                     if (activeAp != mCache.snapshot().accessPoints.end()) {
-                        mManagerState.primaryName = activeAp->ssid;
-                        mManagerState.wifiStrength = activeAp->strength;
+                        nextManagerState.primaryName = activeAp->ssid;
+                        nextManagerState.wifiStrength = activeAp->strength;
                     }
                 }
             }
         } else {
-            mManagerState.primaryKind = PrimaryKind::Wired;
+            nextManagerState.primaryKind = PrimaryKind::Wired;
         }
     }
-    endResetModel();
+
+    mManagerState = nextManagerState;
+    if (!managerStateEquivalent(oldManagerState, nextManagerState)) {
+        emit managerStateChanged();
+    }
 }
 
 QString NmModel::buildActiveInfo(const nm::ActiveConnectionRecord &active) const
@@ -797,38 +888,30 @@ QString NmModel::buildActiveInfo(const nm::ActiveConnectionRecord &active) const
                 str << QStringLiteral("<tr><td><strong>") << tr("Speed", "Active connection information") << QStringLiteral("</strong>: </td><td>")
                     << QLocale::system().toString(static_cast<double>(devIt->bitrateKbps) / 1000.0, 'g', 5) << QStringLiteral(" Mb/s</td></tr>");
             }
-
-            const QString statsPath = devIt->path;
-            const QString statsIface = QStringLiteral("org.freedesktop.NetworkManager.Device.Statistics");
-            const qulonglong rxBytes = dbusGet(statsPath, statsIface, QStringLiteral("RxBytes")).toULongLong();
-            const qulonglong txBytes = dbusGet(statsPath, statsIface, QStringLiteral("TxBytes")).toULongLong();
-            if (rxBytes > 0 || txBytes > 0) {
+            if (devIt->rxBytes > 0 || devIt->txBytes > 0) {
                 str << QStringLiteral("<tr><td><strong>") << tr("Data received", "Active connection information") << QStringLiteral("</strong>: </td><td>")
-                    << formatBytes(rxBytes) << QStringLiteral("</td></tr>")
+                    << formatBytes(devIt->rxBytes) << QStringLiteral("</td></tr>")
                     << QStringLiteral("<tr><td><strong>") << tr("Data transmitted", "Active connection information") << QStringLiteral("</strong>: </td><td>")
-                    << formatBytes(txBytes) << QStringLiteral("</td></tr>");
+                    << formatBytes(devIt->txBytes) << QStringLiteral("</td></tr>");
             }
         }
     }
 
-    auto appendIpConfig = [this, &str](const QString &title, const QString &path, const QString &iface) {
-        if (path.isEmpty() || path == QStringLiteral("/")) {
+    auto appendIpConfig = [&str](const QString &title,
+                                 const QStringList &addresses,
+                                 const QString &gateway,
+                                 const QStringList &dns,
+                                 int routeCount) {
+        if (addresses.isEmpty() && gateway.isEmpty() && dns.isEmpty() && routeCount <= 0) {
             return;
         }
 
-        const QVariant addressData = dbusGet(path, iface, QStringLiteral("AddressData"));
-        const QVariant routeData = dbusGet(path, iface, QStringLiteral("RouteData"));
-        const QVariant nameservers = dbusGet(path, iface, QStringLiteral("NameserverData"));
-        const QString gateway = dbusGet(path, iface, QStringLiteral("Gateway")).toString();
-
         str << QStringLiteral("<tr/><tr><td colspan='2'><big><strong>") << title << QStringLiteral("</strong></big></td></tr>");
 
-        const QVariantList addrList = addressData.toList();
-        for (int i = 0; i < addrList.size(); ++i) {
-            const QVariantMap addr = addrList.at(i).toMap();
+        for (int i = 0; i < addresses.size(); ++i) {
             const QString suffix = i > 0 ? QStringLiteral("(%1)").arg(i + 1) : QString{};
             str << QStringLiteral("<tr><td><strong>") << tr("IP Address", "Active connection information") << suffix
-                << QStringLiteral("</strong>: </td><td>") << addr.value(QStringLiteral("address")).toString() << QStringLiteral("</td></tr>");
+                << QStringLiteral("</strong>: </td><td>") << addresses.at(i) << QStringLiteral("</td></tr>");
         }
 
         if (!gateway.isEmpty()) {
@@ -836,22 +919,27 @@ QString NmModel::buildActiveInfo(const nm::ActiveConnectionRecord &active) const
                 << QStringLiteral("</strong>: </td><td>") << gateway << QStringLiteral("</td></tr>");
         }
 
-        const QVariantList dnsList = nameservers.toList();
-        for (int i = 0; i < dnsList.size(); ++i) {
-            const QVariantMap dns = dnsList.at(i).toMap();
+        for (int i = 0; i < dns.size(); ++i) {
             str << QStringLiteral("<tr><td><strong>") << tr("DNS(%1)", "Active connection information").arg(i + 1)
-                << QStringLiteral("</strong>: </td><td>") << dns.value(QStringLiteral("address")).toString() << QStringLiteral("</td></tr>");
+                << QStringLiteral("</strong>: </td><td>") << dns.at(i) << QStringLiteral("</td></tr>");
         }
 
-        const QVariantList routeList = routeData.toList();
-        if (!routeList.isEmpty()) {
+        if (routeCount > 0) {
             str << QStringLiteral("<tr><td><strong>") << tr("Routes", "Active connection information")
-                << QStringLiteral("</strong>: </td><td>") << routeList.size() << QStringLiteral("</td></tr>");
+                << QStringLiteral("</strong>: </td><td>") << routeCount << QStringLiteral("</td></tr>");
         }
     };
 
-    appendIpConfig(tr("IPv4", "Active connection information"), active.ip4ConfigPath, QStringLiteral("org.freedesktop.NetworkManager.IP4Config"));
-    appendIpConfig(tr("IPv6", "Active connection information"), active.ip6ConfigPath, QStringLiteral("org.freedesktop.NetworkManager.IP6Config"));
+    appendIpConfig(tr("IPv4", "Active connection information"),
+                   active.ip4Addresses,
+                   active.ip4Gateway,
+                   active.ip4Dns,
+                   active.ip4RouteCount);
+    appendIpConfig(tr("IPv6", "Active connection information"),
+                   active.ip6Addresses,
+                   active.ip6Gateway,
+                   active.ip6Dns,
+                   active.ip6RouteCount);
 
     str << QStringLiteral("</table>");
     return info;

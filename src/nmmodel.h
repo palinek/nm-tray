@@ -2,6 +2,7 @@
 #define NMMODEL_H
 
 #include <QAbstractItemModel>
+#include <QThread>
 #include <QString>
 #include <QStringList>
 
@@ -126,6 +127,7 @@ public Q_SLOTS:
     void setShowLowSignalNetworks(bool enabled);
     void disconnectPrimaryConnection();
     void activateConnectionPath(const QString &connectionPath);
+    void onSnapshotChanged(const nm::Snapshot &snapshot);
 
 private:
     enum ItemId
@@ -142,11 +144,12 @@ private:
     };
 
     bool isValidDataIndex(const QModelIndex &index) const;
-    void rebuildFromSnapshot();
+    void rebuildFromSnapshot(const nm::Snapshot &snapshot);
     QString buildActiveInfo(const nm::ActiveConnectionRecord &active) const;
 
 private:
-    nm::NmDbusClient mDbus;
+    QThread mDbusThread;
+    nm::NmDbusClient *mDbus = nullptr;
     nm::NmCache mCache;
 
     QList<nm::ActiveConnectionRecord> mActive;
