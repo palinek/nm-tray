@@ -27,6 +27,13 @@
      </property>
     </widget>
    </item>
+   <item row="1" column="0">
+    <widget class="QCheckBox" name="autoConnectCheckBox">
+     <property name="text">
+      <string>Connect to this network automatically</string>
+     </property>
+    </widget>
+   </item>
   </layout>
  </widget>
  <resources/>

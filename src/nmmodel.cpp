@@ -105,6 +105,7 @@ bool connectionEquivalent(const nm::ConnectionViewRecord &a, const nm::Connectio
         && a.uuid == b.uuid
         && a.type == b.type
         && a.active == b.active
+        && a.autoconnect == b.autoconnect
         && a.stale == b.stale
         && a.lastUsedTimestamp == b.lastUsedTimestamp;
 }
@@ -134,6 +135,7 @@ bool wifiEquivalent(const nm::WifiViewRecord &a, const nm::WifiViewRecord &b)
         && a.secure == b.secure
         && a.active == b.active
         && a.savedConnectionPath == b.savedConnectionPath
+        && a.autoconnect == b.autoconnect
         && a.autoconnectPriority == b.autoconnectPriority
         && a.lastUsedTimestamp == b.lastUsedTimestamp
         && a.stale == b.stale;
@@ -388,6 +390,55 @@ QVariant NmModel::data(const QModelIndex &index, int role) const
 
     if (role == ActiveConnectionStateRole && id == ITEM_ACTIVE_LEAF) {
         return static_cast<int>(mActive.at(index.row()).state);
+    }
+
+    if (role == SavedConnectionPathRole) {
+        switch (id) {
+        case ITEM_ACTIVE_LEAF:
+            return mActive.at(index.row()).connectionPath;
+        case ITEM_CONNECTION_LEAF:
+            return mConnections.at(index.row()).connectionPath;
+        case ITEM_WIFINET_LEAF:
+            return mWifi.at(index.row()).savedConnectionPath;
+        default:
+            return {};
+        }
+    }
+
+    if (role == AutoConnectRole) {
+        auto autoconnectForPath = [this](const QString &connectionPath) -> QVariant {
+            const auto it = mCache.snapshot().savedConnections.find(connectionPath);
+            if (it == mCache.snapshot().savedConnections.end()) {
+                return {};
+            }
+            return it->autoconnect;
+        };
+        switch (id) {
+        case ITEM_ACTIVE_LEAF:
+            return autoconnectForPath(mActive.at(index.row()).connectionPath);
+        case ITEM_CONNECTION_LEAF:
+            return autoconnectForPath(mConnections.at(index.row()).connectionPath);
+        case ITEM_WIFINET_LEAF:
+            if (mWifi.at(index.row()).savedConnectionPath.isEmpty()) {
+                return {};
+            }
+            return mWifi.at(index.row()).autoconnect;
+        default:
+            return {};
+        }
+    }
+
+    if (role == AutoConnectSupportedRole) {
+        switch (id) {
+        case ITEM_ACTIVE_LEAF:
+            return isWirelessType(mActive.at(index.row()).type) && !mActive.at(index.row()).connectionPath.isEmpty();
+        case ITEM_CONNECTION_LEAF:
+            return isWirelessType(mConnections.at(index.row()).type);
+        case ITEM_WIFINET_LEAF:
+            return !mWifi.at(index.row()).savedConnectionPath.isEmpty();
+        default:
+            return false;
+        }
     }
 
     if (role == ActiveConnectionMasterRole && id == ITEM_ACTIVE_LEAF) {
@@ -645,10 +696,7 @@ void NmModel::deactivateConnection(const QModelIndex &index)
     if (!isValidDataIndex(index) || static_cast<ItemId>(index.internalId()) != ITEM_ACTIVE_LEAF) {
         return;
     }
-    const auto &active = mActive.at(index.row());
-    if (auto result = nm::NmActions::deactivateConnection(active.path); !result) {
-        qCWarning(NM_TRAY).noquote() << QStringLiteral("deactivateConnection failed for '%1': %2").arg(active.id, result.error());
-    }
+    disconnectActiveConnection(mActive.at(index.row()));
 }
 
 void NmModel::requestScan(const QModelIndex &index) const
@@ -692,6 +740,20 @@ void NmModel::setWirelessEnabled(bool enabled)
     }
 }
 
+void NmModel::setConnectionAutoconnect(const QString &connectionPath, bool enabled)
+{
+    if (connectionPath.isEmpty() || connectionPath == QStringLiteral("/")) {
+        return;
+    }
+
+    if (auto result = nm::NmActions::setConnectionAutoconnect(connectionPath, enabled); !result) {
+        qCWarning(NM_TRAY).noquote() << QStringLiteral("setConnectionAutoconnect failed for '%1': %2").arg(connectionPath, result.error());
+        return;
+    }
+
+    QMetaObject::invokeMethod(mDbus, "refreshNow", Qt::QueuedConnection);
+}
+
 void NmModel::setShowLowSignalNetworks(bool enabled)
 {
     if (mShowLowSignalNetworks == enabled) {
@@ -706,8 +768,19 @@ void NmModel::disconnectPrimaryConnection()
     if (mManagerState.primaryConnectionPath.isEmpty() || mManagerState.primaryConnectionPath == QStringLiteral("/")) {
         return;
     }
-    if (auto result = nm::NmActions::deactivateConnection(mManagerState.primaryConnectionPath); !result) {
-        qCWarning(NM_TRAY).noquote() << QStringLiteral("disconnectPrimaryConnection failed: %1").arg(result.error());
+
+    const auto activeIt = std::find_if(mActive.cbegin(), mActive.cend(), [this](const nm::ActiveConnectionRecord &active) {
+        return active.path == mManagerState.primaryConnectionPath;
+    });
+    if (activeIt == mActive.cend()) {
+        if (auto result = nm::NmActions::deactivateConnection(mManagerState.primaryConnectionPath); !result) {
+            qCWarning(NM_TRAY).noquote() << QStringLiteral("disconnectPrimaryConnection failed: %1").arg(result.error());
+        }
+        return;
+    }
+
+    if (!disconnectActiveConnection(*activeIt)) {
+        qCWarning(NM_TRAY).noquote() << QStringLiteral("disconnectPrimaryConnection failed for '%1'").arg(activeIt->id);
     }
 }
 
@@ -788,9 +861,9 @@ void NmModel::rebuildFromSnapshot(const nm::Snapshot &snapshot)
 
     mCache.setSnapshot(snapshot);
     QList<nm::ActiveConnectionRecord> nextActive = mCache.activeConnections();
-    QList<nm::ConnectionViewRecord> nextConnections = mCache.knownConnections(true);
+    QList<nm::ConnectionViewRecord> nextConnections = mCache.knownConnections(false);
     QList<nm::DeviceRecord> nextDevices = mCache.devices();
-    QList<nm::WifiViewRecord> nextWifi = mCache.wifiEntries(true);
+    QList<nm::WifiViewRecord> nextWifi = mCache.wifiEntries(false);
     if (!mShowLowSignalNetworks) {
         QList<nm::WifiViewRecord> filtered;
         filtered.reserve(nextWifi.size());
@@ -941,6 +1014,31 @@ void NmModel::rebuildFromSnapshot(const nm::Snapshot &snapshot)
     if (!managerStateEquivalent(oldManagerState, nextManagerState)) {
         emit managerStateChanged();
     }
+}
+
+bool NmModel::disconnectActiveConnection(const nm::ActiveConnectionRecord &active)
+{
+    const bool isDeviceBacked = !active.isVpn
+        && (active.type == QStringLiteral("802-11-wireless")
+            || active.type == QStringLiteral("802-3-ethernet")
+            || active.type == QStringLiteral("bluetooth"));
+
+    if (isDeviceBacked && !active.devices.isEmpty()) {
+        const QString devicePath = active.devices.front();
+        if (auto result = nm::NmActions::disconnectDevice(devicePath); !result) {
+            qCWarning(NM_TRAY).noquote()
+                << QStringLiteral("disconnectDevice failed for '%1' on '%2': %3").arg(active.id, devicePath, result.error());
+            return false;
+        }
+        return true;
+    }
+
+    if (auto result = nm::NmActions::deactivateConnection(active.path); !result) {
+        qCWarning(NM_TRAY).noquote()
+            << QStringLiteral("deactivateConnection failed for '%1': %2").arg(active.id, result.error());
+        return false;
+    }
+    return true;
 }
 
 QString NmModel::buildActiveInfo(const nm::ActiveConnectionRecord &active) const

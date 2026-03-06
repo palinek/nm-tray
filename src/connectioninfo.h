@@ -45,6 +45,7 @@ private:
     void addTab(QModelIndex const & index);
     void removeTab(QModelIndex const & index);
     void changeTab(QModelIndex const & index);
+    void syncAutoConnectUi();
 
 private:
     QScopedPointer<Ui::ConnectionInfo> ui;

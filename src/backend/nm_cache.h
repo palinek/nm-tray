@@ -15,6 +15,7 @@ struct WifiViewRecord
     bool secure = false;
     bool active = false;
     QString savedConnectionPath;
+    bool autoconnect = false;
     int autoconnectPriority = 0;
     qint64 lastUsedTimestamp = 0;
     bool stale = false;
@@ -27,6 +28,7 @@ struct ConnectionViewRecord
     QString uuid;
     QString type;
     bool active = false;
+    bool autoconnect = false;
     bool stale = false;
     qint64 lastUsedTimestamp = 0;
 };

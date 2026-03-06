@@ -265,6 +265,7 @@ void NmDbusClient::registerSignals()
     bus.connect(QString::fromLatin1(kNmService), QString::fromLatin1(kNmPath), QString::fromLatin1(kDbusPropsIface), QStringLiteral("PropertiesChanged"), this, SLOT(onPropertiesChanged(QString,QVariantMap,QStringList)));
     bus.connect(QString::fromLatin1(kNmService), QString::fromLatin1(kSettingsPath), QString::fromLatin1(kSettingsIface), QStringLiteral("NewConnection"), this, SLOT(onManagerSignal()));
     bus.connect(QString::fromLatin1(kNmService), QString::fromLatin1(kSettingsPath), QString::fromLatin1(kSettingsIface), QStringLiteral("ConnectionRemoved"), this, SLOT(onManagerSignal()));
+    bus.connect(QString::fromLatin1(kNmService), QString(), QString::fromLatin1(kSettingsConnIface), QStringLiteral("Updated"), this, SLOT(onManagerSignal()));
     bus.connect(QString::fromLatin1(kNmService), QString(), QString::fromLatin1(kDeviceWirelessIface), QStringLiteral("AccessPointAdded"), this, SLOT(onManagerSignal()));
     bus.connect(QString::fromLatin1(kNmService), QString(), QString::fromLatin1(kDeviceWirelessIface), QStringLiteral("AccessPointRemoved"), this, SLOT(onManagerSignal()));
 }

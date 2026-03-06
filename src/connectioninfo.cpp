@@ -28,6 +28,7 @@ COPYRIGHT_HEADER*/
 #include <QItemSelection>
 #include <QSortFilterProxyModel>
 #include <QTabBar>
+#include <QCheckBox>
 
 ConnectionInfo::ConnectionInfo(NmModel * model, QWidget *parent)
     : QDialog{parent}
@@ -54,19 +55,38 @@ ConnectionInfo::ConnectionInfo(NmModel * model, QWidget *parent)
         for (int i = first; i <= last; ++i)
             addTab(mSorted->index(i, 0, parent));
         ui->tabWidget->setUpdatesEnabled(true);
+        syncAutoConnectUi();
     });
     connect(mSorted.data(), &QAbstractItemModel::rowsAboutToBeRemoved, [this] (QModelIndex const & parent, int first, int last) {
         ui->tabWidget->setUpdatesEnabled(false);
         for (int i = first; i <= last; ++i)
             removeTab(mSorted->index(i, 0, parent));
         ui->tabWidget->setUpdatesEnabled(true);
+        syncAutoConnectUi();
     });
     connect(mSorted.data(), &QAbstractItemModel::dataChanged, [this] (const QModelIndex & topLeft, const QModelIndex & bottomRight, const QVector<int> & /*roles*/) {
         ui->tabWidget->setUpdatesEnabled(false);
         for (auto const & i : QItemSelection{topLeft, bottomRight}.indexes())
             changeTab(i);
         ui->tabWidget->setUpdatesEnabled(true);
+        syncAutoConnectUi();
     });
+    connect(ui->tabWidget, &QTabWidget::currentChanged, this, [this] {
+        syncAutoConnectUi();
+    });
+    connect(ui->autoConnectCheckBox, &QCheckBox::toggled, this, [this] (bool checked) {
+        const int currentTab = ui->tabWidget->currentIndex();
+        if (currentTab < 0) {
+            return;
+        }
+        const QModelIndex currentIndex = mSorted->index(currentTab, 0);
+        const QString connectionPath = mSorted->data(currentIndex, NmModel::SavedConnectionPathRole).toString();
+        if (connectionPath.isEmpty()) {
+            return;
+        }
+        mModel->setConnectionAutoconnect(connectionPath, checked);
+    });
+    syncAutoConnectUi();
 }
 
 ConnectionInfo::~ConnectionInfo()
@@ -100,4 +120,30 @@ void ConnectionInfo::changeTab(QModelIndex const & index)
     content->setWidget(new QLabel{mSorted->data(index, NmModel::ActiveConnectionInfoRole).toString()});
     ui->tabWidget->tabBar()->setTabText(i, mSorted->data(index, NmModel::NameRole).toString());
     ui->tabWidget->tabBar()->setTabIcon(i,  mSorted->data(index, NmModel::IconRole).value<QIcon>());
+}
+
+void ConnectionInfo::syncAutoConnectUi()
+{
+    const int currentTab = ui->tabWidget->currentIndex();
+    if (currentTab < 0) {
+        ui->autoConnectCheckBox->setEnabled(false);
+        ui->autoConnectCheckBox->setChecked(false);
+        ui->autoConnectCheckBox->setText(tr("Connect to this network automatically"));
+        return;
+    }
+
+    const QModelIndex currentIndex = mSorted->index(currentTab, 0);
+    const bool supported = mSorted->data(currentIndex, NmModel::AutoConnectSupportedRole).toBool();
+    const QVariant autoconnect = mSorted->data(currentIndex, NmModel::AutoConnectRole);
+
+    ui->autoConnectCheckBox->blockSignals(true);
+    ui->autoConnectCheckBox->setEnabled(supported && autoconnect.isValid());
+    ui->autoConnectCheckBox->setChecked(autoconnect.toBool());
+    ui->autoConnectCheckBox->blockSignals(false);
+
+    if (supported) {
+        ui->autoConnectCheckBox->setText(tr("Connect to this network automatically"));
+    } else {
+        ui->autoConnectCheckBox->setText(tr("Automatic connection is only available for saved Wi-Fi networks"));
+    }
 }

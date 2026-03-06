@@ -51,11 +51,23 @@ QList<ActiveConnectionRecord> NmCache::activeConnections() const
 {
     QList<ActiveConnectionRecord> out;
     out.reserve(mSnapshot.activeConnections.size());
-    for (const auto &it : mSnapshot.activeConnections) {
-        if (!isUserFacingConnectionType(it.type)) {
+    for (const auto &active : mSnapshot.activeConnections) {
+        ActiveConnectionRecord item = active;
+        if (!isUserFacingConnectionType(item.type) && !item.connectionPath.isEmpty()) {
+            const auto savedIt = mSnapshot.savedConnections.find(item.connectionPath);
+            if (savedIt != mSnapshot.savedConnections.end() && isUserFacingConnectionType(savedIt->type)) {
+                if (item.type.isEmpty()) {
+                    item.type = savedIt->type;
+                }
+                if (item.id.isEmpty()) {
+                    item.id = savedIt->id;
+                }
+            }
+        }
+        if (!isUserFacingConnectionType(item.type)) {
             continue;
         }
-        out.push_back(it);
+        out.push_back(item);
     }
     return out;
 }
@@ -99,6 +111,7 @@ QList<WifiViewRecord> NmCache::wifiEntries(bool hideStale) const
         }
         if (bestConn != nullptr) {
             item.savedConnectionPath = bestConn->path;
+            item.autoconnect = bestConn->autoconnect;
             item.autoconnectPriority = bestConn->autoconnectPriority;
             item.lastUsedTimestamp = bestConn->timestamp;
             item.stale = isConnectionStale(*bestConn);
@@ -120,16 +133,19 @@ QList<WifiViewRecord> NmCache::wifiEntries(bool hideStale) const
         const bool replace = (item.active && !it->active) || (item.active == it->active && item.strength > it->strength);
         if (replace) {
             item.savedConnectionPath = it->savedConnectionPath.isEmpty() ? item.savedConnectionPath : it->savedConnectionPath;
+            item.autoconnect = it->savedConnectionPath.isEmpty() ? item.autoconnect : it->autoconnect;
             item.autoconnectPriority = std::max(item.autoconnectPriority, it->autoconnectPriority);
             item.lastUsedTimestamp = std::max(item.lastUsedTimestamp, it->lastUsedTimestamp);
             item.stale = item.savedConnectionPath.isEmpty() ? item.stale : it->stale;
             *it = item;
         } else if (it->savedConnectionPath.isEmpty() && !item.savedConnectionPath.isEmpty()) {
             it->savedConnectionPath = item.savedConnectionPath;
+            it->autoconnect = item.autoconnect;
             it->autoconnectPriority = item.autoconnectPriority;
             it->lastUsedTimestamp = item.lastUsedTimestamp;
             it->stale = item.stale;
         } else if (!item.savedConnectionPath.isEmpty() && item.savedConnectionPath == it->savedConnectionPath) {
+            it->autoconnect = it->autoconnect || item.autoconnect;
             it->autoconnectPriority = std::max(it->autoconnectPriority, item.autoconnectPriority);
             it->lastUsedTimestamp = std::max(it->lastUsedTimestamp, item.lastUsedTimestamp);
         }
@@ -179,6 +195,7 @@ QList<ConnectionViewRecord> NmCache::knownConnections(bool hideStale) const
         item.type = conn.type;
         item.stale = isConnectionStale(conn);
         item.lastUsedTimestamp = conn.timestamp;
+        item.autoconnect = conn.autoconnect;
 
         for (const auto &active : mSnapshot.activeConnections) {
             if (active.connectionPath == conn.path || (!conn.uuid.isEmpty() && active.uuid == conn.uuid)) {
@@ -196,6 +213,9 @@ QList<ConnectionViewRecord> NmCache::knownConnections(bool hideStale) const
     std::ranges::sort(out, [](const ConnectionViewRecord &a, const ConnectionViewRecord &b) {
         if (a.active != b.active) {
             return a.active;
+        }
+        if (a.autoconnect != b.autoconnect) {
+            return a.autoconnect;
         }
         if (a.stale != b.stale) {
             return !a.stale;
@@ -240,12 +260,17 @@ QString NmCache::connectionPathForUuid(const QString &uuid) const
 
 QString NmCache::connectionPathForSsid(const QString &ssid) const
 {
+    const SavedConnectionRecord *best = nullptr;
     for (const auto &conn : mSnapshot.savedConnections) {
         if ((hasConcreteSsid(conn.wifiSsid) && conn.wifiSsid == ssid) || conn.id == ssid) {
-            return conn.path;
+            if (best == nullptr
+                || conn.autoconnectPriority > best->autoconnectPriority
+                || (conn.autoconnectPriority == best->autoconnectPriority && conn.timestamp > best->timestamp)) {
+                best = &conn;
+            }
         }
     }
-    return {};
+    return best == nullptr ? QString{} : best->path;
 }
 
 QString NmCache::findWifiDeviceForAp(const QString &apPath) const

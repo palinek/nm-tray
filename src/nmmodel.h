@@ -81,8 +81,10 @@ public:
         ActiveConnectionDevicesRole,
         IconSecurityTypeRole,
         IconSecurityRole,
-
-        SignalRole
+        SignalRole,
+        SavedConnectionPathRole,
+        AutoConnectRole,
+        AutoConnectSupportedRole
     };
 
     enum ActiveConnectionState
@@ -124,6 +126,7 @@ public Q_SLOTS:
     void requestAllWifiScan() const;
     void setNetworkingEnabled(bool enabled);
     void setWirelessEnabled(bool enabled);
+    void setConnectionAutoconnect(const QString &connectionPath, bool enabled);
     void setShowLowSignalNetworks(bool enabled);
     void disconnectPrimaryConnection();
     void activateConnectionPath(const QString &connectionPath);
@@ -146,6 +149,7 @@ private:
     bool isValidDataIndex(const QModelIndex &index) const;
     void rebuildFromSnapshot(const nm::Snapshot &snapshot);
     QString buildActiveInfo(const nm::ActiveConnectionRecord &active) const;
+    bool disconnectActiveConnection(const nm::ActiveConnectionRecord &active);
 
 private:
     QThread mDbusThread;
