@@ -178,12 +178,12 @@
     <message>
         <location filename="../src/tray.cpp" line="123"/>
         <source>&lt;pre&gt;Connection &lt;strong&gt;%1&lt;/strong&gt;(%2) active&lt;/pre&gt;</source>
-        <translation>&lt;pre&gt; Conexiune &lt;strong&gt;%1&lt;/strong&gt;(%2) activă&lt;/pre&gt;</translation>
+        <translation>&lt;pre&gt;Conexiune &lt;strong&gt;%1&lt;/strong&gt;(%2) activă&lt;/pre&gt;</translation>
     </message>
     <message>
         <location filename="../src/tray.cpp" line="129"/>
         <source>&lt;pre&gt;No active connection&lt;/pre&gt;</source>
-        <translation>&lt;pre&gt; Nicio conexiune activă &lt;/pre&gt;</translation>
+        <translation>&lt;pre&gt;Nicio conexiune activă&lt;/pre&gt;</translation>
     </message>
     <message>
         <location filename="../src/tray.cpp" line="202"/>
@@ -268,7 +268,7 @@
     <message>
         <location filename="../src/tray.cpp" line="385"/>
         <source>&lt;strong&gt;&lt;a href=&quot;https://github.com/palinek/nm-tray&quot;&gt;nm-tray&lt;/a&gt;&lt;/strong&gt; is a simple Qt based frontend for &lt;a href=&quot;https://wiki.gnome.org/Projects/NetworkManager&quot;&gt;NetworkManager&lt;/a&gt;.&lt;br/&gt;&lt;br/&gt;Version: %1</source>
-        <translation>&lt;strong&gt; &lt;a href=&quot;https://github.com/palinek/nm-tray&quot;&gt;nm-tray&lt;/a&gt;&lt;/strong&gt; este o simplă interfață bazată pe Qt pentru &lt;a href=&quot;https://wiki.gnome.org/Projects/NetworkManager&quot;&gt;NetworkManager&lt;/a&gt;. &lt;br/&gt; &lt;br/&gt; Versiune: %1</translation>
+        <translation>&lt;strong&gt; &lt;a href=&quot;https://github.com/palinek/nm-tray&quot;&gt;nm-tray&lt;/a&gt;&lt;/strong&gt; este o simplă interfață bazată pe Qt pentru &lt;a href=&quot;https://wiki.gnome.org/Projects/NetworkManager&quot;&gt;NetworkManager&lt;/a&gt;. &lt;br/&gt; &lt;br/&gt;Versiune: %1</translation>
     </message>
 </context>
 <context>
