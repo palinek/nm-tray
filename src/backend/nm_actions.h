@@ -19,6 +19,7 @@ public:
     static Result setNetworkingEnabled(bool enabled);
     static Result setWirelessEnabled(bool enabled);
     static Result setConnectionAutoconnect(const QString &connectionPath, bool enabled);
+    static Result addWifiConnection(const QString &ssid, const QString &password, const QString &devicePath, bool secure = false);
 };
 
 } // namespace nm

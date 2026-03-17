@@ -3,10 +3,12 @@
 #include "backend/nm_actions.h"
 #include "icons.h"
 #include "log.h"
+#include "wifi_password_dialog.h"
 
 #include <QLocale>
 #include <QMetaObject>
 #include <QMetaType>
+#include <QApplication>
 #include <algorithm>
 
 namespace
@@ -682,7 +684,8 @@ void NmModel::activateConnection(const QModelIndex &index)
             savedConnectionPath = mCache.connectionPathForSsid(wifi.ssid);
         }
         if (savedConnectionPath.isEmpty()) {
-            qCWarning(NM_TRAY).noquote() << QStringLiteral("No saved profile for SSID '%1'. Connection creation is intentionally delegated to NetworkManager secret agents.").arg(wifi.ssid);
+            // No saved connection, prompt to create one
+            promptAndCreateWifiConnection(wifi.ssid, wifi.devicePath, wifi.secure);
             return;
         }
         if (auto result = nm::NmActions::activateConnection(savedConnectionPath, wifi.devicePath, wifi.apPath); !result) {
@@ -1122,4 +1125,23 @@ QString NmModel::buildActiveInfo(const nm::ActiveConnectionRecord &active) const
 
     str << QStringLiteral("</table>");
     return info;
+}
+
+void NmModel::promptAndCreateWifiConnection(const QString &ssid, const QString &devicePath, bool secure)
+{
+    auto *dialog = new WifiPasswordDialog(ssid, secure, nullptr);
+    dialog->setAttribute(Qt::WA_DeleteOnClose);
+
+    connect(dialog, &QDialog::accepted, this, [this, ssid, devicePath, secure, dialog]() {
+        const QString password = dialog->password();
+        if (auto result = nm::NmActions::addWifiConnection(ssid, password, devicePath, secure); !result) {
+            qCWarning(NM_TRAY).noquote() << QStringLiteral("Failed to create Wi-Fi connection for '%1': %2").arg(ssid, result.error());
+        } else if (mDbus != nullptr) {
+            QMetaObject::invokeMethod(mDbus, "refreshNow", Qt::QueuedConnection);
+        }
+    });
+
+    dialog->show();
+    dialog->raise();
+    dialog->activateWindow();
 }

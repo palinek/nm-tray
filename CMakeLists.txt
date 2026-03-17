@@ -49,6 +49,7 @@ set(SRCS
     src/windowmenu.cpp
     src/tray.cpp
     src/translate.cpp
+    src/wifi_password_dialog.cpp
     src/main.cpp
 )
 

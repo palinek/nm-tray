@@ -137,6 +137,7 @@ QList<WifiViewRecord> NmCache::wifiEntries(bool hideStale) const
             item.autoconnectPriority = std::max(item.autoconnectPriority, it->autoconnectPriority);
             item.lastUsedTimestamp = std::max(item.lastUsedTimestamp, it->lastUsedTimestamp);
             item.stale = item.savedConnectionPath.isEmpty() ? item.stale : it->stale;
+            item.secure = item.secure || it->secure;
             *it = item;
         } else if (it->savedConnectionPath.isEmpty() && !item.savedConnectionPath.isEmpty()) {
             it->savedConnectionPath = item.savedConnectionPath;
@@ -144,10 +145,14 @@ QList<WifiViewRecord> NmCache::wifiEntries(bool hideStale) const
             it->autoconnectPriority = item.autoconnectPriority;
             it->lastUsedTimestamp = item.lastUsedTimestamp;
             it->stale = item.stale;
+            it->secure = it->secure || item.secure;
         } else if (!item.savedConnectionPath.isEmpty() && item.savedConnectionPath == it->savedConnectionPath) {
             it->autoconnect = it->autoconnect || item.autoconnect;
             it->autoconnectPriority = std::max(it->autoconnectPriority, item.autoconnectPriority);
             it->lastUsedTimestamp = std::max(it->lastUsedTimestamp, item.lastUsedTimestamp);
+            it->secure = it->secure || item.secure;
+        } else {
+            it->secure = it->secure || item.secure;
         }
     }
 

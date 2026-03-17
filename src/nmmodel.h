@@ -9,6 +9,8 @@
 #include "backend/nm_cache.h"
 #include "backend/nm_dbus_client.h"
 
+class WifiPasswordDialog;
+
 class NmModel : public QAbstractItemModel
 {
     Q_OBJECT
@@ -131,6 +133,7 @@ public Q_SLOTS:
     void disconnectPrimaryConnection();
     void activateConnectionPath(const QString &connectionPath);
     void onSnapshotChanged(const nm::Snapshot &snapshot);
+    void promptAndCreateWifiConnection(const QString &ssid, const QString &devicePath, bool secure);
 
 private:
     enum ItemId
