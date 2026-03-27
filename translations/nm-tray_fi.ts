@@ -32,7 +32,7 @@
     <message>
         <location filename="../src/nmmodel.cpp" line="56"/>
         <source>nm-tray - wireless password</source>
-        <translation>nm-tray – WLAN-salasana</translation>
+        <translation>nm-tray – WiFin salasana</translation>
     </message>
     <message>
         <location filename="../src/nmmodel.cpp" line="57"/>
@@ -62,7 +62,7 @@
     <message>
         <location filename="../src/nmmodel.cpp" line="753"/>
         <source>wifi network(s)</source>
-        <translation>WLAN-verkot</translation>
+        <translation>WiFi-verkot</translation>
     </message>
     <message>
         <location filename="../src/nmmodel.cpp" line="1044"/>
