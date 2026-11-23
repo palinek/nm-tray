@@ -121,8 +121,8 @@ void TrayPrivate::updateState(QModelIndex const & index, bool removing)
     if (mPrimaryConnection.isValid())
     {
         mTrayIcon.setToolTip(Tray::tr("<pre>Connection <strong>%1</strong>(%2) active</pre>")
-                .arg(mPrimaryConnection.data(NmModel::NameRole).toString())
-                .arg(mPrimaryConnection.data(NmModel::ActiveConnectionTypeStringRole).toString())
+                .arg(mPrimaryConnection.data(NmModel::NameRole).toString().toHtmlEscaped()
+                    , mPrimaryConnection.data(NmModel::ActiveConnectionTypeStringRole).toString().toHtmlEscaped())
                 );
     } else
     {
@@ -221,7 +221,8 @@ void TrayPrivate::notify(QModelIndex const & index, bool removing)
             , 0
             , icons::getIcon(static_cast<icons::Icon>(mActiveConnections.data(index, NmModel::IconTypeRole).toInt()), false).name()
             , summary
-            , body.arg(mActiveConnections.data(index, NmModel::ConnectionTypeStringRole).toString()).arg(mActiveConnections.data(index, NmModel::NameRole).toString())
+            , body.arg(mActiveConnections.data(index, NmModel::ConnectionTypeStringRole).toString().toHtmlEscaped()
+                    , mActiveConnections.data(index, NmModel::NameRole).toString().toHtmlEscaped())
             , {}
             , {}
             , -1);

@@ -54,7 +54,7 @@ namespace
         //TODO: enhance getting the password from user
         bool ok;
         QString password = QInputDialog::getText(nullptr, NmModel::tr("nm-tray - wireless password")
-                , NmModel::tr("Password is needed for connection to '%1':").arg(accessPoint->ssid())
+                , NmModel::tr("Password is needed for connection to '%1':").arg(accessPoint->ssid().toHtmlEscaped())
                 , QLineEdit::Password, QString(), &ok);
         if (!ok)
             return NetworkManager::ConnectionSettings::Ptr{nullptr};
